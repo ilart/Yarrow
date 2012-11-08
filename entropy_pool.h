@@ -1,9 +1,9 @@
 #ifndef _ENTROPY_POOL_H
 #define _ENTROPY_POOL_H
 
-#include "/home/il/bpn/prog/syktsu_svn/crypto/md5.h"
-#include "/home/il/bpn/prog/syktsu_svn/crypto/mp/sha1.h"
-#include "/home/il/bpn/prog/syktsu_svn/crypto/mp/sha256.h"
+#include "./hash/md5.h"
+#include "./hash/mp/sha1.h"
+#include "./hash/mp/sha256.h"
 
 
 #define MAXSOURCES 32

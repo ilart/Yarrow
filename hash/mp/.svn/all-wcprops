@@ -1,0 +1,203 @@
+K 25
+svn:wc:ra_dav:version-url
+V 25
+/svn/crypto/!svn/ver/4/mp
+END
+mp_init.c
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/crypto/!svn/ver/3/mp/mp_init.c
+END
+sha1.h
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/crypto/!svn/ver/3/mp/sha1.h
+END
+mp_sqr.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/mp_sqr.c
+END
+mp_primality.c
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/crypto/!svn/ver/3/mp/mp_primality.c
+END
+sha256.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/sha256.c
+END
+mp_util.c
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/crypto/!svn/ver/3/mp/mp_util.c
+END
+emeoaep.c
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/crypto/!svn/ver/3/mp/emeoaep.c
+END
+sha256.h
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/sha256.h
+END
+emeoaep.h
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/crypto/!svn/ver/3/mp/emeoaep.h
+END
+mp.h
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/crypto/!svn/ver/3/mp/mp.h
+END
+mp_gcd.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/mp_gcd.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/Makefile
+END
+mp_ensure.c
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/crypto/!svn/ver/3/mp/mp_ensure.c
+END
+mp_uchar.c
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/crypto/!svn/ver/3/mp/mp_uchar.c
+END
+mp_reduce.c
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/crypto/!svn/ver/3/mp/mp_reduce.c
+END
+mp_copy.c
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/crypto/!svn/ver/3/mp/mp_copy.c
+END
+mp_shift.c
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/crypto/!svn/ver/3/mp/mp_shift.c
+END
+mp_cmp.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/mp_cmp.c
+END
+mp_random.c
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/crypto/!svn/ver/3/mp/mp_random.c
+END
+libmp.ver
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/crypto/!svn/ver/3/mp/libmp.ver
+END
+mp_div.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/mp_div.c
+END
+test.c
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/crypto/!svn/ver/3/mp/test.c
+END
+mp_clear.c
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/crypto/!svn/ver/3/mp/mp_clear.c
+END
+mp_add.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/mp_add.c
+END
+rsa.c
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/crypto/!svn/ver/3/mp/rsa.c
+END
+mp_sub.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/mp_sub.c
+END
+mp_set.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/mp_set.c
+END
+mp_mod_exp.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/crypto/!svn/ver/3/mp/mp_mod_exp.c
+END
+mp_mod_inv.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/crypto/!svn/ver/3/mp/mp_mod_inv.c
+END
+mp_mul.c
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/crypto/!svn/ver/3/mp/mp_mul.c
+END
+mp_common.h
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/crypto/!svn/ver/3/mp/mp_common.h
+END
+rsa.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/crypto/!svn/ver/3/mp/rsa.h
+END
+sha1.c
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/crypto/!svn/ver/4/mp/sha1.c
+END

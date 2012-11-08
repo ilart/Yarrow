@@ -1,0 +1,18 @@
+VER_1.0 {
+   global: 
+	mp_dbg; mp_init; mp_clear; mp_initv;
+	mp_clearv; mp_zero; mp_iszero; mp_isone;
+	mp_isneg; mp_set_one; mp_set_sint;
+	mp_set_uint; mp_set_str; mp_set_uchar;
+	mp_to_uchar; mp_nr_bits; mp_shr;
+	mp_shl; mp_add; mp_sub; mp_mul;
+	mp_mul_ndig; mp_mul_dig; mp_div;
+	mp_sqr; mp_gcd; mp_random; mp_primality_miller_rabin;
+	mp_reduce_barrett_setup; mp_reduce_barrett;
+	mp_mod_inv; mp_mod_exp; mp_cmp; mp_abs_cmp;
+	mp_copy; mp_swap;
+
+   local:
+	*;
+};
+
