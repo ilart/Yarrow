@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <string.h>
+#include <stdint.h>
+#include "macros.h"
 #include "yarrow.h"
 
 struct hash_desc description[] = {
@@ -132,12 +135,12 @@ entropy_pool_is_thresholded(struct entropy_pool *pool)
 }
 
 int
-entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)
+entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src, int size )
 {
 	assert(dst != NULL || src != NULL);
 
-
 	memcpy(dst, src, size);
+	return 0;
 	//???
 }
 
@@ -172,5 +175,5 @@ void
 entropy_pool_clean(struct entropy_pool *pool)
 {
 	assert(pool != NULL);
-	memset(pool->hash_ctx, 0, sizeof())
+	memset(&pool->hash_ctx, 0, sizeof())
 }
