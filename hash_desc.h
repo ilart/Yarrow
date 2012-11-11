@@ -27,12 +27,10 @@ struct hash_desc {
 	void (*init)(void *ctx);
 
 	/* update function feeds buffer `buf' of `len' bytes into hash */
-	void *(*update)(void *ctx, void *buf, size_t len);
+	void (*update)(void *ctx, void *buf, size_t len);
 
 	/* finalize function outputs hash digest to `digest' */
 	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);
 
-	/* running function returns pointer to running hash buffer */ 
-	void *(*running)(void *ctx);
 };
 #endif	/* _HASH_H_ */

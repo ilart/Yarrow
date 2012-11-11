@@ -1,57 +1,80 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-#include <string.h>
 #include <stdint.h>
-#include "macros.h"
-#include "yarrow.h"
+#include <string.h>
 
-struct hash_desc description[] = {
-	{ HASH_MD5, 16, NULL, NULL, NULL, NULL },
-	{ HASH_SHA1, 20, NULL, NULL, NULL, NULL },
-	{ HASH_SHA256, 32, NULL, NULL, NULL, NULL }
-}
+#include "limits.h"
+#include "yarrow.h"
+#include "entropy_pool.h"
+#include "hash_desc.h"
+
+#define ARRSZ(a) (sizeof(a)/a[0])
+#define DEFAULT_NSOURCES 3
+
+#define HASH_INIT(x) ((void (*)(void *))(x))
+#define HASH_UPDATE(x) ((void (*)(void *, const void *, size_t))(x))
+#define HASH_FINAL(x) ((void * (*)(void *, unsigned char *))(x))
+
+struct hash_desc desc_tbl[] = {
+	{ HASH_MD5,
+	  MD5_DIGEST_LEN, 
+	  HASH_INIT(md5_context_init),
+	  HASH_UPDATE(md5_update),
+	  HASH_FINAL(md5_final) },
+	{ HASH_SHA1, 20, NULL, NULL, NULL },
+	{ HASH_SHA256, 32, NULL, NULL, NULL }
+};
 
 
 int
 entropy_pool_init(struct entropy_pool *pool,
-			int nsources,
-			const char *hash_name)
+		  int nsources,
+		  const char *hash_name)
 {
 
-	assert(pool != NULL && nsources > 0 && hash_name != NULL);
-		
 	int i;
 
-	pool->nsources = nsources;
+	assert(pool != NULL && nsources > 0 && hash_name != NULL);
 
-	pool->k = 0;
+	pool->nsources = nsources;
+	pool->k = DEFAULT_NSOURCES;
 
 	for (i = 0; i < MAXSOURCES; i++) {
-		pool->hreshold[i] = 0.0;
+		pool->threshold[i] = 0.0;
 		pool->estimate[i] = 0.0;
 	}
 
-	if (strcmp(HASH_MD5, hash_name) == 0) {
-		pool->hash_desc = hash_ctx[0];
+	for ( i = 0; i < 3; i++ ) {
+		if (strcmp(hash_name, desc_tbl[i].name) == 0) { 
+			pool->hdesc = &desc_tbl[i];
+			return EPOOL_OK;
+		}
 	}
-
-	else if (strcmp(HASH_SHA1, hash_name) == 0) {
-		pool->hash_desc = hash_ctx[1];
-	}
-	else if (strcmp(HASH_SHA256,hash_name) == 0) {
-		pool->hash_desc = hash_ctx[2];
-	}
-		
-	
-	else
-		DEBUG(LOG_DEFAULT, "Invalid name of hash %s, \
-		      use its one of list: md5, sha1, sha256 \n");
-
-	return 0;
+		return EPOOL_FAIL;
 }
 
+int
+entropy_pool_add(struct entropy_pool *pool,
+		 int source_id,
+		 const void *buf,
+		 size_t len,
+		 double estimate)
+{
+	float res;
+	assert( pool != NULL && source_id >= 0 && buf != NULL && len > 0);
+
+	res = len * CHAR_BIT * estimate;
+	pool->estimate[source_id] += res;
+
+	pool->hdesc->init(&pool->hash_ctx);
+	pool->hdesc->update(&pool->hash_ctx, (void *)buf, len);
+
+
+	return EPOOL_OK;
+}
+
+/*
 int
 entropy_pool_deinit(struct entropy_pool *pool)
 {
@@ -78,27 +101,7 @@ entropy_pool_get_k(struct entropy_pool *pool)
 	return pool->k;
 }
 
-int
-entropy_pool_add(struct entropy_pool *pool,
-			int source_id,
-			const void *buf,
-			size_t len,
-			double estimate,)
-{
-	int i;
 
-	if (pool == NULL || buf == NULL){
-        	DEBUG(LOG_DEFAULT, "pool or buf is NULL\n");
-		return 1;
-	}
-
-	pool->estimate[sources_id] = estimate;
-
-	i = pool->hdesc->hash_update(&pool->hash_ctx, buf, len);
-//	pool->threshold[sources_id] = 0.0;
-
-	return 0;
-}
 
 int
 entropy_pool_set_threshold(struct entropy_pool *pool, int source_id, double threshold)
@@ -135,12 +138,12 @@ entropy_pool_is_thresholded(struct entropy_pool *pool)
 }
 
 int
-entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src, int size )
+entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)
 {
 	assert(dst != NULL || src != NULL);
 
+
 	memcpy(dst, src, size);
-	return 0;
 	//???
 }
 
@@ -175,5 +178,5 @@ void
 entropy_pool_clean(struct entropy_pool *pool)
 {
 	assert(pool != NULL);
-	memset(&pool->hash_ctx, 0, sizeof())
-}
+	memset(pool->hash_ctx, 0, sizeof())
+}*/

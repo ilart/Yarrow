@@ -1,9 +1,9 @@
 #ifndef _ENTROPY_POOL_H
 #define _ENTROPY_POOL_H
 
-#include "./hash/md5.h"
-#include "./hash/mp/sha1.h"
-#include "./hash/mp/sha256.h"
+#include "md5.h"
+#include "sha1.h"
+#include "sha256.h"
 
 
 #define MAXSOURCES 32
