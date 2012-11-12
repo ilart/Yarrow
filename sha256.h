@@ -11,7 +11,7 @@ struct sha256_context {
 
 void sha256_context_init(struct sha256_context *ctx);
 void sha256_update(struct sha256_context *ctx, const void *msg, uint32_t len);
-void sha256_final(struct sha256_context *ctx, unsigned char digest[32]);
+void *sha256_final(struct sha256_context *ctx, unsigned char digest[32]);
 
 #endif /* SHA256_H_ */ 
 

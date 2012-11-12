@@ -347,7 +347,7 @@ uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)
 }
 #endif
 
-void
+void *
 sha256_final(struct sha256_context *ctx, unsigned char digest[32])
 {
 	static const unsigned char pad[64] = { 0x80, 0x0 };
@@ -383,5 +383,6 @@ sha256_final(struct sha256_context *ctx, unsigned char digest[32])
 #else
 #error unknown byte order!
 #endif
+	return &ctx->buffer;
 }
 

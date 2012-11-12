@@ -223,12 +223,16 @@ md5_context_init(struct md5_context *ctx)
 	ctx->state[1] = 0xefcdab89UL;
 	ctx->state[2] = 0x98badcfeUL;
 	ctx->state[3] = 0x10325476UL;
+	printf("This string printed from md5_contex_init function \n");
 }
 
 void
 md5_update(struct md5_context *ctx, const void *msg, u_int32_t msglen)
 {
 	unsigned int n, len;
+
+	printf("This string printed from md5_update,"
+	       "msg = %s,\n", msg);
 
 	/* Get length of buffer used. */
 	n = (ctx->nbits[0] >> 3) & 0x3f;

@@ -11,6 +11,7 @@
 
 #define ARRSZ(a) (sizeof(a)/a[0])
 #define DEFAULT_NSOURCES 3
+#define BUF_SZ 64
 
 #define HASH_INIT(x) ((void (*)(void *))(x))
 #define HASH_UPDATE(x) ((void (*)(void *, const void *, size_t))(x))
@@ -22,8 +23,16 @@ struct hash_desc desc_tbl[] = {
 	  HASH_INIT(md5_context_init),
 	  HASH_UPDATE(md5_update),
 	  HASH_FINAL(md5_final) },
-	{ HASH_SHA1, 20, NULL, NULL, NULL },
-	{ HASH_SHA256, 32, NULL, NULL, NULL }
+	{ HASH_SHA1, 
+	  SHA1_DIGEST_LEN,
+	  HASH_INIT(sha1_context_init),
+	  HASH_UPDATE(sha1_update),
+	  HASH_FINAL(sha1_final) },
+	{ HASH_SHA256,
+	  SHA256_DIGEST_LEN,
+	  HASH_INIT(sha256_context_init),
+	  HASH_UPDATE(sha256_update),
+	  HASH_FINAL(sha256_final) },
 };
 
 
@@ -70,9 +79,36 @@ entropy_pool_add(struct entropy_pool *pool,
 	pool->hdesc->init(&pool->hash_ctx);
 	pool->hdesc->update(&pool->hash_ctx, (void *)buf, len);
 
-
 	return EPOOL_OK;
 }
+
+int
+entropy_pool_is_thresholded(struct entropy_pool *pool)
+{
+	assert(pool != NULL);
+
+	int i, c;
+	c = 0;
+	
+	for (i = 0; i < pool->nsources; i++){
+		if (pool->estimate[i] >= pool->threshold[i])
+			c++;
+		if (c == pool->k )
+			return EPOOL_OK;
+	}
+	
+	return EPOOL_FAIL;
+}
+
+int
+entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)
+{
+	assert(dst != NULL || src != NULL);
+
+	dst->hdesc->update(&dst->hash_ctx, &src->hash_ctx, src->hdesc->digest_len); 
+	return EPOOL_OK;
+}
+
 
 /*
 int
@@ -119,33 +155,6 @@ entropy_pool_get_threshold(struct entropy_pool *pool, int source_id)
 	return pool->threshold[source_id];
 }
 
-int
-entropy_pool_is_thresholded(struct entropy_pool *pool)
-{
-	assert(pool != NULL);
-
-	int i, c;
-	c = 0;
-	
-	for (i = 0; i < pool->nsources; i++){
-		if (pool->threshold[i] >= THRESHOLD)
-			c++;
-		if (c == pool->k )
-			return TRUE;
-	}
-	
-	return FALSE;
-}
-
-int
-entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)
-{
-	assert(dst != NULL || src != NULL);
-
-
-	memcpy(dst, src, size);
-	//???
-}
 
 int
 entropy_pool_set_nsources(struct entropy_pool *pool, int nsources)
