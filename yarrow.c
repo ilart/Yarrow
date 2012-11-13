@@ -1,16 +1,14 @@
-#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 
-#include "limits.h"
+#include <limits.h>
 #include "yarrow.h"
-#include "entropy_pool.h"
-#include "hash_desc.h"
+#include "macros.h"
 
-#define ARRSZ(a) (sizeof(a)/a[0])
-#define DEFAULT_NSOURCES 3
+#define ARRSZ(a) (sizeof(a)/sizeof(a[0]))
+#define DEFAULT_K 3
 #define BUF_SZ 64
 
 #define HASH_INIT(x) ((void (*)(void *))(x))
@@ -47,20 +45,21 @@ entropy_pool_init(struct entropy_pool *pool,
 	assert(pool != NULL && nsources > 0 && hash_name != NULL);
 
 	pool->nsources = nsources;
-	pool->k = DEFAULT_NSOURCES;
+	pool->k = DEFAULT_K;
 
 	for (i = 0; i < MAXSOURCES; i++) {
 		pool->threshold[i] = 0.0;
 		pool->estimate[i] = 0.0;
 	}
 
-	for ( i = 0; i < 3; i++ ) {
+	for ( i = 0; i < ARRSZ(desc_tbl); i++ ) { /* does not  work with ARRSZ*/
 		if (strcmp(hash_name, desc_tbl[i].name) == 0) { 
 			pool->hdesc = &desc_tbl[i];
+			pool->hdesc->init(&pool->hash_ctx);
 			return EPOOL_OK;
 		}
 	}
-		return EPOOL_FAIL;
+	return EPOOL_FAIL;
 }
 
 int
@@ -70,14 +69,22 @@ entropy_pool_add(struct entropy_pool *pool,
 		 size_t len,
 		 double estimate)
 {
-	float res;
-	assert( pool != NULL && source_id >= 0 && buf != NULL && len > 0);
+	float nbits;
+	assert( pool != NULL && source_id >= 0 && buf != NULL);
 
-	res = len * CHAR_BIT * estimate;
-	pool->estimate[source_id] += res;
+	printf("Debug pool_nsources = %d "
+	       "source_id %d "
+	       "buf %p "
+	       "pool %p \n ", pool->nsources, source_id, buf, pool);
 
-	pool->hdesc->init(&pool->hash_ctx);
-	pool->hdesc->update(&pool->hash_ctx, (void *)buf, len);
+	if (source_id >= pool->nsources)
+		return EPOOL_FAIL;
+
+	nbits = len * CHAR_BIT * estimate;
+	printf("nbits %f esitmate %f, len %d \n", nbits, estimate,  len);
+	pool->estimate[source_id] += nbits;
+
+	pool->hdesc->update(&pool->hash_ctx, buf, len);
 
 	return EPOOL_OK;
 }
@@ -105,6 +112,7 @@ entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)
 {
 	assert(dst != NULL || src != NULL);
 
+	printf("fast_pool %p, slow_pool %p \n", dst, src );
 	dst->hdesc->update(&dst->hash_ctx, &src->hash_ctx, src->hdesc->digest_len); 
 	return EPOOL_OK;
 }

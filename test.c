@@ -11,28 +11,44 @@ int main(int argc, char **argv)
 {
 	int res;
 	struct entropy_pool fast_pool, slow_pool;
-	const char buf[] = "qqqwwwmmm";
+	const char buf[] = "qw qw as zx zx zz zz 11";
+	const char tmp_buf[16];
 
-	res = entropy_pool_init(&fast_pool, 12, HASH_MD5);
+	res = entropy_pool_init(&fast_pool, 17, HASH_SHA256);
 	if (res == 0)
-	printf("test entropy_pool_init %d "
-	       "pool->nsources %d "
-	       "pool->k %d "
-	       "pool->hdesc.init %s "
-	       "pool->hdesc.update %s "
-	       "pool.hdesc->name %s \n",
-	       res, 
-	       fast_pool.nsources, 
-	       fast_pool.k, 
-	       (char *)fast_pool.hdesc->init, 
-	       (char *)fast_pool.hdesc->update, 
-	       fast_pool.hdesc->name );
+		printf("pool.nsources %d "
+		       "pool.k %d "
+		       "pool.hdesc->name %s \n",
+		       fast_pool.nsources, 
+		       fast_pool.k, 
+		       fast_pool.hdesc->name);
 
-	res = entropy_pool_add(&fast_pool, 0, buf, 10, 0.3);
+	res = entropy_pool_init(&slow_pool, 12, HASH_SHA256);
 	if (res == 0)
-		printf("pool.estimate[source_id] = %f \n", 
-			fast_pool.estimate[0]);
+		printf("slow_pool.nsoursec  %d"
+		       "slow_pool.k %d" 
+		       "slow_pool.hdesc->k %s \n", 
+		       slow_pool.nsources, 
+		       slow_pool.k, 
+		       slow_pool.hdesc->name);
+
+	res = entropy_pool_add(&slow_pool, 0, buf, 10, 0.3);
+	if (res == 0)
+		printf("pool.estimate add %f \n", 
+			slow_pool.estimate[0]);
+	else {
+		printf("error of entropy_pool_add");
+		return EPOOL_FAIL;
+	}
+	
+	slow_pool.hdesc->finalize(&slow_pool, (void *)tmp_buf);
+	printf("hash = %s \n", tmp_buf);
+
 	res = entropy_pool_is_thresholded(&fast_pool);
 	printf("thresholded = %d \n", res);
+	
+	entropy_pool_feed_to(&fast_pool, &slow_pool);
+	
+	/* how see result, current hash? */		
 	return 0;
 }

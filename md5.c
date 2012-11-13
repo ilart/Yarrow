@@ -232,7 +232,7 @@ md5_update(struct md5_context *ctx, const void *msg, u_int32_t msglen)
 	unsigned int n, len;
 
 	printf("This string printed from md5_update,"
-	       "msg = %s,\n", msg);
+	       "msg = %*s,\n", (char *)msg);
 
 	/* Get length of buffer used. */
 	n = (ctx->nbits[0] >> 3) & 0x3f;
@@ -287,6 +287,6 @@ md5_final(struct md5_context *ctx, unsigned char digest[16])
 	md5_update(ctx, nbits, 8);
 	
 	uint32_to_bytes(digest, ctx->state, 4);
-	return ctx->buffer;
+	return digest;
 }
 
