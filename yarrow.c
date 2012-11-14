@@ -81,7 +81,7 @@ entropy_pool_add(struct entropy_pool *pool,
 		return EPOOL_FAIL;
 
 	nbits = len * CHAR_BIT * estimate;
-	printf("nbits %f esitmate %f, len %d \n", nbits, estimate,  len);
+	printf("nbits %f esitmate %f, len %d \n", nbits, estimate, (int ) len);
 	pool->estimate[source_id] += nbits;
 
 	pool->hdesc->update(&pool->hash_ctx, buf, len);
@@ -113,30 +113,40 @@ entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)
 	assert(dst != NULL || src != NULL);
 
 	printf("fast_pool %p, slow_pool %p \n", dst, src );
-	dst->hdesc->update(&dst->hash_ctx, &src->hash_ctx, src->hdesc->digest_len); 
+//	dst->hdesc->update(&dst->hash_ctx, src->hdesc->finalize(), src->hdesc->digest_len); /*where are need current hash*/
 	return EPOOL_OK;
 }
 
 
-/*
+
 int
 entropy_pool_deinit(struct entropy_pool *pool)
 {
+	int i;
+
 	pool->hdesc 	= NULL;
 	pool->nsources	= 0;
+	pool->k		= 0;
+	
+	for (i = 0; i < pool->nsources; i++) {
+		pool->threshold[i] = 0.0;
+		pool->estimate[i] = 0.0;
+	}
 
-	return 0;
+	return EPOOL_OK;
 }
+
 
 int
 entropy_pool_set_k(struct entropy_pool *pool, int k)
 {
 	assert(pool != NULL && k > 0 && k < pool->nsources);
-// k <0 && k < nsourea
+
 	pool->k = k;
 
-	return 0;
+	return EPOOL_OK;
 }
+
 
 int
 entropy_pool_get_k(struct entropy_pool *pool)
@@ -144,7 +154,8 @@ entropy_pool_get_k(struct entropy_pool *pool)
 	assert(pool != NULL);
 	return pool->k;
 }
-
+ 
+/*
 
 
 int

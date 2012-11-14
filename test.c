@@ -32,6 +32,14 @@ int main(int argc, char **argv)
 		       slow_pool.k, 
 		       slow_pool.hdesc->name);
 
+	res = entropy_pool_set_k(&slow_pool, 2);
+	if (res == 0)
+		printf("entropy_pool_set_k %d\n", slow_pool.k);
+
+	res = entropy_pool_get_k(&slow_pool);
+	if (res != 0)
+                printf("entropy_pool_get_k %d\n", res);
+	
 	res = entropy_pool_add(&slow_pool, 0, buf, 10, 0.3);
 	if (res == 0)
 		printf("pool.estimate add %f \n", 
@@ -47,8 +55,19 @@ int main(int argc, char **argv)
 	res = entropy_pool_is_thresholded(&fast_pool);
 	printf("thresholded = %d \n", res);
 	
-	entropy_pool_feed_to(&fast_pool, &slow_pool);
-	
+	//entropy_pool_feed_to(&fast_pool, &slow_pool);
+
 	/* how see result, current hash? */		
+	
+	res = entropy_pool_deinit(&fast_pool);
+
+	if (res == 0)
+		printf ("fast_pool_hdesc %p,"
+			"pool.nsources %d "
+			"pool.k %d \n", 
+			fast_pool.hdesc, 
+			fast_pool.nsources, 
+			fast_pool.k);
+
 	return 0;
 }
