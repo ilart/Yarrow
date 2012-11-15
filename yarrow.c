@@ -59,6 +59,7 @@ entropy_pool_init(struct entropy_pool *pool,
 			return EPOOL_OK;
 		}
 	}
+	
 	return EPOOL_FAIL;
 }
 
@@ -143,7 +144,6 @@ entropy_pool_set_k(struct entropy_pool *pool, int k)
 	assert(pool != NULL && k > 0 && k < pool->nsources);
 
 	pool->k = k;
-
 	return EPOOL_OK;
 }
 
@@ -155,32 +155,29 @@ entropy_pool_get_k(struct entropy_pool *pool)
 	return pool->k;
 }
  
-/*
-
-
 int
 entropy_pool_set_threshold(struct entropy_pool *pool, int source_id, double threshold)
 {
+	assert(pool != NULL && source_id >= 0 && threshold > 0);
 
 	pool->threshold[source_id] = threshold;
-
-	return 0;
+	return EPOOL_OK;
 }
 
 double
 entropy_pool_get_threshold(struct entropy_pool *pool, int source_id)
 {
-	assert(pool != NULL);
+	assert(pool != NULL && source_id >= 0);
 	return pool->threshold[source_id];
 }
-
 
 int
 entropy_pool_set_nsources(struct entropy_pool *pool, int nsources)
 {
-	assert(pool != NULL);
+	assert(pool != NULL && nsources > 0);
+
 	pool->nsources = nsources;
-	return 0;
+	return EPOOL_OK;
 }
 
 int
@@ -190,21 +187,35 @@ entropy_pool_get_nsources(struct entropy_pool *pool)
         return pool->nsources;
 }
 
+/*
+
 unsigned char
 *entropy_pool_bytes(struct entropy_pool *pool)
 {
-
+	assert(pool != NULL)
+	return pool->hdesc->finalize();
 }
+*/
 
 unsigned int
 entropy_pool_length(struct entropy_pool *pool)
 {
-
+	assert(pool != NULL);
+	return pool->hdesc->digest_len;
 }
 
 void
 entropy_pool_clean(struct entropy_pool *pool)
 {
+	int i;
+
 	assert(pool != NULL);
-	memset(pool->hash_ctx, 0, sizeof())
-}*/
+	
+	for (i = 0; i < pool->nsources; i++) {
+		pool->threshold[i] = 0.0;
+		pool->estimate[i] = 0.0;
+	}
+	
+	pool->hdesc = NULL;
+}
+
