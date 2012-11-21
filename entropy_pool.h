@@ -29,6 +29,9 @@ struct entropy_pool {
 	/* entropy estimation (in bits) for each source */
 	float estimate[MAXSOURCES];
 
+	/* current hash */ 
+	unsigned char buffer[16];
+
 	/* hash context */
 	union _hash_ctx {
 		struct md5_context md5; 

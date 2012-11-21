@@ -9,28 +9,34 @@
 
 #define ARRSZ(a) (sizeof(a)/sizeof(a[0]))
 #define DEFAULT_K 3
-#define BUF_SZ 64
+#define BUFFER_SZ 64
 
 #define HASH_INIT(x) ((void (*)(void *))(x))
 #define HASH_UPDATE(x) ((void (*)(void *, const void *, size_t))(x))
 #define HASH_FINAL(x) ((void * (*)(void *, unsigned char *))(x))
 
 struct hash_desc desc_tbl[] = {
-	{ HASH_MD5,
+	{ 
+	  HASH_MD5,
 	  MD5_DIGEST_LEN, 
 	  HASH_INIT(md5_context_init),
 	  HASH_UPDATE(md5_update),
-	  HASH_FINAL(md5_final) },
-	{ HASH_SHA1, 
+	  HASH_FINAL(md5_final) 
+	},
+	{
+	  HASH_SHA1, 
 	  SHA1_DIGEST_LEN,
 	  HASH_INIT(sha1_context_init),
 	  HASH_UPDATE(sha1_update),
-	  HASH_FINAL(sha1_final) },
-	{ HASH_SHA256,
+	  HASH_FINAL(sha1_final) 
+	},
+	{ 
+	  HASH_SHA256,
 	  SHA256_DIGEST_LEN,
 	  HASH_INIT(sha256_context_init),
 	  HASH_UPDATE(sha256_update),
-	  HASH_FINAL(sha256_final) },
+	  HASH_FINAL(sha256_final) 
+	}
 };
 
 
@@ -52,7 +58,7 @@ entropy_pool_init(struct entropy_pool *pool,
 		pool->estimate[i] = 0.0;
 	}
 
-	for ( i = 0; i < ARRSZ(desc_tbl); i++ ) { /* does not  work with ARRSZ*/
+	for ( i = 0; i < ARRSZ(desc_tbl); i++ ) { 
 		if (strcmp(hash_name, desc_tbl[i].name) == 0) { 
 			pool->hdesc = &desc_tbl[i];
 			pool->hdesc->init(&pool->hash_ctx);
@@ -102,10 +108,10 @@ entropy_pool_is_thresholded(struct entropy_pool *pool)
 		if (pool->estimate[i] >= pool->threshold[i])
 			c++;
 		if (c == pool->k )
-			return EPOOL_OK;
+			return TRUE;
 	}
 	
-	return EPOOL_FAIL;
+	return FALSE;
 }
 
 int
@@ -114,7 +120,11 @@ entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)
 	assert(dst != NULL || src != NULL);
 
 	printf("fast_pool %p, slow_pool %p \n", dst, src );
-//	dst->hdesc->update(&dst->hash_ctx, src->hdesc->finalize(), src->hdesc->digest_len); /*where are need current hash*/
+
+	src->hdesc->finalize((void *)src, (void *)src->buffer);
+	printf(" digest_len %d \n", src->hdesc->digest_len);
+//	dst->hdesc->update((void *)dst, (const void *)src->buffer, src->hdesc->digest_len); 
+	
 	return EPOOL_OK;
 }
 

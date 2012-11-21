@@ -294,6 +294,7 @@ void
 sha256_update(struct sha256_context *ctx, const void *msg, u_int32_t msglen)
 {
 	unsigned int n, len;
+printf("qwer \n");
 
 	/* Get length of buffer used. */
 	n = ctx->count[0] & 0x3f;
@@ -306,7 +307,6 @@ sha256_update(struct sha256_context *ctx, const void *msg, u_int32_t msglen)
 	/* Detect and fix overflow. */
 	if (ctx->count[0] < msglen)
 		++ctx->count[1];
-
 	if (msglen >= len) {
 
 		/* Fill buffer to 64 bytes. */
@@ -357,7 +357,7 @@ sha256_final(struct sha256_context *ctx, unsigned char digest[32])
 
 	n = ctx->count[0] & 0x3f;
 	npad = ((n < 56) ? 56: 120) - n; 
-
+	
 	nbits[0] = ctx->count[1] << 3;
 	nbits[0] += ctx->count[0] >> 29;
 	nbits[1] = ctx->count[0] << 3;

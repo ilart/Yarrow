@@ -231,8 +231,8 @@ md5_update(struct md5_context *ctx, const void *msg, u_int32_t msglen)
 {
 	unsigned int n, len;
 
-	printf("This string printed from md5_update,"
-	       "msg = %*s,\n", (char *)msg);
+//	printf("This string printed from md5_update,"
+//	       "msg = %*s,\n", (char *)msg);
 
 	/* Get length of buffer used. */
 	n = (ctx->nbits[0] >> 3) & 0x3f;

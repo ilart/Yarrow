@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 	if (res == 0)
 		printf("slow_pool.nsoursec  %d"
 		       "slow_pool.k %d" 
-		       "slow_pool.hdesc->k %s \n", 
+		       "slow_pool.hdesc->name %s \n", 
 		       slow_pool.nsources, 
 		       slow_pool.k, 
 		       slow_pool.hdesc->name);
@@ -72,16 +72,18 @@ int main(int argc, char **argv)
 		return EPOOL_FAIL;
 	}
 	printf("\n");
-	
-	slow_pool.hdesc->finalize(&slow_pool, (void *)tmp_buf);
-	printf("hash = %s \n", tmp_buf);
 
 	res = entropy_pool_is_thresholded(&fast_pool);
 	printf("thresholded = %d \n", res);
-	
-	//entropy_pool_feed_to(&fast_pool, &slow_pool);
 
+	printf("digest_len %d\n", slow_pool.hdesc->digest_len);	
+	
+	entropy_pool_feed_to(&fast_pool, &slow_pool);
+	printf("feed: buffer = %s\n", fast_pool.buffer);
 	/* how see result, current hash? */		
+	
+//	slow_pool.hdesc->finalize(&slow_pool, (void *)tmp_buf);
+//	printf("hash = %s \n", tmp_buf);
 	
 	res = entropy_pool_deinit(&fast_pool);
 

@@ -1,0 +1,7 @@
+
+int
+reseed_prng(:)
+{
+
+	
+}
