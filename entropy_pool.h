@@ -56,7 +56,7 @@ double entropy_pool_get_threshold(struct entropy_pool *pool, int source_id);
 
 int entropy_pool_is_thresholded(struct entropy_pool *pool);
 
-int entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src);
+int entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src);
 
 int entropy_pool_set_nsources(struct entropy_pool *pool, int nsources);
 

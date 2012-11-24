@@ -294,7 +294,6 @@ void
 sha256_update(struct sha256_context *ctx, const void *msg, u_int32_t msglen)
 {
 	unsigned int n, len;
-printf("qwer \n");
 
 	/* Get length of buffer used. */
 	n = ctx->count[0] & 0x3f;

@@ -1,0 +1,764 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AA	hash/mp/sha1.c	42;"	d	file:
+AA	sha1.c	42;"	d	file:
+AES_BLOCK_NBYTES	hash/aes.h	11;"	d
+AES_CBC_H_	hash/aes-cbc.h	2;"	d
+AES_H_	hash/aes.h	9;"	d
+AES_KEY_128	hash/aes.h	/^	AES_KEY_128,$/;"	e	enum:__anon4
+AES_KEY_192	hash/aes.h	/^	AES_KEY_192,$/;"	e	enum:__anon4
+AES_KEY_256	hash/aes.h	/^	AES_KEY_256$/;"	e	enum:__anon4
+AES_KEY_UNKNOWN	hash/aes.h	/^	AES_KEY_UNKNOWN,$/;"	e	enum:__anon4
+AES_NB	hash/aes.h	/^	AES_NB		= 4,$/;"	e	enum:__anon3
+AES_NR_MAX	hash/aes.h	/^	AES_NR_MAX	= 14$/;"	e	enum:__anon3
+ARRAY_SIZE	hash/macros.h	11;"	d
+ARRAY_SIZE	macros.h	11;"	d
+ARRSZ	yarrow.c	10;"	d	file:
+BB	hash/mp/sha1.c	53;"	d	file:
+BB	sha1.c	53;"	d	file:
+BE32_FROM_PTR	hash/mp/sha1.c	26;"	d	file:
+BE32_FROM_PTR	hash/mp/sha256.c	19;"	d	file:
+BE32_FROM_PTR	sha1.c	26;"	d	file:
+BE32_FROM_PTR	sha256.c	19;"	d	file:
+BINARIES	hash/mp/Makefile	/^BINARIES = test$/;"	m
+BLOCKSIZE	hash/hmac-whirlpool.c	16;"	d	file:
+BLOCKSZ	hash/aes-cbc.c	9;"	d	file:
+BSIG0	hash/mp/sha256.c	98;"	d	file:
+BSIG0	sha256.c	98;"	d	file:
+BSIG1	hash/mp/sha256.c	99;"	d	file:
+BSIG1	sha256.c	99;"	d	file:
+BUFFER_LEN	hash/md5-test.c	10;"	d	file:
+BUFFER_SZ	yarrow.c	12;"	d	file:
+CBC	hash/aes-cbc.c	14;"	d	file:
+CBC_DECRYPT	hash/aes-cbc.c	12;"	d	file:
+CBC_ENCRYPT	hash/aes-cbc.c	11;"	d	file:
+CC	Makefile	/^CC = gcc$/;"	m
+CC	hash/Makefile	/^CC = gcc$/;"	m
+CC	hash/mp/Makefile	/^CC = gcc$/;"	m
+CC	hash/mp/sha1.c	64;"	d	file:
+CC	sha1.c	64;"	d	file:
+CFLAGS	Makefile	/^CFLAGS = -Wall -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOUCE=600$/;"	m
+CFLAGS	hash/Makefile	/^CFLAGS = -Wall -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOUCE=600$/;"	m
+CFLAGS	hash/mp/Makefile	/^CFLAGS = -g -Wall -fPIC -O2 -D_GNU_SOURCE -D_XOPEN_SOURCE=600$/;"	m
+CH	hash/mp/sha256.c	96;"	d	file:
+CH	sha256.c	96;"	d	file:
+DD	hash/mp/sha1.c	75;"	d	file:
+DD	sha1.c	75;"	d	file:
+DEBUG_ONLY	hash/macros.h	14;"	d
+DEBUG_ONLY	hash/macros.h	16;"	d
+DEBUG_ONLY	macros.h	14;"	d
+DEBUG_ONLY	macros.h	16;"	d
+DEFAULT_K	yarrow.c	11;"	d	file:
+EMEOAEP_H_	hash/mp/emeoaep.h	2;"	d
+EPOOL_FAIL	entropy_pool.h	/^	EPOOL_FAIL = 1$/;"	e	enum:__anon5
+EPOOL_OK	entropy_pool.h	/^	EPOOL_OK = 0,$/;"	e	enum:__anon5
+F	hash/md5.c	21;"	d	file:
+F	md5.c	21;"	d	file:
+FALSE	hash/macros.h	5;"	d
+FALSE	macros.h	5;"	d
+FETCH_U32	hash/md5.c	83;"	d	file:
+FETCH_U32	hash/md5.c	85;"	d	file:
+FETCH_U32	md5.c	83;"	d	file:
+FETCH_U32	md5.c	85;"	d	file:
+FF	hash/md5.c	36;"	d	file:
+FF	md5.c	36;"	d	file:
+G	hash/md5.c	22;"	d	file:
+G	md5.c	22;"	d	file:
+GG	hash/md5.c	43;"	d	file:
+GG	md5.c	43;"	d	file:
+H	hash/md5.c	23;"	d	file:
+H	md5.c	23;"	d	file:
+HASH_FINAL	yarrow.c	16;"	d	file:
+HASH_INIT	yarrow.c	14;"	d	file:
+HASH_MD5	hash_desc.h	9;"	d
+HASH_SHA1	hash_desc.h	10;"	d
+HASH_SHA256	hash_desc.h	11;"	d
+HASH_UPDATE	yarrow.c	15;"	d	file:
+HEADERS	hash/mp/Makefile	/^HEADERS = $(MP_HEADERS) rsa.h sha1.h sha256.h emeoaep.h$/;"	m
+HH	hash/md5.c	50;"	d	file:
+HH	md5.c	50;"	d	file:
+HMAC_WHIRLPOOL_H_	hash/hmac-whirlpool.h	2;"	d
+I	hash/md5.c	24;"	d	file:
+I	md5.c	24;"	d	file:
+I0	hash/aes.c	/^static const uint32_t I0[] = {$/;"	v	file:
+I1	hash/aes.c	/^static const uint32_t I1[] = {$/;"	v	file:
+I2	hash/aes.c	/^static const uint32_t I2[] = {$/;"	v	file:
+I3	hash/aes.c	/^static const uint32_t I3[] = {$/;"	v	file:
+II	hash/md5.c	57;"	d	file:
+II	md5.c	57;"	d	file:
+K00	hash/mp/sha256.c	31;"	d	file:
+K00	sha256.c	31;"	d	file:
+K01	hash/mp/sha256.c	32;"	d	file:
+K01	sha256.c	32;"	d	file:
+K02	hash/mp/sha256.c	33;"	d	file:
+K02	sha256.c	33;"	d	file:
+K03	hash/mp/sha256.c	34;"	d	file:
+K03	sha256.c	34;"	d	file:
+K04	hash/mp/sha256.c	35;"	d	file:
+K04	sha256.c	35;"	d	file:
+K05	hash/mp/sha256.c	36;"	d	file:
+K05	sha256.c	36;"	d	file:
+K06	hash/mp/sha256.c	37;"	d	file:
+K06	sha256.c	37;"	d	file:
+K07	hash/mp/sha256.c	38;"	d	file:
+K07	sha256.c	38;"	d	file:
+K08	hash/mp/sha256.c	39;"	d	file:
+K08	sha256.c	39;"	d	file:
+K09	hash/mp/sha256.c	40;"	d	file:
+K09	sha256.c	40;"	d	file:
+K10	hash/mp/sha256.c	41;"	d	file:
+K10	sha256.c	41;"	d	file:
+K11	hash/mp/sha256.c	42;"	d	file:
+K11	sha256.c	42;"	d	file:
+K12	hash/mp/sha256.c	43;"	d	file:
+K12	sha256.c	43;"	d	file:
+K13	hash/mp/sha256.c	44;"	d	file:
+K13	sha256.c	44;"	d	file:
+K14	hash/mp/sha256.c	45;"	d	file:
+K14	sha256.c	45;"	d	file:
+K15	hash/mp/sha256.c	46;"	d	file:
+K15	sha256.c	46;"	d	file:
+K16	hash/mp/sha256.c	47;"	d	file:
+K16	sha256.c	47;"	d	file:
+K17	hash/mp/sha256.c	48;"	d	file:
+K17	sha256.c	48;"	d	file:
+K18	hash/mp/sha256.c	49;"	d	file:
+K18	sha256.c	49;"	d	file:
+K19	hash/mp/sha256.c	50;"	d	file:
+K19	sha256.c	50;"	d	file:
+K20	hash/mp/sha256.c	51;"	d	file:
+K20	sha256.c	51;"	d	file:
+K21	hash/mp/sha256.c	52;"	d	file:
+K21	sha256.c	52;"	d	file:
+K22	hash/mp/sha256.c	53;"	d	file:
+K22	sha256.c	53;"	d	file:
+K23	hash/mp/sha256.c	54;"	d	file:
+K23	sha256.c	54;"	d	file:
+K24	hash/mp/sha256.c	55;"	d	file:
+K24	sha256.c	55;"	d	file:
+K25	hash/mp/sha256.c	56;"	d	file:
+K25	sha256.c	56;"	d	file:
+K26	hash/mp/sha256.c	57;"	d	file:
+K26	sha256.c	57;"	d	file:
+K27	hash/mp/sha256.c	58;"	d	file:
+K27	sha256.c	58;"	d	file:
+K28	hash/mp/sha256.c	59;"	d	file:
+K28	sha256.c	59;"	d	file:
+K29	hash/mp/sha256.c	60;"	d	file:
+K29	sha256.c	60;"	d	file:
+K30	hash/mp/sha256.c	61;"	d	file:
+K30	sha256.c	61;"	d	file:
+K31	hash/mp/sha256.c	62;"	d	file:
+K31	sha256.c	62;"	d	file:
+K32	hash/mp/sha256.c	63;"	d	file:
+K32	sha256.c	63;"	d	file:
+K33	hash/mp/sha256.c	64;"	d	file:
+K33	sha256.c	64;"	d	file:
+K34	hash/mp/sha256.c	65;"	d	file:
+K34	sha256.c	65;"	d	file:
+K35	hash/mp/sha256.c	66;"	d	file:
+K35	sha256.c	66;"	d	file:
+K36	hash/mp/sha256.c	67;"	d	file:
+K36	sha256.c	67;"	d	file:
+K37	hash/mp/sha256.c	68;"	d	file:
+K37	sha256.c	68;"	d	file:
+K38	hash/mp/sha256.c	69;"	d	file:
+K38	sha256.c	69;"	d	file:
+K39	hash/mp/sha256.c	70;"	d	file:
+K39	sha256.c	70;"	d	file:
+K40	hash/mp/sha256.c	71;"	d	file:
+K40	sha256.c	71;"	d	file:
+K41	hash/mp/sha256.c	72;"	d	file:
+K41	sha256.c	72;"	d	file:
+K42	hash/mp/sha256.c	73;"	d	file:
+K42	sha256.c	73;"	d	file:
+K43	hash/mp/sha256.c	74;"	d	file:
+K43	sha256.c	74;"	d	file:
+K44	hash/mp/sha256.c	75;"	d	file:
+K44	sha256.c	75;"	d	file:
+K45	hash/mp/sha256.c	76;"	d	file:
+K45	sha256.c	76;"	d	file:
+K46	hash/mp/sha256.c	77;"	d	file:
+K46	sha256.c	77;"	d	file:
+K47	hash/mp/sha256.c	78;"	d	file:
+K47	sha256.c	78;"	d	file:
+K48	hash/mp/sha256.c	79;"	d	file:
+K48	sha256.c	79;"	d	file:
+K49	hash/mp/sha256.c	80;"	d	file:
+K49	sha256.c	80;"	d	file:
+K50	hash/mp/sha256.c	81;"	d	file:
+K50	sha256.c	81;"	d	file:
+K51	hash/mp/sha256.c	82;"	d	file:
+K51	sha256.c	82;"	d	file:
+K52	hash/mp/sha256.c	83;"	d	file:
+K52	sha256.c	83;"	d	file:
+K53	hash/mp/sha256.c	84;"	d	file:
+K53	sha256.c	84;"	d	file:
+K54	hash/mp/sha256.c	85;"	d	file:
+K54	sha256.c	85;"	d	file:
+K55	hash/mp/sha256.c	86;"	d	file:
+K55	sha256.c	86;"	d	file:
+K56	hash/mp/sha256.c	87;"	d	file:
+K56	sha256.c	87;"	d	file:
+K57	hash/mp/sha256.c	88;"	d	file:
+K57	sha256.c	88;"	d	file:
+K58	hash/mp/sha256.c	89;"	d	file:
+K58	sha256.c	89;"	d	file:
+K59	hash/mp/sha256.c	90;"	d	file:
+K59	sha256.c	90;"	d	file:
+K60	hash/mp/sha256.c	91;"	d	file:
+K60	sha256.c	91;"	d	file:
+K61	hash/mp/sha256.c	92;"	d	file:
+K61	sha256.c	92;"	d	file:
+K62	hash/mp/sha256.c	93;"	d	file:
+K62	sha256.c	93;"	d	file:
+K63	hash/mp/sha256.c	94;"	d	file:
+K63	sha256.c	94;"	d	file:
+LD	hash/Makefile	/^LD = ld$/;"	m
+LD	hash/mp/Makefile	/^LD = ld$/;"	m
+LE32	hash/aes.c	21;"	d	file:
+LE32	hash/aes.c	24;"	d	file:
+LE32	hash/whirlpool.c	16;"	d	file:
+LE32	hash/whirlpool.c	19;"	d	file:
+LE32_FROM_BYTES	hash/aes.c	30;"	d	file:
+LE32_FROM_BYTES	hash/aes.c	34;"	d	file:
+LE64	hash/whirlpool.c	17;"	d	file:
+LE64	hash/whirlpool.c	22;"	d	file:
+M0	hash/aes.c	/^static const uint32_t M0[] = {$/;"	v	file:
+M1	hash/aes.c	/^static const uint32_t M1[] = {$/;"	v	file:
+M2	hash/aes.c	/^static const uint32_t M2[] = {$/;"	v	file:
+M3	hash/aes.c	/^const uint32_t M3[] = {$/;"	v
+MACROS_H_	hash/macros.h	2;"	d
+MACROS_H_	macros.h	2;"	d
+MAJ	hash/mp/sha256.c	97;"	d	file:
+MAJ	sha256.c	97;"	d	file:
+MAX	hash/mp/mp_common.h	14;"	d
+MAXDIGEST	hash_desc.h	4;"	d
+MAXSOURCES	entropy_pool.h	9;"	d
+MD5_DIGEST_LEN	md5.h	8;"	d
+MD5_H_	hash/md5.h	2;"	d
+MD5_H_	md5.h	2;"	d
+MIN	hash/mp/mp_common.h	13;"	d
+MIX64	hash/whirlpool.c	349;"	d	file:
+MIX64	hash/whirlpool.c	361;"	d	file:
+MP_ALLOC_APPEND	hash/mp/mp_common.h	6;"	d
+MP_ALLOC_CHUNK	hash/mp/mp_common.h	4;"	d
+MP_ALLOC_DEFAULT	hash/mp/mp_common.h	5;"	d
+MP_CMP_EQ	hash/mp/mp.h	23;"	d
+MP_CMP_GT	hash/mp/mp.h	24;"	d
+MP_CMP_LT	hash/mp/mp.h	25;"	d
+MP_COMBA_DEPTH	hash/mp/mp_common.h	10;"	d
+MP_COMBA_STACK	hash/mp/mp_common.h	11;"	d
+MP_COMMON_H_	hash/mp/mp_common.h	2;"	d
+MP_COMPOSITE	hash/mp/mp.h	/^	MP_COMPOSITE$/;"	e	enum:__anon1
+MP_DEBUG	hash/mp/mp_common.h	17;"	d
+MP_DEBUG	hash/mp/mp_common.h	19;"	d
+MP_ERR	hash/mp/mp.h	/^	MP_ERR,$/;"	e	enum:__anon1
+MP_HEADERS	hash/mp/Makefile	/^MP_HEADERS = mp.h mp_common.h$/;"	m
+MP_H_	hash/mp/mp.h	10;"	d
+MP_INT_BASE	hash/mp/mp.h	30;"	d
+MP_INT_BITS	hash/mp/mp.h	32;"	d
+MP_INT_BITS_ALL	hash/mp/mp.h	33;"	d
+MP_INT_MASK	hash/mp/mp.h	31;"	d
+MP_KARATSUBA_CUTOFF	hash/mp/mp_common.h	8;"	d
+MP_MODEXP_STACK	hash/mp/mp_mod_exp.c	9;"	d	file:
+MP_NOMEM	hash/mp/mp.h	/^	MP_NOMEM,$/;"	e	enum:__anon1
+MP_OBJECTS	hash/mp/Makefile	/^MP_OBJECTS = mp_util.o mp_copy.o mp_ensure.o mp_add.o \\$/;"	m
+MP_OK	hash/mp/mp.h	/^	MP_OK	= 0,$/;"	e	enum:__anon1
+MP_SIGN_NEG	hash/mp/mp.h	28;"	d
+MP_SIGN_POS	hash/mp/mp.h	27;"	d
+MP_SOURCES	hash/mp/Makefile	/^MP_SOURCES = mp_util.c mp_copy.c mp_ensure.c mp_add.c \\$/;"	m
+OBJECTS	hash/mp/Makefile	/^OBJECTS = $(MP_OBJECTS) rsa.o sha1.o sha256.o emeoaep.o$/;"	m
+PBKDF2_DEFAULT_NITER	hash/hmac-whirlpool.c	18;"	d	file:
+R64	hash/whirlpool.c	32;"	d	file:
+ROL	hash/md5.c	26;"	d	file:
+ROL	md5.c	26;"	d	file:
+ROL32	hash/mp/sha1.c	31;"	d	file:
+ROL32	hash/mp/sha256.c	24;"	d	file:
+ROL32	sha1.c	31;"	d	file:
+ROL32	sha256.c	24;"	d	file:
+ROL64	hash/whirlpool.c	35;"	d	file:
+ROR32	hash/mp/sha1.c	35;"	d	file:
+ROR32	hash/mp/sha256.c	28;"	d	file:
+ROR32	sha1.c	35;"	d	file:
+ROR32	sha256.c	28;"	d	file:
+RSAKG_MILLER_RABIN_PARAM	hash/mp/rsa.c	26;"	d	file:
+RSAKG_TRIES_MAX	hash/mp/rsa.c	25;"	d	file:
+RSA_EXP_F0	hash/mp/rsa.h	/^	RSA_EXP_F0 = 3,$/;"	e	enum:__anon2
+RSA_EXP_F2	hash/mp/rsa.h	/^	RSA_EXP_F2 = 17,$/;"	e	enum:__anon2
+RSA_EXP_F4	hash/mp/rsa.h	/^	RSA_EXP_F4 = 65537$/;"	e	enum:__anon2
+RSA_H_	hash/mp/rsa.h	18;"	d
+SBOX	hash/aes.c	446;"	d	file:
+SBOX64	hash/whirlpool.c	322;"	d	file:
+SHA1_DIGEST_LEN	hash/mp/sha1.h	4;"	d
+SHA1_DIGEST_LEN	sha1.h	4;"	d
+SHA1_H_	hash/mp/sha1.h	2;"	d
+SHA1_H_	sha1.h	2;"	d
+SHA256_BASIC	hash/mp/sha256.c	103;"	d	file:
+SHA256_BASIC	sha256.c	103;"	d	file:
+SHA256_DIGEST_LEN	hash/mp/sha256.h	4;"	d
+SHA256_DIGEST_LEN	sha256.h	4;"	d
+SHA256_H_	hash/mp/sha256.h	2;"	d
+SHA256_H_	sha256.h	2;"	d
+SHCOL	hash/whirlpool.c	397;"	d	file:
+SOURCES	hash/mp/Makefile	/^SOURCES = rsa.c sha1.c sha256.c emeoaep.c$/;"	m
+SSIG0	hash/mp/sha256.c	100;"	d	file:
+SSIG0	sha256.c	100;"	d	file:
+SSIG1	hash/mp/sha256.c	101;"	d	file:
+SSIG1	sha256.c	101;"	d	file:
+T0	hash/mp/sha1.c	38;"	d	file:
+T0	sha1.c	38;"	d	file:
+T00	hash/md5.c	65;"	d	file:
+T00	md5.c	65;"	d	file:
+T01	hash/md5.c	66;"	d	file:
+T01	md5.c	66;"	d	file:
+T02	hash/md5.c	67;"	d	file:
+T02	md5.c	67;"	d	file:
+T03	hash/md5.c	68;"	d	file:
+T03	md5.c	68;"	d	file:
+T1	hash/mp/sha1.c	39;"	d	file:
+T1	sha1.c	39;"	d	file:
+T10	hash/md5.c	69;"	d	file:
+T10	md5.c	69;"	d	file:
+T11	hash/md5.c	70;"	d	file:
+T11	md5.c	70;"	d	file:
+T12	hash/md5.c	71;"	d	file:
+T12	md5.c	71;"	d	file:
+T13	hash/md5.c	72;"	d	file:
+T13	md5.c	72;"	d	file:
+T2	hash/mp/sha1.c	40;"	d	file:
+T2	sha1.c	40;"	d	file:
+T20	hash/md5.c	73;"	d	file:
+T20	md5.c	73;"	d	file:
+T21	hash/md5.c	74;"	d	file:
+T21	md5.c	74;"	d	file:
+T22	hash/md5.c	75;"	d	file:
+T22	md5.c	75;"	d	file:
+T23	hash/md5.c	76;"	d	file:
+T23	md5.c	76;"	d	file:
+T30	hash/md5.c	77;"	d	file:
+T30	md5.c	77;"	d	file:
+T31	hash/md5.c	78;"	d	file:
+T31	md5.c	78;"	d	file:
+T32	hash/md5.c	79;"	d	file:
+T32	md5.c	79;"	d	file:
+T33	hash/md5.c	80;"	d	file:
+T33	md5.c	80;"	d	file:
+TRUE	hash/macros.h	8;"	d
+TRUE	macros.h	8;"	d
+W0	hash/whirlpool.c	/^const uint64_t W0[] = {$/;"	v
+W1	hash/whirlpool.c	/^const uint64_t W1[] = {$/;"	v
+W2	hash/whirlpool.c	/^const uint64_t W2[] = {$/;"	v
+W3	hash/whirlpool.c	/^const uint64_t W3[] = {$/;"	v
+WHIRLPOOL_H_	hash/whirlpool.h	2;"	d
+YARROW_H_	yarrow.h	2;"	d
+_ENTROPY_POOL_H	entropy_pool.h	2;"	d
+_HASH_H	hash_desc.h	2;"	d
+_hash_ctx	entropy_pool.h	/^	union _hash_ctx {$/;"	u	struct:entropy_pool	access:public
+_mp_abs_cmp	hash/mp/mp_cmp.c	/^_mp_abs_cmp(const mp_int *a, const mp_int *b)$/;"	f	signature:(const mp_int *a, const mp_int *b)
+_mp_add	hash/mp/mp_add.c	/^_mp_add(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+_mp_add	hash/mp/mp_sub.c	/^extern int _mp_add(mp_int *c, const mp_int *a, const mp_int *b);$/;"	p	file:	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+_mp_int_t	hash/mp/mp.h	/^typedef uint32_t _mp_int_t;$/;"	t
+_mp_long_t	hash/mp/mp.h	/^typedef uint64_t _mp_long_t;$/;"	t
+_mp_mul_comba	hash/mp/mp_mul.c	/^_mp_mul_comba(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+_mp_mul_comba_ndig	hash/mp/mp_mul.c	/^_mp_mul_comba_ndig(mp_int *c, const mp_int *a, const mp_int *b, int ndig)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b, int ndig)
+_mp_mul_comba_upper	hash/mp/mp_mul.c	/^_mp_mul_comba_upper(mp_int *c, const mp_int *a, const mp_int *b, int digit)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b, int digit)
+_mp_mul_comba_upper	hash/mp/mp_reduce.c	/^extern int _mp_mul_comba_upper(mp_int *c, const mp_int *a, const mp_int *b, int digit);$/;"	p	file:	signature:(mp_int *c, const mp_int *a, const mp_int *b, int digit)
+_mp_mul_karatsuba	hash/mp/mp_mul.c	/^_mp_mul_karatsuba(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+_mp_mul_school	hash/mp/mp_mul.c	/^_mp_mul_school(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+_mp_sqr_comba	hash/mp/mp_sqr.c	/^_mp_sqr_comba(mp_int *c, const mp_int *a)$/;"	f	signature:(mp_int *c, const mp_int *a)
+_mp_sqr_karatsuba	hash/mp/mp_sqr.c	/^_mp_sqr_karatsuba(mp_int *c, const mp_int *x)$/;"	f	signature:(mp_int *c, const mp_int *x)
+_mp_sqr_school	hash/mp/mp_sqr.c	/^_mp_sqr_school(mp_int *c, const mp_int *a)$/;"	f	signature:(mp_int *c, const mp_int *a)
+_mp_sub	hash/mp/mp_add.c	/^extern int _mp_sub(mp_int *c, const mp_int *a, const mp_int *b);$/;"	p	file:	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+_mp_sub	hash/mp/mp_sub.c	/^_mp_sub(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+add_round_key	hash/aes.c	/^add_round_key(struct aes_context *ctx, int round)$/;"	f	file:	signature:(struct aes_context *ctx, int round)
+add_round_key	hash/whirlpool.c	/^add_round_key(uint64_t state[8], uint64_t rk[8])$/;"	f	file:	signature:(uint64_t state[8], uint64_t rk[8])
+add_to_fast	feed_entropy.c	/^int add_to_fast[MAXSOURCES];$/;"	v
+aes_cbc	hash/aes-cbc.h	/^struct aes_cbc {$/;"	s
+aes_cbc::buffer	hash/aes-cbc.h	/^	uint8_t		buffer[16];	\/* partial input *\/$/;"	m	struct:aes_cbc	access:public
+aes_cbc::ctx	hash/aes-cbc.h	/^	void		*ctx;$/;"	m	struct:aes_cbc	access:public
+aes_cbc::encode	hash/aes-cbc.h	/^	void (*encode)(void *ctx, const void *in, void *out);$/;"	m	struct:aes_cbc	access:public
+aes_cbc::iv	hash/aes-cbc.h	/^	uint8_t		iv[16];		\/* IV and previous ciphertext are stored here *\/$/;"	m	struct:aes_cbc	access:public
+aes_cbc::len	hash/aes-cbc.h	/^	unsigned int	len;		\/* length of partial input *\/$/;"	m	struct:aes_cbc	access:public
+aes_cbc::mode	hash/aes-cbc.h	/^	int		mode;		\/* CBC_ENCRYPT or CBC_DECRYPT *\/$/;"	m	struct:aes_cbc	access:public
+aes_cbc_clean	hash/aes-cbc.c	/^aes_cbc_clean(struct aes_cbc *cbc)$/;"	f	signature:(struct aes_cbc *cbc)
+aes_cbc_final	hash/aes-cbc.c	/^aes_cbc_final(struct aes_cbc *cbc, void *out, unsigned *olen)$/;"	f	signature:(struct aes_cbc *cbc, void *out, unsigned *olen)
+aes_cbc_final	hash/aes-cbc.h	/^void aes_cbc_final(struct aes_cbc *cbc, void *out, unsigned *olen);$/;"	p	signature:(struct aes_cbc *cbc, void *out, unsigned *olen)
+aes_cbc_init	hash/aes-cbc.c	/^aes_cbc_init(struct aes_cbc *cbc,$/;"	f	signature:(struct aes_cbc *cbc, void (*encode)(void *ctx, const void *in, void *out), void *ctx, int encr, const unsigned char iv[16])
+aes_cbc_init	hash/aes-cbc.h	/^void aes_cbc_init(struct aes_cbc *cbc,$/;"	p	signature:(struct aes_cbc *cbc, void (*encode)(void *ctx, const void *in, void *out), void *ctx, int encr, const unsigned char iv[16])
+aes_cbc_update	hash/aes-cbc.c	/^aes_cbc_update(struct aes_cbc *cbc, void *out, unsigned *olen, const void *in, unsigned ilen)$/;"	f	signature:(struct aes_cbc *cbc, void *out, unsigned *olen, const void *in, unsigned ilen)
+aes_cbc_update	hash/aes-cbc.h	/^void aes_cbc_update(struct aes_cbc *cbc, void *out, unsigned *olen, const void *in, unsigned ilen);$/;"	p	signature:(struct aes_cbc *cbc, void *out, unsigned *olen, const void *in, unsigned ilen)
+aes_context	hash/aes.h	/^struct aes_context {$/;"	s
+aes_context::key	hash/aes.h	/^	u_int32_t	key[8];$/;"	m	struct:aes_context	access:public
+aes_context::klen	hash/aes.h	/^	aes_key_len_t	klen;$/;"	m	struct:aes_context	access:public
+aes_context::nb	hash/aes.h	/^	int		nb;$/;"	m	struct:aes_context	access:public
+aes_context::nk	hash/aes.h	/^	int		nk;$/;"	m	struct:aes_context	access:public
+aes_context::nr	hash/aes.h	/^	int		nr;$/;"	m	struct:aes_context	access:public
+aes_context::state	hash/aes.h	/^	u_int32_t	state[AES_NB];$/;"	m	struct:aes_context	access:public
+aes_context::w	hash/aes.h	/^	u_int32_t	w[AES_NB*(AES_NR_MAX+1)];$/;"	m	struct:aes_context	access:public
+aes_context_clean	hash/aes.c	/^aes_context_clean(struct aes_context *ctx)$/;"	f	signature:(struct aes_context *ctx)
+aes_context_clean	hash/aes.h	/^void aes_context_clean(struct aes_context *ctx);$/;"	p	signature:(struct aes_context *ctx)
+aes_context_free	hash/aes.c	/^aes_context_free(struct aes_context **ctx)$/;"	f	signature:(struct aes_context **ctx)
+aes_context_free	hash/aes.h	/^void aes_context_free(struct aes_context **ctx);$/;"	p	signature:(struct aes_context **ctx)
+aes_context_init	hash/aes.c	/^aes_context_init(struct aes_context *ctx)$/;"	f	signature:(struct aes_context *ctx)
+aes_context_init	hash/aes.h	/^void aes_context_init(struct aes_context *ctx);$/;"	p	signature:(struct aes_context *ctx)
+aes_context_new	hash/aes.c	/^aes_context_new()$/;"	f
+aes_context_new	hash/aes.h	/^struct aes_context *aes_context_new();$/;"	p	signature:()
+aes_decrypt	hash/aes.c	/^aes_decrypt(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)$/;"	f	signature:(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)
+aes_decrypt	hash/aes.h	/^void aes_decrypt(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out);$/;"	p	signature:(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)
+aes_encrypt	hash/aes.c	/^aes_encrypt(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)$/;"	f	signature:(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)
+aes_encrypt	hash/aes.h	/^void aes_encrypt(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out);$/;"	p	signature:(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)
+aes_key_len_t	hash/aes.h	/^} aes_key_len_t;$/;"	t	typeref:enum:__anon4
+aes_set_key	hash/aes.c	/^aes_set_key(struct aes_context *ctx, const void *key, aes_key_len_t klen)$/;"	f	signature:(struct aes_context *ctx, const void *key, aes_key_len_t klen)
+aes_set_key	hash/aes.h	/^int aes_set_key(struct aes_context *ctx, const void *key, aes_key_len_t klen);$/;"	p	signature:(struct aes_context *ctx, const void *key, aes_key_len_t klen)
+alloc	hash/mp/mp.h	/^	unsigned int	alloc;	\/* number of allocated digits *\/$/;"	m	struct:mp_int	access:public
+assert	hash/macros.h	44;"	d
+assert	hash/macros.h	59;"	d
+assert	macros.h	44;"	d
+assert	macros.h	59;"	d
+binaries	Makefile	/^binaries = test $/;"	m
+binaries	hash/Makefile	/^binaries = md5-test whirlpool-test$/;"	m
+buffer	entropy_pool.h	/^	unsigned char buffer[16];$/;"	m	struct:entropy_pool	access:public
+buffer	hash/aes-cbc.h	/^	uint8_t		buffer[16];	\/* partial input *\/$/;"	m	struct:aes_cbc	access:public
+buffer	hash/md5.h	/^	u_int8_t	buffer[64];	\/* message buffer *\/$/;"	m	struct:md5_context	access:public
+buffer	hash/mp/sha1.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha1_context	access:public
+buffer	hash/mp/sha256.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha256_context	access:public
+buffer	hash/whirlpool.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:whirlpool_context	access:public
+buffer	md5.h	/^	u_int8_t	buffer[64];	\/* message buffer *\/$/;"	m	struct:md5_context	access:public
+buffer	sha1.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha1_context	access:public
+buffer	sha256.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha256_context	access:public
+count	hash/mp/sha1.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha1_context	access:public
+count	hash/mp/sha256.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha256_context	access:public
+count	hash/whirlpool.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:whirlpool_context	access:public
+count	sha1.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha1_context	access:public
+count	sha256.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha256_context	access:public
+ctx	hash/aes-cbc.h	/^	void		*ctx;$/;"	m	struct:aes_cbc	access:public
+desc_tbl	yarrow.c	/^struct hash_desc desc_tbl[] = {$/;"	v	typeref:struct:hash_desc
+dig	hash/mp/mp.h	/^	_mp_int_t	*dig;	\/* malloc'ed array of digits *\/$/;"	m	struct:mp_int	access:public
+digest_len	hash_desc.h	/^	int digest_len;$/;"	m	struct:hash_desc	access:public
+emeoaep_sha1_decode	hash/mp/emeoaep.c	/^emeoaep_sha1_decode(void *em, unsigned emlen, void *m, unsigned mlen, unsigned char phash[32])$/;"	f	signature:(void *em, unsigned emlen, void *m, unsigned mlen, unsigned char phash[32])
+emeoaep_sha1_decode	hash/mp/emeoaep.h	/^int emeoaep_sha1_decode(const void *em, unsigned emlen, void *m, int mlen, unsigned char phash[20]);$/;"	p	signature:(const void *em, unsigned emlen, void *m, int mlen, unsigned char phash[20])
+emeoaep_sha1_encode	hash/mp/emeoaep.c	/^emeoaep_sha1_encode(const void *m, unsigned mlen, const void *p, unsigned plen,$/;"	f	signature:(const void *m, unsigned mlen, const void *p, unsigned plen, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, void *em, unsigned emlen)
+emeoaep_sha1_encode	hash/mp/emeoaep.h	/^int emeoaep_sha1_encode(const void *m, unsigned mlen, const void *p, unsigned plen,$/;"	p	signature:(const void *m, unsigned mlen, const void *p, unsigned plen, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, void *em, int emlen)
+emeoaep_sha256_decode	hash/mp/emeoaep.c	/^emeoaep_sha256_decode(void *em, unsigned emlen, void *m, unsigned mlen, unsigned char phash[32])$/;"	f	signature:(void *em, unsigned emlen, void *m, unsigned mlen, unsigned char phash[32])
+emeoaep_sha256_decode	hash/mp/emeoaep.h	/^int emeoaep_sha256_decode(const void *em, unsigned emlen, void *m, int mlen, unsigned char phash[32]);$/;"	p	signature:(const void *em, unsigned emlen, void *m, int mlen, unsigned char phash[32])
+emeoaep_sha256_encode	hash/mp/emeoaep.c	/^emeoaep_sha256_encode(const void *m, unsigned mlen, const void *p, unsigned plen,$/;"	f	signature:(const void *m, unsigned mlen, const void *p, unsigned plen, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, void *em, unsigned emlen)
+emeoaep_sha256_encode	hash/mp/emeoaep.h	/^int emeoaep_sha256_encode(const void *m, unsigned mlen, const void *p, unsigned plen,$/;"	p	signature:(const void *m, unsigned mlen, const void *p, unsigned plen, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, void *em, int emlen)
+encode	hash/aes-cbc.h	/^	void (*encode)(void *ctx, const void *in, void *out);$/;"	m	struct:aes_cbc	access:public
+entropy_pool	entropy_pool.h	/^struct entropy_pool {$/;"	s
+entropy_pool::_hash_ctx	entropy_pool.h	/^	union _hash_ctx {$/;"	u	struct:entropy_pool	access:public
+entropy_pool::_hash_ctx::md5	entropy_pool.h	/^		struct md5_context md5; $/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::md5_context	access:public
+entropy_pool::_hash_ctx::sha1	entropy_pool.h	/^		struct sha1_context sha1;$/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::sha1_context	access:public
+entropy_pool::_hash_ctx::sha256	entropy_pool.h	/^		struct sha256_context sha256;$/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::sha256_context	access:public
+entropy_pool::buffer	entropy_pool.h	/^	unsigned char buffer[16];$/;"	m	struct:entropy_pool	access:public
+entropy_pool::estimate	entropy_pool.h	/^	float estimate[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
+entropy_pool::hash_ctx	entropy_pool.h	/^	} hash_ctx;$/;"	m	struct:entropy_pool	typeref:union:entropy_pool::_hash_ctx	access:public
+entropy_pool::hdesc	entropy_pool.h	/^	struct hash_desc *hdesc;$/;"	m	struct:entropy_pool	typeref:struct:entropy_pool::hash_desc	access:public
+entropy_pool::k	entropy_pool.h	/^	int k;$/;"	m	struct:entropy_pool	access:public
+entropy_pool::nsources	entropy_pool.h	/^	int nsources;$/;"	m	struct:entropy_pool	access:public
+entropy_pool::threshold	entropy_pool.h	/^	float threshold[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
+entropy_pool_add	entropy_pool.h	/^int entropy_pool_add(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate);$/;"	p	signature:(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate)
+entropy_pool_add	yarrow.c	/^entropy_pool_add(struct entropy_pool *pool,$/;"	f	signature:(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate)
+entropy_pool_bytes	entropy_pool.h	/^unsigned char *entropy_pool_bytes(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
+entropy_pool_clean	entropy_pool.h	/^void entropy_pool_clean(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
+entropy_pool_clean	yarrow.c	/^entropy_pool_clean(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_deinit	entropy_pool.h	/^int entropy_pool_deinit(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
+entropy_pool_deinit	yarrow.c	/^entropy_pool_deinit(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_feed_to	entropy_pool.h	/^int entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src);$/;"	p	signature:(struct entropy_pool *dst, const struct entropy_pool *src)
+entropy_pool_feed_to	yarrow.c	/^entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)$/;"	f	signature:(struct entropy_pool *dst, const struct entropy_pool *src)
+entropy_pool_get_k	entropy_pool.h	/^int entropy_pool_get_k(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
+entropy_pool_get_k	yarrow.c	/^entropy_pool_get_k(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_get_nsources	entropy_pool.h	/^int entropy_pool_get_nsources(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
+entropy_pool_get_nsources	yarrow.c	/^entropy_pool_get_nsources(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_get_threshold	entropy_pool.h	/^double entropy_pool_get_threshold(struct entropy_pool *pool, int source_id);$/;"	p	signature:(struct entropy_pool *pool, int source_id)
+entropy_pool_get_threshold	yarrow.c	/^entropy_pool_get_threshold(struct entropy_pool *pool, int source_id)$/;"	f	signature:(struct entropy_pool *pool, int source_id)
+entropy_pool_init	entropy_pool.h	/^int entropy_pool_init(struct entropy_pool *pool, int nsources, const char *hash_name);$/;"	p	signature:(struct entropy_pool *pool, int nsources, const char *hash_name)
+entropy_pool_init	yarrow.c	/^entropy_pool_init(struct entropy_pool *pool,$/;"	f	signature:(struct entropy_pool *pool, int nsources, const char *hash_name)
+entropy_pool_is_thresholded	entropy_pool.h	/^int entropy_pool_is_thresholded(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
+entropy_pool_is_thresholded	yarrow.c	/^entropy_pool_is_thresholded(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_length	entropy_pool.h	/^unsigned int entropy_pool_length(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
+entropy_pool_length	yarrow.c	/^entropy_pool_length(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_set_k	entropy_pool.h	/^int entropy_pool_set_k(struct entropy_pool *pool, int k);$/;"	p	signature:(struct entropy_pool *pool, int k)
+entropy_pool_set_k	yarrow.c	/^entropy_pool_set_k(struct entropy_pool *pool, int k)$/;"	f	signature:(struct entropy_pool *pool, int k)
+entropy_pool_set_nsources	entropy_pool.h	/^int entropy_pool_set_nsources(struct entropy_pool *pool, int nsources);$/;"	p	signature:(struct entropy_pool *pool, int nsources)
+entropy_pool_set_nsources	yarrow.c	/^entropy_pool_set_nsources(struct entropy_pool *pool, int nsources)$/;"	f	signature:(struct entropy_pool *pool, int nsources)
+entropy_pool_set_threshold	entropy_pool.h	/^int entropy_pool_set_threshold(struct entropy_pool *pool, int source_id, double threshold);$/;"	p	signature:(struct entropy_pool *pool, int source_id, double threshold)
+entropy_pool_set_threshold	yarrow.c	/^entropy_pool_set_threshold(struct entropy_pool *pool, int source_id, double threshold)$/;"	f	signature:(struct entropy_pool *pool, int source_id, double threshold)
+estimate	entropy_pool.h	/^	float estimate[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
+feed_entropy	feed_entropy.c	/^feed_entropy(int source_id, void *buf, int len, double estimate)$/;"	f	signature:(int source_id, void *buf, int len, double estimate)
+finalize	hash_desc.h	/^	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);$/;"	m	struct:hash_desc	access:public
+flags	hash/mp/mp.h	/^	unsigned int	flags;$/;"	m	struct:mp_int	access:public
+hash_ctx	entropy_pool.h	/^	} hash_ctx;$/;"	m	struct:entropy_pool	typeref:union:entropy_pool::_hash_ctx	access:public
+hash_desc	hash_desc.h	/^struct hash_desc {$/;"	s
+hash_desc::digest_len	hash_desc.h	/^	int digest_len;$/;"	m	struct:hash_desc	access:public
+hash_desc::finalize	hash_desc.h	/^	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);$/;"	m	struct:hash_desc	access:public
+hash_desc::init	hash_desc.h	/^	void (*init)(void *ctx);$/;"	m	struct:hash_desc	access:public
+hash_desc::name	hash_desc.h	/^	const char *name;$/;"	m	struct:hash_desc	access:public
+hash_desc::update	hash_desc.h	/^	void (*update)(void *ctx, const void *buf, size_t len);$/;"	m	struct:hash_desc	access:public
+hdesc	entropy_pool.h	/^	struct hash_desc *hdesc;$/;"	m	struct:entropy_pool	typeref:struct:entropy_pool::hash_desc	access:public
+headers	hash/Makefile	/^headers = md5.h whirlpool.h$/;"	m
+hmac_whirlpool	hash/hmac-whirlpool.c	/^hmac_whirlpool(const void *key, unsigned nkey, const void *msg, unsigned nmsg, unsigned char hmac[64])$/;"	f	signature:(const void *key, unsigned nkey, const void *msg, unsigned nmsg, unsigned char hmac[64])
+hmac_whirlpool	hash/hmac-whirlpool.h	/^void hmac_whirlpool(const void *key, unsigned nkey, const void *msg,$/;"	p	signature:(const void *key, unsigned nkey, const void *msg, unsigned nmsg, unsigned char hmac[64])
+init	hash_desc.h	/^	void (*init)(void *ctx);$/;"	m	struct:hash_desc	access:public
+inv_mix_columns	hash/aes.c	/^inv_mix_columns(uint32_t *state)$/;"	f	file:	signature:(uint32_t *state)
+inv_shift_rows	hash/aes.c	/^inv_shift_rows(uint32_t *state)$/;"	f	file:	signature:(uint32_t *state)
+inv_sub_bytes	hash/aes.c	/^inv_sub_bytes(uint32_t *state)$/;"	f	file:	signature:(uint32_t *state)
+isbox	hash/aes.c	/^static const uint8_t isbox[256] = {$/;"	v	file:
+iv	hash/aes-cbc.h	/^	uint8_t		iv[16];		\/* IV and previous ciphertext are stored here *\/$/;"	m	struct:aes_cbc	access:public
+k	entropy_pool.h	/^	int k;$/;"	m	struct:entropy_pool	access:public
+key	hash/aes.h	/^	u_int32_t	key[8];$/;"	m	struct:aes_context	access:public
+key_expansion	hash/aes.c	/^key_expansion(struct aes_context *ctx)$/;"	f	file:	signature:(struct aes_context *ctx)
+klen	hash/aes.h	/^	aes_key_len_t	klen;$/;"	m	struct:aes_context	access:public
+len	hash/aes-cbc.h	/^	unsigned int	len;		\/* length of partial input *\/$/;"	m	struct:aes_cbc	access:public
+main	hash/md5-test.c	/^main(int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
+main	hash/mp/test.c	/^main(int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
+main	hash/whirlpool-test.c	/^main(int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
+main	test.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+md5	entropy_pool.h	/^		struct md5_context md5; $/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::md5_context	access:public
+md5_context	hash/md5.h	/^struct md5_context {$/;"	s
+md5_context	md5.h	/^struct md5_context {$/;"	s
+md5_context::buffer	hash/md5.h	/^	u_int8_t	buffer[64];	\/* message buffer *\/$/;"	m	struct:md5_context	access:public
+md5_context::buffer	md5.h	/^	u_int8_t	buffer[64];	\/* message buffer *\/$/;"	m	struct:md5_context	access:public
+md5_context::nbits	hash/md5.h	/^	u_int32_t	nbits[2];	\/* message size (in bits) *\/$/;"	m	struct:md5_context	access:public
+md5_context::nbits	md5.h	/^	u_int32_t	nbits[2];	\/* message size (in bits) *\/$/;"	m	struct:md5_context	access:public
+md5_context::state	hash/md5.h	/^	u_int32_t	state[4];	\/* state words *\/$/;"	m	struct:md5_context	access:public
+md5_context::state	md5.h	/^	u_int32_t	state[4];	\/* state words *\/$/;"	m	struct:md5_context	access:public
+md5_context_init	hash/md5.c	/^md5_context_init(struct md5_context *ctx)$/;"	f	signature:(struct md5_context *ctx)
+md5_context_init	hash/md5.h	/^void md5_context_init(struct md5_context *ctx);$/;"	p	signature:(struct md5_context *ctx)
+md5_context_init	md5.c	/^md5_context_init(struct md5_context *ctx)$/;"	f	signature:(struct md5_context *ctx)
+md5_context_init	md5.h	/^void md5_context_init(struct md5_context *ctx);$/;"	p	signature:(struct md5_context *ctx)
+md5_final	hash/md5.c	/^md5_final(struct md5_context *ctx, unsigned char digest[16])$/;"	f	signature:(struct md5_context *ctx, unsigned char digest[16])
+md5_final	hash/md5.h	/^void md5_final(struct md5_context *ctx, unsigned char digest[16]);$/;"	p	signature:(struct md5_context *ctx, unsigned char digest[16])
+md5_final	md5.c	/^md5_final(struct md5_context *ctx, unsigned char digest[16])$/;"	f	signature:(struct md5_context *ctx, unsigned char digest[16])
+md5_final	md5.h	/^void *md5_final(struct md5_context *ctx, unsigned char digest[16]);$/;"	p	signature:(struct md5_context *ctx, unsigned char digest[16])
+md5_transform	hash/md5.c	/^md5_transform(u_int32_t state[4], const unsigned char block[64])$/;"	f	signature:(u_int32_t state[4], const unsigned char block[64])
+md5_transform	md5.c	/^md5_transform(u_int32_t state[4], const unsigned char block[64])$/;"	f	signature:(u_int32_t state[4], const unsigned char block[64])
+md5_update	hash/md5.c	/^md5_update(struct md5_context *ctx, const void *msg, u_int32_t msglen)$/;"	f	signature:(struct md5_context *ctx, const void *msg, u_int32_t msglen)
+md5_update	hash/md5.h	/^void md5_update(struct md5_context *ctx, const void *msg, u_int32_t msglen);$/;"	p	signature:(struct md5_context *ctx, const void *msg, u_int32_t msglen)
+md5_update	md5.c	/^md5_update(struct md5_context *ctx, const void *msg, u_int32_t msglen)$/;"	f	signature:(struct md5_context *ctx, const void *msg, u_int32_t msglen)
+md5_update	md5.h	/^void md5_update(struct md5_context *ctx, const void *msg, u_int32_t msglen);$/;"	p	signature:(struct md5_context *ctx, const void *msg, u_int32_t msglen)
+md5pad	hash/md5.c	/^static const unsigned char md5pad[64] = { 0x80 }; \/* Other 63 bytes are zeroes. *\/$/;"	v	file:
+md5pad	md5.c	/^static const unsigned char md5pad[64] = { 0x80 }; \/* Other 63 bytes are zeroes. *\/$/;"	v	file:
+mix_columns	hash/aes.c	/^mix_columns(uint32_t *state)$/;"	f	file:	signature:(uint32_t *state)
+mix_rows	hash/whirlpool.c	/^mix_rows(uint64_t state[8])$/;"	f	file:	signature:(uint64_t state[8])
+mode	hash/aes-cbc.h	/^	int		mode;		\/* CBC_ENCRYPT or CBC_DECRYPT *\/$/;"	m	struct:aes_cbc	access:public
+mp_abs_cmp	hash/mp/mp.h	/^int mp_abs_cmp(const mp_int *a, const mp_int *b);$/;"	p	signature:(const mp_int *a, const mp_int *b)
+mp_abs_cmp	hash/mp/mp_cmp.c	/^mp_abs_cmp(const mp_int *a, const mp_int *b)$/;"	f	signature:(const mp_int *a, const mp_int *b)
+mp_add	hash/mp/mp.h	/^int mp_add(mp_int *c, const mp_int *a, const mp_int *b);$/;"	p	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_add	hash/mp/mp_add.c	/^mp_add(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_canonicalize	hash/mp/mp_add.c	/^extern int mp_canonicalize(mp_int *a);$/;"	p	file:	signature:(mp_int *a)
+mp_canonicalize	hash/mp/mp_div.c	/^extern void mp_canonicalize(mp_int *a);$/;"	p	file:	signature:(mp_int *a)
+mp_canonicalize	hash/mp/mp_mul.c	/^extern void mp_canonicalize(mp_int *a);$/;"	p	file:	signature:(mp_int *a)
+mp_canonicalize	hash/mp/mp_shift.c	/^extern void mp_canonicalize(mp_int *a);$/;"	p	file:	signature:(mp_int *a)
+mp_canonicalize	hash/mp/mp_sqr.c	/^extern void mp_canonicalize(mp_int *a);$/;"	p	file:	signature:(mp_int *a)
+mp_canonicalize	hash/mp/mp_sub.c	/^extern void mp_canonicalize(mp_int *a);$/;"	p	file:	signature:(mp_int *a)
+mp_canonicalize	hash/mp/mp_util.c	/^mp_canonicalize(mp_int *a)$/;"	f	signature:(mp_int *a)
+mp_clear	hash/mp/mp.h	/^void mp_clear(mp_int *a);$/;"	p	signature:(mp_int *a)
+mp_clear	hash/mp/mp_clear.c	/^mp_clear(mp_int *p)$/;"	f	signature:(mp_int *p)
+mp_clearv	hash/mp/mp.h	/^void mp_clearv(mp_int *a, ...);$/;"	p	signature:(mp_int *a, ...)
+mp_clearv	hash/mp/mp_clear.c	/^mp_clearv(mp_int *a, ...)$/;"	f	signature:(mp_int *a, ...)
+mp_cmp	hash/mp/mp.h	/^int mp_cmp(const mp_int *a, const mp_int *b);$/;"	p	signature:(const mp_int *a, const mp_int *b)
+mp_cmp	hash/mp/mp_cmp.c	/^mp_cmp(const mp_int *a, const mp_int *b)$/;"	f	signature:(const mp_int *a, const mp_int *b)
+mp_copy	hash/mp/mp.h	/^int mp_copy(mp_int *dst, const mp_int *src);$/;"	p	signature:(mp_int *dst, const mp_int *src)
+mp_copy	hash/mp/mp_copy.c	/^mp_copy(mp_int *dst, const mp_int *src)$/;"	f	signature:(mp_int *dst, const mp_int *src)
+mp_dbg	hash/mp/mp.h	/^void mp_dbg(const mp_int *a, FILE *fp);$/;"	p	signature:(const mp_int *a, FILE *fp)
+mp_dbg	hash/mp/mp_util.c	/^mp_dbg(const mp_int *a, FILE *fp)$/;"	f	signature:(const mp_int *a, FILE *fp)
+mp_div	hash/mp/mp.h	/^int mp_div(mp_int *q, mp_int *r, const mp_int *y, const mp_int *x);$/;"	p	signature:(mp_int *q, mp_int *r, const mp_int *y, const mp_int *x)
+mp_div	hash/mp/mp_div.c	/^mp_div(mp_int *q, mp_int *r, const mp_int *y, const mp_int *x)$/;"	f	signature:(mp_int *q, mp_int *r, const mp_int *y, const mp_int *x)
+mp_ensure	hash/mp/mp_common.h	/^int mp_ensure(mp_int *p, unsigned int new_size);$/;"	p	signature:(mp_int *p, unsigned int new_size)
+mp_ensure	hash/mp/mp_ensure.c	/^mp_ensure(mp_int *p, unsigned int new_size)$/;"	f	signature:(mp_int *p, unsigned int new_size)
+mp_gcd	hash/mp/mp.h	/^int mp_gcd(mp_int *c, const mp_int *a, const mp_int *b);$/;"	p	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_gcd	hash/mp/mp_gcd.c	/^mp_gcd(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_init	hash/mp/mp.h	/^int mp_init(mp_int *a);$/;"	p	signature:(mp_int *a)
+mp_init	hash/mp/mp_init.c	/^mp_init(mp_int *p)$/;"	f	signature:(mp_int *p)
+mp_initv	hash/mp/mp.h	/^int mp_initv(mp_int *a, ...);$/;"	p	signature:(mp_int *a, ...)
+mp_initv	hash/mp/mp_init.c	/^mp_initv(mp_int *a, ...)$/;"	f	signature:(mp_int *a, ...)
+mp_int	hash/mp/mp.h	/^typedef struct mp_int {$/;"	s
+mp_int	hash/mp/mp.h	/^} mp_int;$/;"	t	typeref:struct:mp_int
+mp_int::alloc	hash/mp/mp.h	/^	unsigned int	alloc;	\/* number of allocated digits *\/$/;"	m	struct:mp_int	access:public
+mp_int::dig	hash/mp/mp.h	/^	_mp_int_t	*dig;	\/* malloc'ed array of digits *\/$/;"	m	struct:mp_int	access:public
+mp_int::flags	hash/mp/mp.h	/^	unsigned int	flags;$/;"	m	struct:mp_int	access:public
+mp_int::sign	hash/mp/mp.h	/^	int		sign;	\/* MP_SIGN_POS or MP_SIGN_NEG *\/$/;"	m	struct:mp_int	access:public
+mp_int::top	hash/mp/mp.h	/^	int		top;	\/* index to top digit *\/$/;"	m	struct:mp_int	access:public
+mp_iseven	hash/mp/mp.h	47;"	d
+mp_isneg	hash/mp/mp.h	/^int mp_isneg(const mp_int *a);$/;"	p	signature:(const mp_int *a)
+mp_isneg	hash/mp/mp_util.c	/^mp_isneg(const mp_int *a)$/;"	f	signature:(const mp_int *a)
+mp_isodd	hash/mp/mp.h	48;"	d
+mp_isone	hash/mp/mp.h	/^int mp_isone(const mp_int *a);$/;"	p	signature:(const mp_int *a)
+mp_isone	hash/mp/mp_util.c	/^mp_isone(const mp_int *a)$/;"	f	signature:(const mp_int *a)
+mp_iszero	hash/mp/mp.h	/^int mp_iszero(const mp_int *a);$/;"	p	signature:(const mp_int *a)
+mp_iszero	hash/mp/mp_util.c	/^mp_iszero(const mp_int *a)$/;"	f	signature:(const mp_int *a)
+mp_mod_exp	hash/mp/mp.h	/^int mp_mod_exp(mp_int *res, const mp_int *a, const mp_int *y, const mp_int *b);$/;"	p	signature:(mp_int *res, const mp_int *a, const mp_int *y, const mp_int *b)
+mp_mod_exp	hash/mp/mp_mod_exp.c	/^mp_mod_exp(mp_int *res, const mp_int *a, const mp_int *y, const mp_int *b)$/;"	f	signature:(mp_int *res, const mp_int *a, const mp_int *y, const mp_int *b)
+mp_mod_inv	hash/mp/mp.h	/^int mp_mod_inv(mp_int *c, const mp_int *a, const mp_int *b);$/;"	p	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_mod_inv	hash/mp/mp_mod_inv.c	/^mp_mod_inv(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_mul	hash/mp/mp.h	/^int mp_mul(mp_int *c, const mp_int *a, const mp_int *b);$/;"	p	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_mul	hash/mp/mp_mul.c	/^mp_mul(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_mul_dig	hash/mp/mp.h	/^int mp_mul_dig(mp_int *c, const mp_int *a, _mp_int_t b);$/;"	p	signature:(mp_int *c, const mp_int *a, _mp_int_t b)
+mp_mul_dig	hash/mp/mp_mul.c	/^mp_mul_dig(mp_int *c, const mp_int *a, _mp_int_t b)$/;"	f	signature:(mp_int *c, const mp_int *a, _mp_int_t b)
+mp_mul_ndig	hash/mp/mp.h	/^int mp_mul_ndig(mp_int *c, const mp_int *a, const mp_int *b, int ndig);$/;"	p	signature:(mp_int *c, const mp_int *a, const mp_int *b, int ndig)
+mp_mul_ndig	hash/mp/mp_mul.c	/^mp_mul_ndig(mp_int *c, const mp_int *a, const mp_int *b, int ndig)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b, int ndig)
+mp_nr_bits	hash/mp/mp.h	/^int mp_nr_bits(const mp_int *a);$/;"	p	signature:(const mp_int *a)
+mp_nr_bits	hash/mp/mp_util.c	/^mp_nr_bits(const mp_int *a)$/;"	f	signature:(const mp_int *a)
+mp_primality_miller_rabin	hash/mp/mp.h	/^int mp_primality_miller_rabin(const mp_int *a, int r, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx);$/;"	p	signature:(const mp_int *a, int r, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx)
+mp_primality_miller_rabin	hash/mp/mp_primality.c	/^mp_primality_miller_rabin(const mp_int *m, int r,$/;"	f	signature:(const mp_int *m, int r, int (*rnd)(void *buf, size_t size, void *rndctx), void *rndctx)
+mp_random	hash/mp/mp.h	/^int mp_random(mp_int *a, int len, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx);$/;"	p	signature:(mp_int *a, int len, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx)
+mp_random	hash/mp/mp_random.c	/^mp_random(mp_int *a, int size,$/;"	f	signature:(mp_int *a, int size, int (*rnd)(void *buf, size_t size, void *rndctx), void *rndctx)
+mp_reduce_barrett	hash/mp/mp.h	/^int mp_reduce_barrett(mp_int *c, const mp_int *a, const mp_int *b, const mp_int *mu);$/;"	p	signature:(mp_int *c, const mp_int *a, const mp_int *b, const mp_int *mu)
+mp_reduce_barrett	hash/mp/mp_reduce.c	/^mp_reduce_barrett(mp_int *c, const mp_int *a, const mp_int *b, const mp_int *mu)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b, const mp_int *mu)
+mp_reduce_barrett_setup	hash/mp/mp.h	/^int mp_reduce_barrett_setup(mp_int *mu, const mp_int *b);$/;"	p	signature:(mp_int *mu, const mp_int *b)
+mp_reduce_barrett_setup	hash/mp/mp_reduce.c	/^mp_reduce_barrett_setup(mp_int *mu, const mp_int *b)$/;"	f	signature:(mp_int *mu, const mp_int *b)
+mp_set	hash/mp/mp_set.c	/^mp_set(mp_int *a, unsigned long *val, unsigned int nval, int sign)$/;"	f	signature:(mp_int *a, unsigned long *val, unsigned int nval, int sign)
+mp_set_one	hash/mp/mp.h	/^void mp_set_one(mp_int *a);$/;"	p	signature:(mp_int *a)
+mp_set_one	hash/mp/mp_set.c	/^mp_set_one(mp_int *a)$/;"	f	signature:(mp_int *a)
+mp_set_sint	hash/mp/mp.h	/^void mp_set_sint(mp_int *a, long value);$/;"	p	signature:(mp_int *a, long value)
+mp_set_sint	hash/mp/mp_set.c	/^mp_set_sint(mp_int *a, long val)$/;"	f	signature:(mp_int *a, long val)
+mp_set_str	hash/mp/mp.h	/^int  mp_set_str(mp_int *a, const char *str, int base);$/;"	p	signature:(mp_int *a, const char *str, int base)
+mp_set_str	hash/mp/mp_set.c	/^mp_set_str(mp_int *a, const char *str, int base)$/;"	f	signature:(mp_int *a, const char *str, int base)
+mp_set_uchar	hash/mp/mp.h	/^int mp_set_uchar(mp_int *a, const unsigned char *buf, int len);$/;"	p	signature:(mp_int *a, const unsigned char *buf, int len)
+mp_set_uchar	hash/mp/mp_uchar.c	/^mp_set_uchar(mp_int *a, const unsigned char *buf, int len)$/;"	f	signature:(mp_int *a, const unsigned char *buf, int len)
+mp_set_uint	hash/mp/mp.h	/^void mp_set_uint(mp_int *a, unsigned long value);$/;"	p	signature:(mp_int *a, unsigned long value)
+mp_set_uint	hash/mp/mp_set.c	/^mp_set_uint(mp_int *a, unsigned long val)$/;"	f	signature:(mp_int *a, unsigned long val)
+mp_shl	hash/mp/mp.h	/^int mp_shl(mp_int *a, unsigned int nr);$/;"	p	signature:(mp_int *a, unsigned int nr)
+mp_shl	hash/mp/mp_shift.c	/^mp_shl(mp_int *a, unsigned int nr)$/;"	f	signature:(mp_int *a, unsigned int nr)
+mp_shr	hash/mp/mp.h	/^int mp_shr(mp_int *a, unsigned int nr);$/;"	p	signature:(mp_int *a, unsigned int nr)
+mp_shr	hash/mp/mp_shift.c	/^mp_shr(mp_int *a, unsigned int nr)$/;"	f	signature:(mp_int *a, unsigned int nr)
+mp_sqr	hash/mp/mp.h	/^int mp_sqr(mp_int *c, const mp_int *x);$/;"	p	signature:(mp_int *c, const mp_int *x)
+mp_sqr	hash/mp/mp_sqr.c	/^mp_sqr(mp_int *c, const mp_int *x)$/;"	f	signature:(mp_int *c, const mp_int *x)
+mp_sub	hash/mp/mp.h	/^int mp_sub(mp_int *c, const mp_int *a, const mp_int *b);$/;"	p	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_sub	hash/mp/mp_sub.c	/^mp_sub(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
+mp_swap	hash/mp/mp.h	/^int mp_swap(mp_int *a, mp_int *b);$/;"	p	signature:(mp_int *a, mp_int *b)
+mp_swap	hash/mp/mp_util.c	/^mp_swap(mp_int *a, mp_int *b)$/;"	f	signature:(mp_int *a, mp_int *b)
+mp_to_uchar	hash/mp/mp.h	/^int mp_to_uchar(const mp_int *a, unsigned char *buf, int len);$/;"	p	signature:(const mp_int *a, unsigned char *buf, int len)
+mp_to_uchar	hash/mp/mp_uchar.c	/^mp_to_uchar(const mp_int *a, unsigned char *buf, int len)$/;"	f	signature:(const mp_int *a, unsigned char *buf, int len)
+mp_zero	hash/mp/mp.h	/^void mp_zero(mp_int *a);$/;"	p	signature:(mp_int *a)
+mp_zero	hash/mp/mp_util.c	/^mp_zero(mp_int *a)$/;"	f	signature:(mp_int *a)
+name	hash_desc.h	/^	const char *name;$/;"	m	struct:hash_desc	access:public
+nb	hash/aes.h	/^	int		nb;$/;"	m	struct:aes_context	access:public
+nbits	hash/md5.h	/^	u_int32_t	nbits[2];	\/* message size (in bits) *\/$/;"	m	struct:md5_context	access:public
+nbits	md5.h	/^	u_int32_t	nbits[2];	\/* message size (in bits) *\/$/;"	m	struct:md5_context	access:public
+nk	hash/aes.h	/^	int		nk;$/;"	m	struct:aes_context	access:public
+nr	hash/aes.h	/^	int		nr;$/;"	m	struct:aes_context	access:public
+nsources	entropy_pool.h	/^	int nsources;$/;"	m	struct:entropy_pool	access:public
+objects	Makefile	/^objects = test.o yarrow.o md5.o sha1.o sha256.o$/;"	m
+objects	hash/Makefile	/^objects = md5.o whirlpool.o hmac-whirlpool.o$/;"	m
+pbkdf2_hmac_whirlpool	hash/hmac-whirlpool.c	/^pbkdf2_hmac_whirlpool(const void	*pass,$/;"	f	signature:(const void *pass, unsigned npass, const void *salt, unsigned nsalt, int niter, void *key, unsigned nkey)
+pbkdf2_hmac_whirlpool	hash/hmac-whirlpool.h	/^pbkdf2_hmac_whirlpool(const void	*pass,$/;"	p	signature:(const void *pass, unsigned npass, const void *salt, unsigned nsalt, int niter, void *key, unsigned nkey)
+reseed_prng	reseed_prng.c	/^reseed_prng(:)$/;"	f	signature:(:)
+return_if_fail	hash/macros.h	20;"	d
+return_if_fail	hash/macros.h	57;"	d
+return_if_fail	macros.h	20;"	d
+return_if_fail	macros.h	57;"	d
+return_val_if_fail	hash/macros.h	32;"	d
+return_val_if_fail	hash/macros.h	58;"	d
+return_val_if_fail	macros.h	32;"	d
+return_val_if_fail	macros.h	58;"	d
+rnd	hash/mp/test.c	/^rnd(void *buf, size_t len, void *ctx)$/;"	f	file:	signature:(void *buf, size_t len, void *ctx)
+rot_word	hash/aes.c	/^rot_word(u_int32_t x)$/;"	f	file:	signature:(u_int32_t x)
+rsa_rnd_prime	hash/mp/rsa.c	/^rsa_rnd_prime(const mp_int *exp, int len, int triesmax, int param,$/;"	f	file:	signature:(const mp_int *exp, int len, int triesmax, int param, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, mp_int *prime)
+rsacrtdp	hash/mp/rsa.c	/^rsacrtdp(const mp_int *c, const mp_int *p, const mp_int *q, const mp_int *dp,$/;"	f	signature:(const mp_int *c, const mp_int *p, const mp_int *q, const mp_int *dp, const mp_int *dq, const mp_int *qinv, mp_int *m)
+rsacrtdp	hash/mp/rsa.h	/^int rsacrtdp(const mp_int *c, const mp_int *p, const mp_int *q, const mp_int *dp, const mp_int *dq, const mp_int *qinv, mp_int *m);$/;"	p	signature:(const mp_int *c, const mp_int *p, const mp_int *q, const mp_int *dp, const mp_int *dq, const mp_int *qinv, mp_int *m)
+rsacrtkg	hash/mp/rsa.c	/^rsacrtkg(unsigned int len, int exp, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx,$/;"	f	signature:(unsigned int len, int exp, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, mp_int *n, mp_int *p, mp_int *q, mp_int *dp, mp_int *dq, mp_int *qinv)
+rsacrtkg	hash/mp/rsa.h	/^int rsacrtkg(unsigned int len, int exp, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx,$/;"	p	signature:(unsigned int len, int exp, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, mp_int *n, mp_int *p, mp_int *q, mp_int *dp, mp_int *dq, mp_int *qinv)
+rsadp	hash/mp/rsa.c	/^rsadp(const mp_int *c, const mp_int *d, const mp_int *n, mp_int *m)$/;"	f	signature:(const mp_int *c, const mp_int *d, const mp_int *n, mp_int *m)
+rsadp	hash/mp/rsa.h	/^int rsadp(const mp_int *c, const mp_int *d, const mp_int *n, mp_int *m);$/;"	p	signature:(const mp_int *c, const mp_int *d, const mp_int *n, mp_int *m)
+rsaep	hash/mp/rsa.c	/^rsaep(const mp_int *m, int exp, const mp_int *n, mp_int *c)$/;"	f	signature:(const mp_int *m, int exp, const mp_int *n, mp_int *c)
+rsaep	hash/mp/rsa.h	/^int rsaep(const mp_int *m, int exp, const mp_int *n, mp_int *c);$/;"	p	signature:(const mp_int *m, int exp, const mp_int *n, mp_int *c)
+rsakg	hash/mp/rsa.c	/^rsakg(unsigned int len, int exp,$/;"	f	signature:(unsigned int len, int exp, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, mp_int *n, mp_int *d)
+rsakg	hash/mp/rsa.h	/^int rsakg(unsigned int len, int exp, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, mp_int *n, mp_int *d);$/;"	p	signature:(unsigned int len, int exp, int (*rnd)(void *buf, size_t len, void *rndctx), void *rndctx, mp_int *n, mp_int *d)
+sbox	hash/aes.c	/^static const uint8_t sbox[256] = {$/;"	v	file:
+sbox	hash/whirlpool.c	/^static const uint8_t sbox[256] = {$/;"	v	file:
+sha1	entropy_pool.h	/^		struct sha1_context sha1;$/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::sha1_context	access:public
+sha1_context	hash/mp/sha1.h	/^struct sha1_context {$/;"	s
+sha1_context	sha1.h	/^struct sha1_context {$/;"	s
+sha1_context::buffer	hash/mp/sha1.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha1_context	access:public
+sha1_context::buffer	sha1.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha1_context	access:public
+sha1_context::count	hash/mp/sha1.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha1_context	access:public
+sha1_context::count	sha1.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha1_context	access:public
+sha1_context::state	hash/mp/sha1.h	/^        uint32_t        state[5];       \/* H(i) hash state *\/$/;"	m	struct:sha1_context	access:public
+sha1_context::state	sha1.h	/^        uint32_t        state[5];       \/* H(i) hash state *\/$/;"	m	struct:sha1_context	access:public
+sha1_context_init	hash/mp/sha1.c	/^sha1_context_init(struct sha1_context *ctx)$/;"	f	signature:(struct sha1_context *ctx)
+sha1_context_init	hash/mp/sha1.h	/^void sha1_context_init(struct sha1_context *ctx);$/;"	p	signature:(struct sha1_context *ctx)
+sha1_context_init	sha1.c	/^sha1_context_init(struct sha1_context *ctx)$/;"	f	signature:(struct sha1_context *ctx)
+sha1_context_init	sha1.h	/^void sha1_context_init(struct sha1_context *ctx);$/;"	p	signature:(struct sha1_context *ctx)
+sha1_final	hash/mp/sha1.c	/^sha1_final(struct sha1_context *ctx, unsigned char digest[20])$/;"	f	signature:(struct sha1_context *ctx, unsigned char digest[20])
+sha1_final	hash/mp/sha1.h	/^void sha1_final(struct sha1_context *ctx, unsigned char digest[20]);$/;"	p	signature:(struct sha1_context *ctx, unsigned char digest[20])
+sha1_final	sha1.c	/^sha1_final(struct sha1_context *ctx, unsigned char digest[20])$/;"	f	signature:(struct sha1_context *ctx, unsigned char digest[20])
+sha1_final	sha1.h	/^void *sha1_final(struct sha1_context *ctx, unsigned char digest[20]);$/;"	p	signature:(struct sha1_context *ctx, unsigned char digest[20])
+sha1_hash	hash/mp/sha1.c	/^sha1_hash(uint32_t s[8], const unsigned char buffer[64])$/;"	f	signature:(uint32_t s[8], const unsigned char buffer[64])
+sha1_hash	sha1.c	/^sha1_hash(uint32_t s[8], const unsigned char buffer[64])$/;"	f	signature:(uint32_t s[8], const unsigned char buffer[64])
+sha1_update	hash/mp/sha1.c	/^sha1_update(struct sha1_context *ctx, const void *msg, u_int32_t msglen)$/;"	f	signature:(struct sha1_context *ctx, const void *msg, u_int32_t msglen)
+sha1_update	hash/mp/sha1.h	/^void sha1_update(struct sha1_context *ctx, const void *msg, uint32_t len);$/;"	p	signature:(struct sha1_context *ctx, const void *msg, uint32_t len)
+sha1_update	sha1.c	/^sha1_update(struct sha1_context *ctx, const void *msg, u_int32_t msglen)$/;"	f	signature:(struct sha1_context *ctx, const void *msg, u_int32_t msglen)
+sha1_update	sha1.h	/^void sha1_update(struct sha1_context *ctx, const void *msg, uint32_t len);$/;"	p	signature:(struct sha1_context *ctx, const void *msg, uint32_t len)
+sha256	entropy_pool.h	/^		struct sha256_context sha256;$/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::sha256_context	access:public
+sha256_context	hash/mp/sha256.h	/^struct sha256_context {$/;"	s
+sha256_context	sha256.h	/^struct sha256_context {$/;"	s
+sha256_context::buffer	hash/mp/sha256.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha256_context	access:public
+sha256_context::buffer	sha256.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha256_context	access:public
+sha256_context::count	hash/mp/sha256.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha256_context	access:public
+sha256_context::count	sha256.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha256_context	access:public
+sha256_context::state	hash/mp/sha256.h	/^        uint32_t        state[8];       \/* H(i) hash state *\/$/;"	m	struct:sha256_context	access:public
+sha256_context::state	sha256.h	/^        uint32_t        state[8];       \/* H(i) hash state *\/$/;"	m	struct:sha256_context	access:public
+sha256_context_init	hash/mp/sha256.c	/^sha256_context_init(struct sha256_context *ctx)$/;"	f	signature:(struct sha256_context *ctx)
+sha256_context_init	hash/mp/sha256.h	/^void sha256_context_init(struct sha256_context *ctx);$/;"	p	signature:(struct sha256_context *ctx)
+sha256_context_init	sha256.c	/^sha256_context_init(struct sha256_context *ctx)$/;"	f	signature:(struct sha256_context *ctx)
+sha256_context_init	sha256.h	/^void sha256_context_init(struct sha256_context *ctx);$/;"	p	signature:(struct sha256_context *ctx)
+sha256_final	hash/mp/sha256.c	/^sha256_final(struct sha256_context *ctx, unsigned char digest[32])$/;"	f	signature:(struct sha256_context *ctx, unsigned char digest[32])
+sha256_final	hash/mp/sha256.h	/^void sha256_final(struct sha256_context *ctx, unsigned char digest[32]);$/;"	p	signature:(struct sha256_context *ctx, unsigned char digest[32])
+sha256_final	sha256.c	/^sha256_final(struct sha256_context *ctx, unsigned char digest[32])$/;"	f	signature:(struct sha256_context *ctx, unsigned char digest[32])
+sha256_final	sha256.h	/^void *sha256_final(struct sha256_context *ctx, unsigned char digest[32]);$/;"	p	signature:(struct sha256_context *ctx, unsigned char digest[32])
+sha256_hash	hash/mp/sha256.c	/^sha256_hash(uint32_t s[8], const unsigned char buffer[64])$/;"	f	signature:(uint32_t s[8], const unsigned char buffer[64])
+sha256_hash	sha256.c	/^sha256_hash(uint32_t s[8], const unsigned char buffer[64])$/;"	f	signature:(uint32_t s[8], const unsigned char buffer[64])
+sha256_update	hash/mp/sha256.c	/^sha256_update(struct sha256_context *ctx, const void *msg, u_int32_t msglen)$/;"	f	signature:(struct sha256_context *ctx, const void *msg, u_int32_t msglen)
+sha256_update	hash/mp/sha256.h	/^void sha256_update(struct sha256_context *ctx, const void *msg, uint32_t len);$/;"	p	signature:(struct sha256_context *ctx, const void *msg, uint32_t len)
+sha256_update	sha256.c	/^sha256_update(struct sha256_context *ctx, const void *msg, u_int32_t msglen)$/;"	f	signature:(struct sha256_context *ctx, const void *msg, u_int32_t msglen)
+sha256_update	sha256.h	/^void sha256_update(struct sha256_context *ctx, const void *msg, uint32_t len);$/;"	p	signature:(struct sha256_context *ctx, const void *msg, uint32_t len)
+shift_columns	hash/whirlpool.c	/^shift_columns(uint64_t state[8])$/;"	f	file:	signature:(uint64_t state[8])
+shift_rows	hash/aes.c	/^shift_rows(uint32_t *state)$/;"	f	file:	signature:(uint32_t *state)
+sign	hash/mp/mp.h	/^	int		sign;	\/* MP_SIGN_POS or MP_SIGN_NEG *\/$/;"	m	struct:mp_int	access:public
+sources	Makefile	/^sources = test.c yarrow.c md5.c sha1.c sha256.c$/;"	m
+sources	hash/Makefile	/^sources = md5.c main.c hmac-whirlpool.c$/;"	m
+state	hash/aes.h	/^	u_int32_t	state[AES_NB];$/;"	m	struct:aes_context	access:public
+state	hash/md5.h	/^	u_int32_t	state[4];	\/* state words *\/$/;"	m	struct:md5_context	access:public
+state	hash/mp/sha1.h	/^        uint32_t        state[5];       \/* H(i) hash state *\/$/;"	m	struct:sha1_context	access:public
+state	hash/mp/sha256.h	/^        uint32_t        state[8];       \/* H(i) hash state *\/$/;"	m	struct:sha256_context	access:public
+state	hash/whirlpool.h	/^        uint64_t        state[8];       \/* 8x8 state matrix *\/$/;"	m	struct:whirlpool_context	access:public
+state	md5.h	/^	u_int32_t	state[4];	\/* state words *\/$/;"	m	struct:md5_context	access:public
+state	sha1.h	/^        uint32_t        state[5];       \/* H(i) hash state *\/$/;"	m	struct:sha1_context	access:public
+state	sha256.h	/^        uint32_t        state[8];       \/* H(i) hash state *\/$/;"	m	struct:sha256_context	access:public
+sub_bytes	hash/aes.c	/^sub_bytes(uint32_t *state)$/;"	f	file:	signature:(uint32_t *state)
+sub_bytes	hash/whirlpool.c	/^sub_bytes(uint64_t state[8])$/;"	f	file:	signature:(uint64_t state[8])
+sub_word	hash/aes.c	/^sub_word(u_int32_t x)$/;"	f	file:	signature:(u_int32_t x)
+test_gcd	hash/mp/test.c	/^test_gcd()$/;"	f
+test_rsa	hash/mp/test.c	/^test_rsa()$/;"	f
+test_rsacrt	hash/mp/test.c	/^test_rsacrt()$/;"	f
+test_sha1_oaep	hash/mp/test.c	/^test_sha1_oaep()$/;"	f
+testrnd	hash/mp/test.c	/^testrnd(void *buf, size_t len, void *ctx)$/;"	f	file:	signature:(void *buf, size_t len, void *ctx)
+threshold	entropy_pool.h	/^	float threshold[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
+top	hash/mp/mp.h	/^	int		top;	\/* index to top digit *\/$/;"	m	struct:mp_int	access:public
+uint32_to_bytes	hash/md5.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
+uint32_to_bytes	hash/mp/sha1.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
+uint32_to_bytes	hash/mp/sha256.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
+uint32_to_bytes	hash/whirlpool.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
+uint32_to_bytes	md5.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
+uint32_to_bytes	sha1.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
+uint32_to_bytes	sha256.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
+update	hash_desc.h	/^	void (*update)(void *ctx, const void *buf, size_t len);$/;"	m	struct:hash_desc	access:public
+urandom	hash/mp/test.c	/^urandom(void *buf, size_t len)$/;"	f	signature:(void *buf, size_t len)
+w	hash/aes.h	/^	u_int32_t	w[AES_NB*(AES_NR_MAX+1)];$/;"	m	struct:aes_context	access:public
+whirlpool_context	hash/whirlpool.h	/^struct whirlpool_context {$/;"	s
+whirlpool_context::buffer	hash/whirlpool.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:whirlpool_context	access:public
+whirlpool_context::count	hash/whirlpool.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:whirlpool_context	access:public
+whirlpool_context::state	hash/whirlpool.h	/^        uint64_t        state[8];       \/* 8x8 state matrix *\/$/;"	m	struct:whirlpool_context	access:public
+whirlpool_context_init	hash/whirlpool.c	/^whirlpool_context_init(struct whirlpool_context *ctx)$/;"	f	signature:(struct whirlpool_context *ctx)
+whirlpool_context_init	hash/whirlpool.h	/^void whirlpool_context_init(struct whirlpool_context *ctx);$/;"	p	signature:(struct whirlpool_context *ctx)
+whirlpool_final	hash/whirlpool.c	/^whirlpool_final(struct whirlpool_context *ctx, unsigned char digest[64])$/;"	f	signature:(struct whirlpool_context *ctx, unsigned char digest[64])
+whirlpool_final	hash/whirlpool.h	/^void whirlpool_final(struct whirlpool_context *ctx, unsigned char digest[64]);$/;"	p	signature:(struct whirlpool_context *ctx, unsigned char digest[64])
+whirlpool_hash	hash/whirlpool.c	/^whirlpool_hash(uint64_t s[8], const unsigned char buffer[64])$/;"	f	signature:(uint64_t s[8], const unsigned char buffer[64])
+whirlpool_update	hash/whirlpool.c	/^whirlpool_update(struct whirlpool_context *ctx, const void *msg, u_int32_t msglen)$/;"	f	signature:(struct whirlpool_context *ctx, const void *msg, u_int32_t msglen)
+whirlpool_update	hash/whirlpool.h	/^void whirlpool_update(struct whirlpool_context *ctx, const void *msg, uint32_t len);$/;"	p	signature:(struct whirlpool_context *ctx, const void *msg, uint32_t len)

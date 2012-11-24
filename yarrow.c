@@ -115,15 +115,15 @@ entropy_pool_is_thresholded(struct entropy_pool *pool)
 }
 
 int
-entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)
+entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src)
 {
 	assert(dst != NULL || src != NULL);
 
 	printf("fast_pool %p, slow_pool %p \n", dst, src );
 
-	src->hdesc->finalize((void *)src, (void *)src->buffer);
+	src->hdesc->finalize(&src->hash_ctx, (void *)(src->buffer));
 	printf(" digest_len %d \n", src->hdesc->digest_len);
-//	dst->hdesc->update((void *)dst, (const void *)src->buffer, src->hdesc->digest_len); 
+	dst->hdesc->update(&dst->hash_ctx, (const void *)src->buffer, MAXDIGEST); 
 	
 	return EPOOL_OK;
 }
@@ -197,15 +197,13 @@ entropy_pool_get_nsources(struct entropy_pool *pool)
         return pool->nsources;
 }
 
-/*
-
 unsigned char
 *entropy_pool_bytes(struct entropy_pool *pool)
 {
 	assert(pool != NULL)
-	return pool->hdesc->finalize();
+	return pool->hdesc->finalize(&pool->hash_ctx, pool->buffer);
 }
-*/
+
 
 unsigned int
 entropy_pool_length(struct entropy_pool *pool)
@@ -228,4 +226,5 @@ entropy_pool_clean(struct entropy_pool *pool)
 	
 	pool->hdesc = NULL;
 }
+
 

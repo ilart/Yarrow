@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOUCE=600
+CFLAGS = -Wall -O2 -fomit-frame-pointer -ggdb -D_GNU_SOURCE -D_XOPEN_SOUCE=600
 #CFLAGS = -Wall -O0 -D_GNU_SOURCE -D_XOPEN_SOURCE=600
 #CFLAGS = -Wall -mtune=k8 -march=k8 -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOURCE=600
 objects = test.o yarrow.o md5.o sha1.o sha256.o
