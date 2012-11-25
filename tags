@@ -3,18 +3,18 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+!_TAG_PROGRAM_VERSION	5.8	//
 AA	hash/mp/sha1.c	42;"	d	file:
 AA	sha1.c	42;"	d	file:
 AES_BLOCK_NBYTES	hash/aes.h	11;"	d
 AES_CBC_H_	hash/aes-cbc.h	2;"	d
 AES_H_	hash/aes.h	9;"	d
-AES_KEY_128	hash/aes.h	/^	AES_KEY_128,$/;"	e	enum:__anon4
-AES_KEY_192	hash/aes.h	/^	AES_KEY_192,$/;"	e	enum:__anon4
-AES_KEY_256	hash/aes.h	/^	AES_KEY_256$/;"	e	enum:__anon4
-AES_KEY_UNKNOWN	hash/aes.h	/^	AES_KEY_UNKNOWN,$/;"	e	enum:__anon4
-AES_NB	hash/aes.h	/^	AES_NB		= 4,$/;"	e	enum:__anon3
-AES_NR_MAX	hash/aes.h	/^	AES_NR_MAX	= 14$/;"	e	enum:__anon3
+AES_KEY_128	hash/aes.h	/^	AES_KEY_128,$/;"	e	enum:__anon3
+AES_KEY_192	hash/aes.h	/^	AES_KEY_192,$/;"	e	enum:__anon3
+AES_KEY_256	hash/aes.h	/^	AES_KEY_256$/;"	e	enum:__anon3
+AES_KEY_UNKNOWN	hash/aes.h	/^	AES_KEY_UNKNOWN,$/;"	e	enum:__anon3
+AES_NB	hash/aes.h	/^	AES_NB		= 4,$/;"	e	enum:__anon2
+AES_NR_MAX	hash/aes.h	/^	AES_NR_MAX	= 14$/;"	e	enum:__anon2
 ARRAY_SIZE	hash/macros.h	11;"	d
 ARRAY_SIZE	macros.h	11;"	d
 ARRSZ	yarrow.c	10;"	d	file:
@@ -24,7 +24,6 @@ BE32_FROM_PTR	hash/mp/sha1.c	26;"	d	file:
 BE32_FROM_PTR	hash/mp/sha256.c	19;"	d	file:
 BE32_FROM_PTR	sha1.c	26;"	d	file:
 BE32_FROM_PTR	sha256.c	19;"	d	file:
-BINARIES	hash/mp/Makefile	/^BINARIES = test$/;"	m
 BLOCKSIZE	hash/hmac-whirlpool.c	16;"	d	file:
 BLOCKSZ	hash/aes-cbc.c	9;"	d	file:
 BSIG0	hash/mp/sha256.c	98;"	d	file:
@@ -37,13 +36,9 @@ CBC	hash/aes-cbc.c	14;"	d	file:
 CBC_DECRYPT	hash/aes-cbc.c	12;"	d	file:
 CBC_ENCRYPT	hash/aes-cbc.c	11;"	d	file:
 CC	Makefile	/^CC = gcc$/;"	m
-CC	hash/Makefile	/^CC = gcc$/;"	m
-CC	hash/mp/Makefile	/^CC = gcc$/;"	m
 CC	hash/mp/sha1.c	64;"	d	file:
 CC	sha1.c	64;"	d	file:
-CFLAGS	Makefile	/^CFLAGS = -Wall -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOUCE=600$/;"	m
-CFLAGS	hash/Makefile	/^CFLAGS = -Wall -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOUCE=600$/;"	m
-CFLAGS	hash/mp/Makefile	/^CFLAGS = -g -Wall -fPIC -O2 -D_GNU_SOURCE -D_XOPEN_SOURCE=600$/;"	m
+CFLAGS	Makefile	/^CFLAGS = -Wall -O2 -fomit-frame-pointer -ggdb -D_GNU_SOURCE -D_XOPEN_SOUCE=600$/;"	m
 CH	hash/mp/sha256.c	96;"	d	file:
 CH	sha256.c	96;"	d	file:
 DD	hash/mp/sha1.c	75;"	d	file:
@@ -54,8 +49,8 @@ DEBUG_ONLY	macros.h	14;"	d
 DEBUG_ONLY	macros.h	16;"	d
 DEFAULT_K	yarrow.c	11;"	d	file:
 EMEOAEP_H_	hash/mp/emeoaep.h	2;"	d
-EPOOL_FAIL	entropy_pool.h	/^	EPOOL_FAIL = 1$/;"	e	enum:__anon5
-EPOOL_OK	entropy_pool.h	/^	EPOOL_OK = 0,$/;"	e	enum:__anon5
+EPOOL_FAIL	entropy_pool.h	/^	EPOOL_FAIL = 1$/;"	e	enum:__anon1
+EPOOL_OK	entropy_pool.h	/^	EPOOL_OK = 0,$/;"	e	enum:__anon1
 F	hash/md5.c	21;"	d	file:
 F	md5.c	21;"	d	file:
 FALSE	hash/macros.h	5;"	d
@@ -78,7 +73,6 @@ HASH_MD5	hash_desc.h	9;"	d
 HASH_SHA1	hash_desc.h	10;"	d
 HASH_SHA256	hash_desc.h	11;"	d
 HASH_UPDATE	yarrow.c	15;"	d	file:
-HEADERS	hash/mp/Makefile	/^HEADERS = $(MP_HEADERS) rsa.h sha1.h sha256.h emeoaep.h$/;"	m
 HH	hash/md5.c	50;"	d	file:
 HH	md5.c	50;"	d	file:
 HMAC_WHIRLPOOL_H_	hash/hmac-whirlpool.h	2;"	d
@@ -218,8 +212,6 @@ K62	hash/mp/sha256.c	93;"	d	file:
 K62	sha256.c	93;"	d	file:
 K63	hash/mp/sha256.c	94;"	d	file:
 K63	sha256.c	94;"	d	file:
-LD	hash/Makefile	/^LD = ld$/;"	m
-LD	hash/mp/Makefile	/^LD = ld$/;"	m
 LE32	hash/aes.c	21;"	d	file:
 LE32	hash/aes.c	24;"	d	file:
 LE32	hash/whirlpool.c	16;"	d	file:
@@ -254,11 +246,10 @@ MP_CMP_LT	hash/mp/mp.h	25;"	d
 MP_COMBA_DEPTH	hash/mp/mp_common.h	10;"	d
 MP_COMBA_STACK	hash/mp/mp_common.h	11;"	d
 MP_COMMON_H_	hash/mp/mp_common.h	2;"	d
-MP_COMPOSITE	hash/mp/mp.h	/^	MP_COMPOSITE$/;"	e	enum:__anon1
+MP_COMPOSITE	hash/mp/mp.h	/^	MP_COMPOSITE$/;"	e	enum:__anon4
 MP_DEBUG	hash/mp/mp_common.h	17;"	d
 MP_DEBUG	hash/mp/mp_common.h	19;"	d
-MP_ERR	hash/mp/mp.h	/^	MP_ERR,$/;"	e	enum:__anon1
-MP_HEADERS	hash/mp/Makefile	/^MP_HEADERS = mp.h mp_common.h$/;"	m
+MP_ERR	hash/mp/mp.h	/^	MP_ERR,$/;"	e	enum:__anon4
 MP_H_	hash/mp/mp.h	10;"	d
 MP_INT_BASE	hash/mp/mp.h	30;"	d
 MP_INT_BITS	hash/mp/mp.h	32;"	d
@@ -266,13 +257,10 @@ MP_INT_BITS_ALL	hash/mp/mp.h	33;"	d
 MP_INT_MASK	hash/mp/mp.h	31;"	d
 MP_KARATSUBA_CUTOFF	hash/mp/mp_common.h	8;"	d
 MP_MODEXP_STACK	hash/mp/mp_mod_exp.c	9;"	d	file:
-MP_NOMEM	hash/mp/mp.h	/^	MP_NOMEM,$/;"	e	enum:__anon1
-MP_OBJECTS	hash/mp/Makefile	/^MP_OBJECTS = mp_util.o mp_copy.o mp_ensure.o mp_add.o \\$/;"	m
-MP_OK	hash/mp/mp.h	/^	MP_OK	= 0,$/;"	e	enum:__anon1
+MP_NOMEM	hash/mp/mp.h	/^	MP_NOMEM,$/;"	e	enum:__anon4
+MP_OK	hash/mp/mp.h	/^	MP_OK	= 0,$/;"	e	enum:__anon4
 MP_SIGN_NEG	hash/mp/mp.h	28;"	d
 MP_SIGN_POS	hash/mp/mp.h	27;"	d
-MP_SOURCES	hash/mp/Makefile	/^MP_SOURCES = mp_util.c mp_copy.c mp_ensure.c mp_add.c \\$/;"	m
-OBJECTS	hash/mp/Makefile	/^OBJECTS = $(MP_OBJECTS) rsa.o sha1.o sha256.o emeoaep.o$/;"	m
 PBKDF2_DEFAULT_NITER	hash/hmac-whirlpool.c	18;"	d	file:
 R64	hash/whirlpool.c	32;"	d	file:
 ROL	hash/md5.c	26;"	d	file:
@@ -288,9 +276,9 @@ ROR32	sha1.c	35;"	d	file:
 ROR32	sha256.c	28;"	d	file:
 RSAKG_MILLER_RABIN_PARAM	hash/mp/rsa.c	26;"	d	file:
 RSAKG_TRIES_MAX	hash/mp/rsa.c	25;"	d	file:
-RSA_EXP_F0	hash/mp/rsa.h	/^	RSA_EXP_F0 = 3,$/;"	e	enum:__anon2
-RSA_EXP_F2	hash/mp/rsa.h	/^	RSA_EXP_F2 = 17,$/;"	e	enum:__anon2
-RSA_EXP_F4	hash/mp/rsa.h	/^	RSA_EXP_F4 = 65537$/;"	e	enum:__anon2
+RSA_EXP_F0	hash/mp/rsa.h	/^	RSA_EXP_F0 = 3,$/;"	e	enum:__anon5
+RSA_EXP_F2	hash/mp/rsa.h	/^	RSA_EXP_F2 = 17,$/;"	e	enum:__anon5
+RSA_EXP_F4	hash/mp/rsa.h	/^	RSA_EXP_F4 = 65537$/;"	e	enum:__anon5
 RSA_H_	hash/mp/rsa.h	18;"	d
 SBOX	hash/aes.c	446;"	d	file:
 SBOX64	hash/whirlpool.c	322;"	d	file:
@@ -305,7 +293,6 @@ SHA256_DIGEST_LEN	sha256.h	4;"	d
 SHA256_H_	hash/mp/sha256.h	2;"	d
 SHA256_H_	sha256.h	2;"	d
 SHCOL	hash/whirlpool.c	397;"	d	file:
-SOURCES	hash/mp/Makefile	/^SOURCES = rsa.c sha1.c sha256.c emeoaep.c$/;"	m
 SSIG0	hash/mp/sha256.c	100;"	d	file:
 SSIG0	sha256.c	100;"	d	file:
 SSIG1	hash/mp/sha256.c	101;"	d	file:
@@ -358,6 +345,7 @@ WHIRLPOOL_H_	hash/whirlpool.h	2;"	d
 YARROW_H_	yarrow.h	2;"	d
 _ENTROPY_POOL_H	entropy_pool.h	2;"	d
 _HASH_H	hash_desc.h	2;"	d
+__PRNG_H	prng.h	2;"	d
 _hash_ctx	entropy_pool.h	/^	union _hash_ctx {$/;"	u	struct:entropy_pool	access:public
 _mp_abs_cmp	hash/mp/mp_cmp.c	/^_mp_abs_cmp(const mp_int *a, const mp_int *b)$/;"	f	signature:(const mp_int *a, const mp_int *b)
 _mp_add	hash/mp/mp_add.c	/^_mp_add(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
@@ -412,7 +400,7 @@ aes_decrypt	hash/aes.c	/^aes_decrypt(struct aes_context *ctx, const u_int8_t *in
 aes_decrypt	hash/aes.h	/^void aes_decrypt(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out);$/;"	p	signature:(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)
 aes_encrypt	hash/aes.c	/^aes_encrypt(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)$/;"	f	signature:(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)
 aes_encrypt	hash/aes.h	/^void aes_encrypt(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out);$/;"	p	signature:(struct aes_context *ctx, const u_int8_t *in, u_int8_t *out)
-aes_key_len_t	hash/aes.h	/^} aes_key_len_t;$/;"	t	typeref:enum:__anon4
+aes_key_len_t	hash/aes.h	/^} aes_key_len_t;$/;"	t	typeref:enum:__anon3
 aes_set_key	hash/aes.c	/^aes_set_key(struct aes_context *ctx, const void *key, aes_key_len_t klen)$/;"	f	signature:(struct aes_context *ctx, const void *key, aes_key_len_t klen)
 aes_set_key	hash/aes.h	/^int aes_set_key(struct aes_context *ctx, const void *key, aes_key_len_t klen);$/;"	p	signature:(struct aes_context *ctx, const void *key, aes_key_len_t klen)
 alloc	hash/mp/mp.h	/^	unsigned int	alloc;	\/* number of allocated digits *\/$/;"	m	struct:mp_int	access:public
@@ -421,7 +409,6 @@ assert	hash/macros.h	59;"	d
 assert	macros.h	44;"	d
 assert	macros.h	59;"	d
 binaries	Makefile	/^binaries = test $/;"	m
-binaries	hash/Makefile	/^binaries = md5-test whirlpool-test$/;"	m
 buffer	entropy_pool.h	/^	unsigned char buffer[16];$/;"	m	struct:entropy_pool	access:public
 buffer	hash/aes-cbc.h	/^	uint8_t		buffer[16];	\/* partial input *\/$/;"	m	struct:aes_cbc	access:public
 buffer	hash/md5.h	/^	u_int8_t	buffer[64];	\/* message buffer *\/$/;"	m	struct:md5_context	access:public
@@ -436,6 +423,7 @@ count	hash/mp/sha256.h	/^        uint32_t        count[2];       \/* data length
 count	hash/whirlpool.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:whirlpool_context	access:public
 count	sha1.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha1_context	access:public
 count	sha256.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha256_context	access:public
+counter	prng.h	/^	int counter;$/;"	m	struct:prng	access:public
 ctx	hash/aes-cbc.h	/^	void		*ctx;$/;"	m	struct:aes_cbc	access:public
 desc_tbl	yarrow.c	/^struct hash_desc desc_tbl[] = {$/;"	v	typeref:struct:hash_desc
 dig	hash/mp/mp.h	/^	_mp_int_t	*dig;	\/* malloc'ed array of digits *\/$/;"	m	struct:mp_int	access:public
@@ -464,12 +452,13 @@ entropy_pool::threshold	entropy_pool.h	/^	float threshold[MAXSOURCES];$/;"	m	str
 entropy_pool_add	entropy_pool.h	/^int entropy_pool_add(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate);$/;"	p	signature:(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate)
 entropy_pool_add	yarrow.c	/^entropy_pool_add(struct entropy_pool *pool,$/;"	f	signature:(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate)
 entropy_pool_bytes	entropy_pool.h	/^unsigned char *entropy_pool_bytes(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
+entropy_pool_bytes	yarrow.c	/^*entropy_pool_bytes(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
 entropy_pool_clean	entropy_pool.h	/^void entropy_pool_clean(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
 entropy_pool_clean	yarrow.c	/^entropy_pool_clean(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
 entropy_pool_deinit	entropy_pool.h	/^int entropy_pool_deinit(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
 entropy_pool_deinit	yarrow.c	/^entropy_pool_deinit(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
-entropy_pool_feed_to	entropy_pool.h	/^int entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src);$/;"	p	signature:(struct entropy_pool *dst, const struct entropy_pool *src)
-entropy_pool_feed_to	yarrow.c	/^entropy_pool_feed_to(struct entropy_pool *dst, const struct entropy_pool *src)$/;"	f	signature:(struct entropy_pool *dst, const struct entropy_pool *src)
+entropy_pool_feed_to	entropy_pool.h	/^int entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src);$/;"	p	signature:(struct entropy_pool *dst, struct entropy_pool *src)
+entropy_pool_feed_to	yarrow.c	/^entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src)$/;"	f	signature:(struct entropy_pool *dst, struct entropy_pool *src)
 entropy_pool_get_k	entropy_pool.h	/^int entropy_pool_get_k(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
 entropy_pool_get_k	yarrow.c	/^entropy_pool_get_k(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
 entropy_pool_get_nsources	entropy_pool.h	/^int entropy_pool_get_nsources(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
@@ -500,7 +489,6 @@ hash_desc::init	hash_desc.h	/^	void (*init)(void *ctx);$/;"	m	struct:hash_desc	a
 hash_desc::name	hash_desc.h	/^	const char *name;$/;"	m	struct:hash_desc	access:public
 hash_desc::update	hash_desc.h	/^	void (*update)(void *ctx, const void *buf, size_t len);$/;"	m	struct:hash_desc	access:public
 hdesc	entropy_pool.h	/^	struct hash_desc *hdesc;$/;"	m	struct:entropy_pool	typeref:struct:entropy_pool::hash_desc	access:public
-headers	hash/Makefile	/^headers = md5.h whirlpool.h$/;"	m
 hmac_whirlpool	hash/hmac-whirlpool.c	/^hmac_whirlpool(const void *key, unsigned nkey, const void *msg, unsigned nmsg, unsigned char hmac[64])$/;"	f	signature:(const void *key, unsigned nkey, const void *msg, unsigned nmsg, unsigned char hmac[64])
 hmac_whirlpool	hash/hmac-whirlpool.h	/^void hmac_whirlpool(const void *key, unsigned nkey, const void *msg,$/;"	p	signature:(const void *key, unsigned nkey, const void *msg, unsigned nmsg, unsigned char hmac[64])
 init	hash_desc.h	/^	void (*init)(void *ctx);$/;"	m	struct:hash_desc	access:public
@@ -511,6 +499,7 @@ isbox	hash/aes.c	/^static const uint8_t isbox[256] = {$/;"	v	file:
 iv	hash/aes-cbc.h	/^	uint8_t		iv[16];		\/* IV and previous ciphertext are stored here *\/$/;"	m	struct:aes_cbc	access:public
 k	entropy_pool.h	/^	int k;$/;"	m	struct:entropy_pool	access:public
 key	hash/aes.h	/^	u_int32_t	key[8];$/;"	m	struct:aes_context	access:public
+key	prng.h	/^	int key;$/;"	m	struct:prng	access:public
 key_expansion	hash/aes.c	/^key_expansion(struct aes_context *ctx)$/;"	f	file:	signature:(struct aes_context *ctx)
 klen	hash/aes.h	/^	aes_key_len_t	klen;$/;"	m	struct:aes_context	access:public
 len	hash/aes-cbc.h	/^	unsigned int	len;		\/* length of partial input *\/$/;"	m	struct:aes_cbc	access:public
@@ -645,10 +634,14 @@ nk	hash/aes.h	/^	int		nk;$/;"	m	struct:aes_context	access:public
 nr	hash/aes.h	/^	int		nr;$/;"	m	struct:aes_context	access:public
 nsources	entropy_pool.h	/^	int nsources;$/;"	m	struct:entropy_pool	access:public
 objects	Makefile	/^objects = test.o yarrow.o md5.o sha1.o sha256.o$/;"	m
-objects	hash/Makefile	/^objects = md5.o whirlpool.o hmac-whirlpool.o$/;"	m
 pbkdf2_hmac_whirlpool	hash/hmac-whirlpool.c	/^pbkdf2_hmac_whirlpool(const void	*pass,$/;"	f	signature:(const void *pass, unsigned npass, const void *salt, unsigned nsalt, int niter, void *key, unsigned nkey)
 pbkdf2_hmac_whirlpool	hash/hmac-whirlpool.h	/^pbkdf2_hmac_whirlpool(const void	*pass,$/;"	p	signature:(const void *pass, unsigned npass, const void *salt, unsigned nsalt, int niter, void *key, unsigned nkey)
+prng	prng.h	/^struct prng {$/;"	s
+prng::counter	prng.h	/^	int counter;$/;"	m	struct:prng	access:public
+prng::key	prng.h	/^	int key;$/;"	m	struct:prng	access:public
+reseed_prng	prng.h	/^struct prng reseed_prng(struct entropy_pool *pool, struct prng *prng_ptr, u_int16_t);$/;"	p	signature:(struct entropy_pool *pool, struct prng *prng_ptr, u_int16_t)
 reseed_prng	reseed_prng.c	/^reseed_prng(:)$/;"	f	signature:(:)
+reseed_prng	yarrow.c	/^reseed_prng(struct entropy_pool *pool, struct prng *prng_ptr, u_int16_t p_t)$/;"	f	signature:(struct entropy_pool *pool, struct prng *prng_ptr, u_int16_t p_t)
 return_if_fail	hash/macros.h	20;"	d
 return_if_fail	hash/macros.h	57;"	d
 return_if_fail	macros.h	20;"	d
@@ -722,7 +715,6 @@ shift_columns	hash/whirlpool.c	/^shift_columns(uint64_t state[8])$/;"	f	file:	si
 shift_rows	hash/aes.c	/^shift_rows(uint32_t *state)$/;"	f	file:	signature:(uint32_t *state)
 sign	hash/mp/mp.h	/^	int		sign;	\/* MP_SIGN_POS or MP_SIGN_NEG *\/$/;"	m	struct:mp_int	access:public
 sources	Makefile	/^sources = test.c yarrow.c md5.c sha1.c sha256.c$/;"	m
-sources	hash/Makefile	/^sources = md5.c main.c hmac-whirlpool.c$/;"	m
 state	hash/aes.h	/^	u_int32_t	state[AES_NB];$/;"	m	struct:aes_context	access:public
 state	hash/md5.h	/^	u_int32_t	state[4];	\/* state words *\/$/;"	m	struct:md5_context	access:public
 state	hash/mp/sha1.h	/^        uint32_t        state[5];       \/* H(i) hash state *\/$/;"	m	struct:sha1_context	access:public

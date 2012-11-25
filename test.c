@@ -12,9 +12,14 @@ int main(int argc, char **argv)
 	int res;
 	double tmp;
 	struct entropy_pool fast_pool, slow_pool;
+	struct prng prng_ptr;
 	const char buf[] = "qw qw as zx zx zz zz 11";
 	//char tmp_buf[16];
 	unsigned char *tmp_s;
+
+	prng_ptr.key = 0;
+	prng_ptr.counter = 0;
+
 	res = entropy_pool_init(&fast_pool, 17, HASH_SHA256);
 	if (res == 0)
 		printf("pool.nsources %d "
@@ -82,9 +87,13 @@ int main(int argc, char **argv)
 	entropy_pool_feed_to(&fast_pool, &slow_pool);
 	printf("feed: buffer = %s\n", fast_pool.buffer);
 	/* how see result, current hash? */		
-
+	
 	tmp_s = entropy_pool_bytes(&fast_pool);
 	printf("fast_pool_byts %s \n", tmp_s);
+
+	entropy_pool_clean(&fast_pool);
+	printf("entropy_pool_clean %s", fast_pool.buffer);
+
 
 //	slow_pool.hdesc->finalize(&slow_pool, (void *)tmp_buf);
 //	printf("hash = %s \n", tmp_buf);

@@ -92,6 +92,7 @@ entropy_pool_add(struct entropy_pool *pool,
 	pool->estimate[source_id] += nbits;
 
 	pool->hdesc->update(&pool->hash_ctx, buf, len);
+	pool->hdesc->finalize(&pool->hash_ctx, pool->buffer);
 
 	return EPOOL_OK;
 }
@@ -119,16 +120,12 @@ entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src)
 {
 	assert(dst != NULL || src != NULL);
 
-	printf("fast_pool %p, slow_pool %p \n", dst, src );
-
 	src->hdesc->finalize(&src->hash_ctx, (void *)(src->buffer));
 	printf(" digest_len %d \n", src->hdesc->digest_len);
-	dst->hdesc->update(&dst->hash_ctx, (const void *)src->buffer, MAXDIGEST); 
+	dst->hdesc->update(&dst->hash_ctx, (const void *)src->buffer, src->hdesc->digest_len); 
 	
 	return EPOOL_OK;
 }
-
-
 
 int
 entropy_pool_deinit(struct entropy_pool *pool)
@@ -201,7 +198,7 @@ unsigned char
 *entropy_pool_bytes(struct entropy_pool *pool)
 {
 	assert(pool != NULL)
-	return pool->hdesc->finalize(&pool->hash_ctx, pool->buffer);
+	return pool->buffer;
 }
 
 
@@ -224,7 +221,51 @@ entropy_pool_clean(struct entropy_pool *pool)
 		pool->estimate[i] = 0.0;
 	}
 	
+	for (i = 0; i < ARRSZ(pool->buffer); i++) {
+		pool->buffer[i] = 0;
+	}
+
+	memset(&pool->hash_ctx, 0, sizeof(pool->hash_ctx));
 	pool->hdesc = NULL;
 }
 
+int 
+reseed_prng(struct prng *prng_ptr, const struct entropy_pool *pool, int param)
+{
+	unsigned char val[4], v0[16], digest[16];
+	int i, key;
+
+	struct hash_ctx ctx;
+
+	v0 = entropy_pool_bytes(pool);
+	len = entropy_pool_length(pool);
+
+	pool->hdesc->init(&ctx);	
+	pool->hdesc->update(&ctx, v0, len);
+	pool->hdesc->update(&ctx, v0, len);
+	i = 1;
+	val[0] = (i & 0xff000000) >> 24;
+	val[1] = (i & 0xff0000) >> 16;
+	val[2] = (i & 0xff00) >> 8;
+	val[3] = (i & 0xff);
+
+	pool->hdesc->update(&ctx, val, sizeof(val));
+	pool->hdesc->finalize(&ctx, digest);
+
+	for (i = 2; i <=param; i++) {
+		pool->hdesc->init(&ctx);
+		pool->hdesc->update(&ctx, digest, len);
+		pool->hdesc->update(&ctx, val, len);
+		 
+		val[0] = (i & 0xff000000) >> 24;
+		val[1] = (i & 0xff0000) >> 16;
+		val[2] = (i & 0xff00) >> 8;
+		val[3] = (i & 0xff);
+		pool->hdesc->update(&ctx, val, sizeof(val));
+		pool->hdesc->finalize(&ctx, digest);
+	}
+
+
+
+}
 

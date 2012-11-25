@@ -14,7 +14,7 @@ all: test
 test: $(objects)
 	$(CC) $(CFLAGS) -o $@ $^
 
-yarrow.o: yarrow.c entropy_pool.h hash_desc.h
+yarrow.o: yarrow.c entropy_pool.h hash_desc.h prng.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 md5.o: md5.c md5.h
