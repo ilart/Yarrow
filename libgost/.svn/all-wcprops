@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 23
+/svn/libgost/!svn/ver/2
+END
+gostcat.c
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/libgost/!svn/ver/2/gostcat.c
+END
+Makefile.win
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/libgost/!svn/ver/2/Makefile.win
+END
+macros.h
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/libgost/!svn/ver/1/macros.h
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/libgost/!svn/ver/1/Makefile
+END
+gost.c
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/libgost/!svn/ver/2/gost.c
+END
+common.h
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/libgost/!svn/ver/2/common.h
+END
+test.c
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/libgost/!svn/ver/2/test.c
+END
+gost.h
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/libgost/!svn/ver/2/gost.h
+END

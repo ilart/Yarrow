@@ -1,0 +1,57 @@
+CC = gcc
+LD = ld
+LIBTOOL = libtool
+CFLAGS = -Wall -fomit-frame-pointer -O2 -DNDEBUG -D_GNU_SOURCE -D_XOPEN_SOURCE=600
+#CFLAGS = -Wall -g -O0 -D_GNU_SOURCE -D_XOPEN_SOURCE=600
+LDFLAGS = -L./
+OBJS = galois.o aes.o sbox.o aes-stream.o
+LIBTOOL_OBJS = $(OBJS:.o=.lo)
+LIBMINOR = 0.0
+LIBMAJOR = 1
+LIBSO = libaes.so.$(LIBMAJOR).$(LIBMINOR)
+LIBLA = libaes.la
+TARGET = test
+STREAM = stream
+AESCAT = aescat
+
+sources = $(SOURCES)
+include $(sources:.c=.d)
+
+.PHONY = lib clean
+
+# Rule to make *.d files which contain header dependencies.
+%.d: %.c
+	@set -e; rm -f $@; \
+	$(CC) -M $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+all: $(LIBLA) $(TARGET) $(STREAM) $(AESCAT)
+
+test.o: test.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+stream.o: stream.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+%.o: %.c
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -c -o $@ $<
+
+$(TARGET): test.o $(LIBTOOL_OBJS)
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+
+$(STREAM): stream.o aes-stream.o $(LIBLA)
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+	
+$(AESCAT): aescat.o $(LIBLA)
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+
+$(LIBLA): $(OBJS)
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o libaes.la $(LIBTOOL_OBJS) \
+		   -version-info 1:0 -export-symbols exported.sym -rpath /usr/local/lib -lc
+clean:
+	-rm -rf *~ *.o $(TARGET) $(AESCAT) aescat.lo \
+		$(STREAM) $(LIBSO) $(LIBTOOL_OBJS) \
+		$(LIBLA) libaes.so libaes.so.*
+	-rm -rf .libs
+

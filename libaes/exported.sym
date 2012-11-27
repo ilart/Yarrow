@@ -1,0 +1,12 @@
+aes_init
+aes_context_new
+aes_context_free
+aes_set_key
+aes_encrypt
+aes_decrypt
+aes_stream_create
+aes_stream_destroy
+aes_stream_set_mode
+aes_stream_set_iv
+aes_stream_encrypt
+aes_stream_decrypt

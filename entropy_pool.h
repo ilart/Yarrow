@@ -30,7 +30,7 @@ struct entropy_pool {
 	float estimate[MAXSOURCES];
 
 	/* current hash */ 
-	unsigned char buffer[16];
+	unsigned char buffer[MAXDIGEST];
 
 	/* hash context */
 	union _hash_ctx {

@@ -7,6 +7,7 @@
 #include "yarrow.h"
 #include "macros.h"
 
+#include "hash_desc.h"
 #define ARRSZ(a) (sizeof(a)/sizeof(a[0]))
 #define DEFAULT_K 3
 #define BUFFER_SZ 64
@@ -232,7 +233,7 @@ entropy_pool_clean(struct entropy_pool *pool)
 int 
 reseed_prng(struct prng *prng_ptr, const struct entropy_pool *pool, int param)
 {
-	unsigned char val[4], v0[16], digest[16];
+	unsigned char val[4], v0[pool->hdesc->digest_len], digest[pool->hdesc->digest_len];
 	int i, key;
 
 	struct hash_ctx ctx;
@@ -252,7 +253,7 @@ reseed_prng(struct prng *prng_ptr, const struct entropy_pool *pool, int param)
 	pool->hdesc->update(&ctx, val, sizeof(val));
 	pool->hdesc->finalize(&ctx, digest);
 
-	for (i = 2; i <=param; i++) {
+	for (i = 2; i <= param; i++) {
 		pool->hdesc->init(&ctx);
 		pool->hdesc->update(&ctx, digest, len);
 		pool->hdesc->update(&ctx, val, len);
@@ -264,8 +265,7 @@ reseed_prng(struct prng *prng_ptr, const struct entropy_pool *pool, int param)
 		pool->hdesc->update(&ctx, val, sizeof(val));
 		pool->hdesc->finalize(&ctx, digest);
 	}
-
-
+	
 
 }
 

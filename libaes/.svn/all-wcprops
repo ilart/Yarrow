@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 22
+/svn/libaes/!svn/ver/2
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/libaes/!svn/ver/2/Makefile
+END
+common.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/libaes/!svn/ver/1/common.h
+END
+aescat.c
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/libaes/!svn/ver/1/aescat.c
+END
+aes-stream.c
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/libaes/!svn/ver/1/aes-stream.c
+END
+aes-stream.h
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/libaes/!svn/ver/1/aes-stream.h
+END
+aes.c
+K 25
+svn:wc:ra_dav:version-url
+V 28
+/svn/libaes/!svn/ver/1/aes.c
+END
+sbox.c
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/libaes/!svn/ver/1/sbox.c
+END
+aes.h
+K 25
+svn:wc:ra_dav:version-url
+V 28
+/svn/libaes/!svn/ver/1/aes.h
+END
+galois.c
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/libaes/!svn/ver/1/galois.c
+END
+test.c
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/libaes/!svn/ver/1/test.c
+END
+sbox.h
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/libaes/!svn/ver/1/sbox.h
+END
+exported.sym
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/libaes/!svn/ver/1/exported.sym
+END
+galois.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/libaes/!svn/ver/1/galois.h
+END
+macros.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/libaes/!svn/ver/1/macros.h
+END
+stream.c
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/libaes/!svn/ver/1/stream.c
+END
