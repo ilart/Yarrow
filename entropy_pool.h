@@ -4,7 +4,7 @@
 #include "md5.h"
 #include "sha1.h"
 #include "sha256.h"
-
+#include "hash_desc.h"
 
 #define MAXSOURCES 32
 
@@ -62,9 +62,9 @@ int entropy_pool_set_nsources(struct entropy_pool *pool, int nsources);
 
 int entropy_pool_get_nsources(struct entropy_pool *pool);
 
-unsigned char *entropy_pool_bytes(struct entropy_pool *pool);
+unsigned char *entropy_pool_bytes(const struct entropy_pool *pool);
 
-unsigned int entropy_pool_length(struct entropy_pool *pool);
+unsigned int entropy_pool_length(const struct entropy_pool *pool);
 
 void entropy_pool_clean(struct entropy_pool *pool);
 

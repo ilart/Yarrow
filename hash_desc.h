@@ -33,4 +33,6 @@ struct hash_desc {
 	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);
 
 };
+
+struct hash_desc *hash_desc_get(const char *name);
 #endif	/* _HASH_H_ */

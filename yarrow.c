@@ -8,7 +8,6 @@
 #include "macros.h"
 
 #include "hash_desc.h"
-#define ARRSZ(a) (sizeof(a)/sizeof(a[0]))
 #define DEFAULT_K 3
 #define BUFFER_SZ 64
 
@@ -59,15 +58,14 @@ entropy_pool_init(struct entropy_pool *pool,
 		pool->estimate[i] = 0.0;
 	}
 
-	for ( i = 0; i < ARRSZ(desc_tbl); i++ ) { 
-		if (strcmp(hash_name, desc_tbl[i].name) == 0) { 
-			pool->hdesc = &desc_tbl[i];
-			pool->hdesc->init(&pool->hash_ctx);
-			return EPOOL_OK;
-		}
-	}
+	pool->hdesc = hash_desc_get(hash_name);
+	pool->hdesc->init(&pool->hash_ctx);
 	
-	return EPOOL_FAIL;
+	if (pool->hdesc == 1)
+		return EPOOL_FAIL;
+	
+	return EPOOL_OK;
+	
 }
 
 int
@@ -196,7 +194,7 @@ entropy_pool_get_nsources(struct entropy_pool *pool)
 }
 
 unsigned char
-*entropy_pool_bytes(struct entropy_pool *pool)
+*entropy_pool_bytes(const struct entropy_pool *pool)
 {
 	assert(pool != NULL)
 	return pool->buffer;
@@ -204,7 +202,7 @@ unsigned char
 
 
 unsigned int
-entropy_pool_length(struct entropy_pool *pool)
+entropy_pool_length(const struct entropy_pool *pool)
 {
 	assert(pool != NULL);
 	return pool->hdesc->digest_len;
@@ -222,7 +220,7 @@ entropy_pool_clean(struct entropy_pool *pool)
 		pool->estimate[i] = 0.0;
 	}
 	
-	for (i = 0; i < ARRSZ(pool->buffer); i++) {
+	for (i = 0; i < ARRAY_SIZE(pool->buffer); i++) {
 		pool->buffer[i] = 0;
 	}
 
@@ -230,3 +228,18 @@ entropy_pool_clean(struct entropy_pool *pool)
 	pool->hdesc = NULL;
 }
 
+struct hash_desc *
+hash_desc_get(const char *hash_name)
+{
+	int i;
+
+	assert(hash_name != 0);
+	
+	for ( i = 0; i < ARRAY_SIZE(desc_tbl); i++ ) {
+		if (strcmp(hash_name, desc_tbl[i].name) == 0) {
+			return &desc_tbl[i];
+		}
+	}
+
+	return FALSE;
+}

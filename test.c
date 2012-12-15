@@ -6,19 +6,19 @@
 #include "yarrow.h"
 #include "entropy_pool.h"
 #include "hash_desc.h"
+#include "prng.h"
+#include "gost.h"
 
 int main(int argc, char **argv)
 {
 	int res;
 	double tmp;
 	struct entropy_pool fast_pool, slow_pool;
-	struct prng prng_ptr;
+	struct prng_context prng_ptr;
+	struct gost_context *gost_ctx;
 	const char buf[] = "qw qw as zx zx zz zz 11";
 	//char tmp_buf[16];
 	unsigned char *tmp_s;
-
-	prng_ptr.key = 0;
-	prng_ptr.counter = 0;
 
 	res = entropy_pool_init(&fast_pool, 17, HASH_SHA256);
 	if (res == 0)
@@ -45,6 +45,9 @@ int main(int argc, char **argv)
 	res = entropy_pool_set_nsources(&slow_pool, 15);
 	if (res == 0)
 	        printf("entropy_pool_set_nsources %d\n", slow_pool.nsources);
+
+	gost_ctx = gost_context_new();
+	//prng_reseed();
 
 	res = entropy_pool_get_nsources(&slow_pool);
 	if (res != 0)
