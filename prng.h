@@ -1,14 +1,16 @@
 #ifndef __PRNG_H
 #define __PRNG_H
+#define	MAXBLOCK_SIZE	64
 
 struct prng reseed_prng(struct entropy_pool *pool, struct prng *prng_ptr, u_int16_t);
 
-struct prng {
-	union _encrypt_ctx {
-		struct gost_context gost_ctx;
-		struct aes_context aes_ctx;
-	} encrypt_ctx;
-	int counter;
+struct prng_context {
+
+	int parma;
+	struct hash_desc *hdesc;
+	struct cipher_desc *cdesc;
+
+	int counter[MAXBLOCK_SIZE / 8 / 4];
 };
 
 #endif
