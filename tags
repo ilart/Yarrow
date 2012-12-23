@@ -116,9 +116,9 @@ H	hash/md5.c	23;"	d	file:
 H	md5.c	23;"	d	file:
 HASH_FINAL	yarrow.c	16;"	d	file:
 HASH_INIT	yarrow.c	14;"	d	file:
-HASH_MD5	hash_desc.h	9;"	d
-HASH_SHA1	hash_desc.h	10;"	d
-HASH_SHA256	hash_desc.h	11;"	d
+HASH_MD5	hash_desc.h	13;"	d
+HASH_SHA1	hash_desc.h	14;"	d
+HASH_SHA256	hash_desc.h	15;"	d
 HASH_UPDATE	yarrow.c	15;"	d	file:
 HAS_KEY_FILE	libaes/aescat.c	11;"	d	file:
 HAS_KEY_FILE	libgost/gostcat.c	8;"	d	file:
@@ -297,10 +297,10 @@ MACROS_H_	macros.h	2;"	d
 MAJ	hash/mp/sha256.c	97;"	d	file:
 MAJ	sha256.c	97;"	d	file:
 MAX	hash/mp/mp_common.h	14;"	d
-MAXBLOCK_SIZE	prng.h	3;"	d
-MAXDIGEST	hash_desc.h	4;"	d
+MAXBLOCK_SIZE	prng.h	4;"	d
+MAXDIGEST	hash_desc.h	8;"	d
 MAXKEY	prng_desc.h	5;"	d
-MAXSOURCES	entropy_pool.h	9;"	d
+MAXSOURCES	entropy_pool.h	6;"	d
 MD5_DIGEST_LEN	md5.h	8;"	d
 MD5_H_	hash/md5.h	2;"	d
 MD5_H_	md5.h	2;"	d
@@ -431,7 +431,7 @@ W3	hash/whirlpool.c	/^const uint64_t W3[] = {$/;"	v
 WHIRLPOOL_H_	hash/whirlpool.h	2;"	d
 YARROW_H_	yarrow.h	2;"	d
 _ENTROPY_POOL_H	entropy_pool.h	2;"	d
-_HASH_H	hash_desc.h	2;"	d
+_HASH_H	hash_desc.h	6;"	d
 _PRNG_H	prng_desc.h	2;"	d
 __BIG_ENDIAN	libaes/common.h	46;"	d
 __BYTE_ORDER	libaes/common.h	30;"	d
@@ -439,9 +439,11 @@ __BYTE_ORDER	libaes/common.h	38;"	d
 __CIPHER_DESC_H	cipher_desc.h	2;"	d
 __LITTLE_ENDIAN	libaes/common.h	29;"	d
 __LITTLE_ENDIAN	libaes/common.h	42;"	d
-__PRNG_H	prng.h	2;"	d
-_hash_ctx	entropy_pool.h	/^	union _hash_ctx {$/;"	u	struct:entropy_pool	access:public
-_hash_ctx	prng.h	/^	union _hash_ctx {$/;"	u	struct:prng_context	access:public
+__PRNG_H	prng.h	3;"	d
+_hash_ctx	hash_desc.h	/^union _hash_ctx {$/;"	u
+_hash_ctx::md5	hash_desc.h	/^		struct md5_context md5; $/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::md5_context	access:public
+_hash_ctx::sha1	hash_desc.h	/^		struct sha1_context sha1;$/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::sha1_context	access:public
+_hash_ctx::sha256	hash_desc.h	/^		struct sha256_context sha256;$/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::sha256_context	access:public
 _mp_abs_cmp	hash/mp/mp_cmp.c	/^_mp_abs_cmp(const mp_int *a, const mp_int *b)$/;"	f	signature:(const mp_int *a, const mp_int *b)
 _mp_add	hash/mp/mp_add.c	/^_mp_add(mp_int *c, const mp_int *a, const mp_int *b)$/;"	f	signature:(mp_int *c, const mp_int *a, const mp_int *b)
 _mp_add	hash/mp/mp_sub.c	/^extern int _mp_add(mp_int *c, const mp_int *a, const mp_int *b);$/;"	p	file:	signature:(mp_int *c, const mp_int *a, const mp_int *b)
@@ -606,13 +608,9 @@ encode	hash/aes-cbc.h	/^	void (*encode)(void *ctx, const void *in, void *out);$/
 encrypt	cipher_desc.h	/^	void (*encrypt)(void *ctx, void *block);$/;"	m	struct:cipher_desc	access:public
 encrypt	libaes/aes-stream.c	/^	aes_encrypt_func	encrypt;	\/* block cipher encryption routine *\/$/;"	m	struct:aes_stream	file:	access:public
 entropy_pool	entropy_pool.h	/^struct entropy_pool {$/;"	s
-entropy_pool::_hash_ctx	entropy_pool.h	/^	union _hash_ctx {$/;"	u	struct:entropy_pool	access:public
-entropy_pool::_hash_ctx::md5	entropy_pool.h	/^		struct md5_context md5; $/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::md5_context	access:public
-entropy_pool::_hash_ctx::sha1	entropy_pool.h	/^		struct sha1_context sha1;$/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::sha1_context	access:public
-entropy_pool::_hash_ctx::sha256	entropy_pool.h	/^		struct sha256_context sha256;$/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::sha256_context	access:public
 entropy_pool::buffer	entropy_pool.h	/^	unsigned char buffer[MAXDIGEST];$/;"	m	struct:entropy_pool	access:public
 entropy_pool::estimate	entropy_pool.h	/^	float estimate[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
-entropy_pool::hash_ctx	entropy_pool.h	/^	} hash_ctx;$/;"	m	struct:entropy_pool	typeref:union:entropy_pool::_hash_ctx	access:public
+entropy_pool::hash_ctx	entropy_pool.h	/^	union _hash_ctx hash_ctx;$/;"	m	struct:entropy_pool	typeref:union:entropy_pool::_hash_ctx	access:public
 entropy_pool::hdesc	entropy_pool.h	/^	struct hash_desc *hdesc;$/;"	m	struct:entropy_pool	typeref:struct:entropy_pool::hash_desc	access:public
 entropy_pool::k	entropy_pool.h	/^	int k;$/;"	m	struct:entropy_pool	access:public
 entropy_pool::nsources	entropy_pool.h	/^	int nsources;$/;"	m	struct:entropy_pool	access:public
@@ -620,7 +618,7 @@ entropy_pool::threshold	entropy_pool.h	/^	float threshold[MAXSOURCES];$/;"	m	str
 entropy_pool_add	entropy_pool.h	/^int entropy_pool_add(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate);$/;"	p	signature:(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate)
 entropy_pool_add	yarrow.c	/^entropy_pool_add(struct entropy_pool *pool,$/;"	f	signature:(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate)
 entropy_pool_bytes	entropy_pool.h	/^unsigned char *entropy_pool_bytes(const struct entropy_pool *pool);$/;"	p	signature:(const struct entropy_pool *pool)
-entropy_pool_bytes	yarrow.c	/^*entropy_pool_bytes(const struct entropy_pool *pool)$/;"	f	signature:(const struct entropy_pool *pool)
+entropy_pool_bytes	yarrow.c	/^entropy_pool_bytes(const struct entropy_pool *pool)$/;"	f	signature:(const struct entropy_pool *pool)
 entropy_pool_clean	entropy_pool.h	/^void entropy_pool_clean(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
 entropy_pool_clean	yarrow.c	/^entropy_pool_clean(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
 entropy_pool_deinit	entropy_pool.h	/^int entropy_pool_deinit(struct entropy_pool *pool);$/;"	p	signature:(struct entropy_pool *pool)
@@ -726,8 +724,8 @@ gost_set_sync	libgost/gost.c	/^gost_set_sync(struct gost_context *ctx, const u_i
 gost_set_sync	libgost/gost.h	/^void gost_set_sync(struct gost_context *ctx, const u_int32_t *sync);$/;"	p	signature:(struct gost_context *ctx, const u_int32_t *sync)
 gost_update_gamma	gost.c	/^gost_update_gamma(struct gost_context *ctx)$/;"	f	file:	signature:(struct gost_context *ctx)
 gost_update_gamma	libgost/gost.c	/^gost_update_gamma(struct gost_context *ctx)$/;"	f	file:	signature:(struct gost_context *ctx)
-hash_ctx	entropy_pool.h	/^	} hash_ctx;$/;"	m	struct:entropy_pool	typeref:union:entropy_pool::_hash_ctx	access:public
-hash_ctx	prng.h	/^	} hash_ctx;$/;"	m	struct:prng_context	typeref:union:prng_context::_hash_ctx	access:public
+hash_ctx	entropy_pool.h	/^	union _hash_ctx hash_ctx;$/;"	m	struct:entropy_pool	typeref:union:entropy_pool::_hash_ctx	access:public
+hash_ctx	prng.h	/^	union _hash_ctx hash_ctx;$/;"	m	struct:prng_context	typeref:union:prng_context::_hash_ctx	access:public
 hash_desc	hash_desc.h	/^struct hash_desc {$/;"	s
 hash_desc::digest_len	hash_desc.h	/^	int digest_len;$/;"	m	struct:hash_desc	access:public
 hash_desc::finalize	hash_desc.h	/^	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);$/;"	m	struct:hash_desc	access:public
@@ -759,6 +757,7 @@ key	gost.h	/^	u_int32_t key[8];$/;"	m	struct:gost_context	access:public
 key	hash/aes.h	/^	u_int32_t	key[8];$/;"	m	struct:aes_context	access:public
 key	libaes/aes.c	/^	u_int32_t	key[8];$/;"	m	struct:aes_context	file:	access:public
 key	libgost/gost.h	/^	u_int32_t key[8];$/;"	m	struct:gost_context	access:public
+key	prng.h	/^	u_int32_t key[MAXDIGEST];$/;"	m	struct:prng_context	access:public
 key_expansion	hash/aes.c	/^key_expansion(struct aes_context *ctx)$/;"	f	file:	signature:(struct aes_context *ctx)
 key_expansion	libaes/aes.c	/^key_expansion(struct aes_context *ctx)$/;"	f	file:	signature:(struct aes_context *ctx)
 key_file	libaes/aescat.c	/^static char		*key_file;$/;"	v	file:
@@ -778,8 +777,7 @@ main	libaes/test.c	/^main(int argc, char *argv[])$/;"	f	signature:(int argc, cha
 main	libgost/gostcat.c	/^main(int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
 main	libgost/test.c	/^main(int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
 main	test.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
-md5	entropy_pool.h	/^		struct md5_context md5; $/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::md5_context	access:public
-md5	prng.h	/^		struct md5_context md5;$/;"	m	union:prng_context::_hash_ctx	typeref:struct:prng_context::_hash_ctx::md5_context	access:public
+md5	hash_desc.h	/^		struct md5_context md5; $/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::md5_context	access:public
 md5_context	hash/md5.h	/^struct md5_context {$/;"	s
 md5_context	md5.h	/^struct md5_context {$/;"	s
 md5_context::buffer	hash/md5.h	/^	u_int8_t	buffer[64];	\/* message buffer *\/$/;"	m	struct:md5_context	access:public
@@ -912,7 +910,7 @@ nk	libaes/aes.c	/^	int		nk;$/;"	m	struct:aes_context	file:	access:public
 nr	hash/aes.h	/^	int		nr;$/;"	m	struct:aes_context	access:public
 nr	libaes/aes.c	/^	int		nr;$/;"	m	struct:aes_context	file:	access:public
 nsources	entropy_pool.h	/^	int nsources;$/;"	m	struct:entropy_pool	access:public
-objects	Makefile	/^objects = test.o yarrow.o md5.o sha1.o sha256.o prng.o gost.o$/;"	m
+objects	Makefile	/^objects = test.o yarrow.o md5.o sha1.o sha256.o #prng.o gost.o$/;"	m
 open_read_close	libaes/aescat.c	/^open_read_close(const char *file, void *buf, size_t len)$/;"	f	signature:(const char *file, void *buf, size_t len)
 open_read_close	libgost/gostcat.c	/^open_read_close(const char *file, void *buf, size_t len)$/;"	f	signature:(const char *file, void *buf, size_t len)
 opt_show_galois	libaes/test.c	/^int opt_show_galois;	\/* print Galois GF(2^8) tables *\/$/;"	v
@@ -929,17 +927,15 @@ pbkdf2_hmac_whirlpool	hash/hmac-whirlpool.h	/^pbkdf2_hmac_whirlpool(const void	*
 print_usage	libaes/aescat.c	/^print_usage()$/;"	f	file:
 print_usage	libgost/gostcat.c	/^print_usage()$/;"	f	file:
 prng_context	prng.h	/^struct prng_context {$/;"	s
-prng_context::_hash_ctx	prng.h	/^	union _hash_ctx {$/;"	u	struct:prng_context	access:public
-prng_context::_hash_ctx::md5	prng.h	/^		struct md5_context md5;$/;"	m	union:prng_context::_hash_ctx	typeref:struct:prng_context::_hash_ctx::md5_context	access:public
-prng_context::_hash_ctx::sha1	prng.h	/^		struct sha1_context sha1;$/;"	m	union:prng_context::_hash_ctx	typeref:struct:prng_context::_hash_ctx::sha1_context	access:public
-prng_context::_hash_ctx::sha256	prng.h	/^		struct sha256_context sha256;$/;"	m	union:prng_context::_hash_ctx	typeref:struct:prng_context::_hash_ctx::sha256_context	access:public
 prng_context::cdesc	prng.h	/^	struct cipher_desc *cdesc;$/;"	m	struct:prng_context	typeref:struct:prng_context::cipher_desc	access:public
 prng_context::counter	prng.h	/^	int counter[MAXBLOCK_SIZE \/ 8 \/ 4];$/;"	m	struct:prng_context	access:public
-prng_context::hash_ctx	prng.h	/^	} hash_ctx;$/;"	m	struct:prng_context	typeref:union:prng_context::_hash_ctx	access:public
+prng_context::hash_ctx	prng.h	/^	union _hash_ctx hash_ctx;$/;"	m	struct:prng_context	typeref:union:prng_context::_hash_ctx	access:public
 prng_context::hdesc	prng.h	/^	struct hash_desc *hdesc;$/;"	m	struct:prng_context	typeref:struct:prng_context::hash_desc	access:public
+prng_context::key	prng.h	/^	u_int32_t key[MAXDIGEST];$/;"	m	struct:prng_context	access:public
 prng_context::parma	prng.h	/^	int parma;$/;"	m	struct:prng_context	access:public
 prng_reseed	prng.c	/^prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param)$/;"	f	signature:(struct prng_context *prng, const struct entropy_pool *pool, int param)
 prng_reseed	prng.h	/^int prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param);$/;"	p	signature:(struct prng_context *prng, const struct entropy_pool *pool, int param)
+prng_reseed	yarrow.c	/^prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param)$/;"	f	signature:(struct prng_context *prng, const struct entropy_pool *pool, int param)
 program_name	libaes/aescat.c	/^static const char	*program_name;$/;"	v	file:
 program_name	libgost/gostcat.c	/^static const char	*program_name;$/;"	v	file:
 return_if_fail	hash/macros.h	20;"	d
@@ -986,8 +982,7 @@ sbox_file	libgost/gostcat.c	/^static char		*sbox_file;$/;"	v	file:
 set_key	cipher_desc.h	/^	void (*set_key)(void *ctx, void *key);$/;"	m	struct:cipher_desc	access:public
 set_program_name	libaes/aescat.c	/^set_program_name(int argc, char *argv[])$/;"	f	file:	signature:(int argc, char *argv[])
 set_program_name	libgost/gostcat.c	/^set_program_name(int argc, char *argv[])$/;"	f	file:	signature:(int argc, char *argv[])
-sha1	entropy_pool.h	/^		struct sha1_context sha1;$/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::sha1_context	access:public
-sha1	prng.h	/^		struct sha1_context sha1;$/;"	m	union:prng_context::_hash_ctx	typeref:struct:prng_context::_hash_ctx::sha1_context	access:public
+sha1	hash_desc.h	/^		struct sha1_context sha1;$/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::sha1_context	access:public
 sha1_context	hash/mp/sha1.h	/^struct sha1_context {$/;"	s
 sha1_context	sha1.h	/^struct sha1_context {$/;"	s
 sha1_context::buffer	hash/mp/sha1.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha1_context	access:public
@@ -1010,8 +1005,7 @@ sha1_update	hash/mp/sha1.c	/^sha1_update(struct sha1_context *ctx, const void *m
 sha1_update	hash/mp/sha1.h	/^void sha1_update(struct sha1_context *ctx, const void *msg, uint32_t len);$/;"	p	signature:(struct sha1_context *ctx, const void *msg, uint32_t len)
 sha1_update	sha1.c	/^sha1_update(struct sha1_context *ctx, const void *msg, u_int32_t msglen)$/;"	f	signature:(struct sha1_context *ctx, const void *msg, u_int32_t msglen)
 sha1_update	sha1.h	/^void sha1_update(struct sha1_context *ctx, const void *msg, uint32_t len);$/;"	p	signature:(struct sha1_context *ctx, const void *msg, uint32_t len)
-sha256	entropy_pool.h	/^		struct sha256_context sha256;$/;"	m	union:entropy_pool::_hash_ctx	typeref:struct:entropy_pool::_hash_ctx::sha256_context	access:public
-sha256	prng.h	/^		struct sha256_context sha256;$/;"	m	union:prng_context::_hash_ctx	typeref:struct:prng_context::_hash_ctx::sha256_context	access:public
+sha256	hash_desc.h	/^		struct sha256_context sha256;$/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::sha256_context	access:public
 sha256_context	hash/mp/sha256.h	/^struct sha256_context {$/;"	s
 sha256_context	sha256.h	/^struct sha256_context {$/;"	s
 sha256_context::buffer	hash/mp/sha256.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha256_context	access:public
@@ -1039,7 +1033,7 @@ shift_rows	hash/aes.c	/^shift_rows(uint32_t *state)$/;"	f	file:	signature:(uint3
 shift_rows	libaes/aes.c	/^shift_rows(struct aes_context *ctx)$/;"	f	file:	signature:(struct aes_context *ctx)
 show_key_schedule	libaes/test.c	/^show_key_schedule()$/;"	f
 sign	hash/mp/mp.h	/^	int		sign;	\/* MP_SIGN_POS or MP_SIGN_NEG *\/$/;"	m	struct:mp_int	access:public
-sources	Makefile	/^sources = test.c yarrow.c md5.c sha1.c sha256.c prng.c gost.c$/;"	m
+sources	Makefile	/^sources = test.c yarrow.c md5.c sha1.c sha256.c #prng.c gost.c$/;"	m
 sources	libgost/Makefile	/^sources = $(SOURCES)$/;"	m
 state	hash/aes.h	/^	u_int32_t	state[AES_NB];$/;"	m	struct:aes_context	access:public
 state	hash/md5.h	/^	u_int32_t	state[4];	\/* state words *\/$/;"	m	struct:md5_context	access:public

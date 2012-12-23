@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-
+#include <assert.h>
 #include <limits.h>
 #include "yarrow.h"
 #include "macros.h"
-
+#include "gost.h"
 #include "hash_desc.h"
 #define DEFAULT_K 3
 #define BUFFER_SZ 64
@@ -61,7 +61,7 @@ entropy_pool_init(struct entropy_pool *pool,
 	pool->hdesc = hash_desc_get(hash_name);
 	pool->hdesc->init(&pool->hash_ctx);
 	
-	if (pool->hdesc == 1)
+	if (pool->hdesc == NULL)
 		return EPOOL_FAIL;
 	
 	return EPOOL_OK;
@@ -193,10 +193,10 @@ entropy_pool_get_nsources(struct entropy_pool *pool)
         return pool->nsources;
 }
 
-unsigned char
-*entropy_pool_bytes(const struct entropy_pool *pool)
+unsigned char *
+entropy_pool_bytes(const struct entropy_pool *pool)
 {
-	assert(pool != NULL)
+	assert(pool != NULL);
 	return pool->buffer;
 }
 
@@ -243,3 +243,57 @@ hash_desc_get(const char *hash_name)
 
 	return FALSE;
 }
+
+int 
+prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param)
+{
+	unsigned char *v0, digest[MAXDIGEST]; 
+	unsigned char val[4];
+	int i, len;
+	struct gost_context *gost_ctx;
+
+	v0 = entropy_pool_bytes(pool);
+	len = entropy_pool_length(pool);
+
+	prng->hdesc = hash_desc_get("sha1");
+
+	prng->hdesc->init(&prng->hash_ctx);	
+	prng->hdesc->update(&prng->hash_ctx, v0, len);
+	prng->hdesc->update(&prng->hash_ctx, v0, len);
+	i = 1;
+	val[0] = (i & 0xff000000) >> 24;
+	val[1] = (i & 0xff0000) >> 16;
+	val[2] = (i & 0xff00) >> 8;
+	val[3] = (i & 0xff);
+
+	prng->hdesc->update(&prng->hash_ctx, val, sizeof(val));
+	prng->hdesc->finalize(&prng->hash_ctx, digest);
+
+	for (i = 2; i <= param; i++) {
+		prng->hdesc->init(&prng->hash_ctx);
+		prng->hdesc->update(&prng->hash_ctx, digest, len);
+		prng->hdesc->update(&prng->hash_ctx, val, len);
+		 
+		val[0] = (i & 0xff000000) >> 24;
+		val[1] = (i & 0xff0000) >> 16;
+		val[2] = (i & 0xff00) >> 8;
+		val[3] = (i & 0xff);
+		prng->hdesc->update(&prng->hash_ctx, val, sizeof(val));
+		prng->hdesc->finalize(&prng->hash_ctx, digest);
+	}
+
+	for (i = 0; i < ARRAY_SIZE(digest); i++) {
+		prng->key[i] = digest[i];
+	}
+
+	for (i = 0; i < ARRAY_SIZE(prng->counter); i++) {
+		prng->counter[i] = 0;			
+	}
+	
+	gost_ctx = gost_context_new();
+	gost_set_key(gost_ctx, prng->key);
+	gost_encrypt_32z(gost_ctx, (u_int32_t *) prng->counter);
+
+	return TRUE;
+}
+

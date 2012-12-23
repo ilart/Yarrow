@@ -1,3 +1,4 @@
+#include "hash_desc.h"
 #ifndef __PRNG_H
 #define __PRNG_H
 #define	MAXBLOCK_SIZE	64
@@ -5,6 +6,8 @@
 struct prng_context {
 
 	union _hash_ctx hash_ctx;
+
+	u_int32_t key[MAXDIGEST];
 	int parma;
 	struct hash_desc *hdesc;
 	struct cipher_desc *cdesc;

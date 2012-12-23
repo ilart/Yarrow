@@ -41,7 +41,7 @@
 	} \
 }
 
-#define assert(expr) \
+/*#define assert(expr) \
 { \
 	if (!(expr)) { \
 		fprintf(stderr, "%s:%d:%s(): Assertion (%s) failed\n", \
@@ -52,7 +52,7 @@
 		abort(); \
 	} \
 }
-
+*/
 #else
 #define return_if_fail(expr)
 #define return_val_if_fail(expr, val)

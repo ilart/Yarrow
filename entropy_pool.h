@@ -1,9 +1,6 @@
 #ifndef _ENTROPY_POOL_H
 #define _ENTROPY_POOL_H
 
-#include "md5.h"
-#include "sha1.h"
-#include "sha256.h"
 #include "hash_desc.h"
 
 #define MAXSOURCES 32
@@ -33,11 +30,8 @@ struct entropy_pool {
 	unsigned char buffer[MAXDIGEST];
 
 	/* hash context */
-	union _hash_ctx {
-		struct md5_context md5; 
-		struct sha1_context sha1;
-		struct sha256_context sha256;
-	} hash_ctx;
+	union _hash_ctx hash_ctx;
+	
 };
 
 int entropy_pool_init(struct entropy_pool *pool, int nsources, const char *hash_name);

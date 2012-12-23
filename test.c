@@ -6,16 +6,17 @@
 #include "yarrow.h"
 #include "entropy_pool.h"
 #include "hash_desc.h"
-#include "prng.h"
-#include "gost.h"
+#include "macros.h"
+//#include "prng.h"
+//#include "gost.h"
 
 int main(int argc, char **argv)
 {
-	int res;
+	int res, i;
 	double tmp;
 	struct entropy_pool fast_pool, slow_pool;
-	struct prng_context prng_ptr;
-	struct gost_context *gost_ctx;
+	struct prng_context prng;
+//	struct gost_context *gost_ctx;
 	const char buf[] = "qw qw as zx zx zz zz 11";
 	//char tmp_buf[16];
 	unsigned char *tmp_s;
@@ -42,37 +43,48 @@ int main(int argc, char **argv)
 	res = entropy_pool_length(&slow_pool);
 	printf("entropy_pool_lenght %u \n", res);
 
-	res = entropy_pool_set_nsources(&slow_pool, 15);
+	res = entropy_pool_set_nsources(&fast_pool, 15);
 	if (res == 0)
 	        printf("entropy_pool_set_nsources %d\n", slow_pool.nsources);
 
-	gost_ctx = gost_context_new();
-	//prng_reseed();
+	printf("key before reseedi \n");
+	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
+		printf("%u ", prng.key[i]);
+	}
+	res = entropy_pool_get_nsources(&fast_pool);
 
-	res = entropy_pool_get_nsources(&slow_pool);
+
+//	gost_ctx = gost_context_new();
+	prng_reseed(&prng, &fast_pool, 10);
+
+	printf("key before reseedi \n");
+	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
+		printf("%u ", prng.key[i]);
+	}
+	res = entropy_pool_get_nsources(&fast_pool);
 	if (res != 0)
                 printf("entropy_pool_get_nsources %d\n", res);
 	printf("\n");
 	
-	res = entropy_pool_set_k(&slow_pool, 2);
+	res = entropy_pool_set_k(&fast_pool, 2);
 	if (res == 0)
-		printf("entropy_pool_set_k %d\n", slow_pool.k);
+		printf("entropy_pool_set_k %d\n", fast_pool.k);
 
-	res = entropy_pool_get_k(&slow_pool);
+	res = entropy_pool_get_k(&fast_pool);
 	if (res != 0)
                 printf("entropy_pool_get_k %d\n", res);
 	printf("\n");
 
-	res = entropy_pool_set_threshold(&slow_pool, 0, 121.0);	
+	res = entropy_pool_set_threshold(&fast_pool, 0, 121.0);	
 	if (res == 0)
                 printf("entropy_pool_set_threshold %f\n", slow_pool.threshold[0]);
 	
-	tmp = entropy_pool_get_threshold(&slow_pool, 0);	
+	tmp = entropy_pool_get_threshold(&fast_pool, 0);	
 	if (tmp != 0)
                 printf("entropy_pool_get_threshold %f\n", tmp);
 	printf("\n");
 
-	res = entropy_pool_add(&slow_pool, 0, buf, 10, 0.3);
+	res = entropy_pool_add(&fast_pool, 0, buf, 10, 0.3);
 	if (res == 0)
 		printf("pool.estimate add %f \n", 
 			slow_pool.estimate[0]);
@@ -91,8 +103,8 @@ int main(int argc, char **argv)
 	printf("feed: buffer = %s\n", fast_pool.buffer);
 	/* how see result, current hash? */		
 	
-	tmp_s = entropy_pool_bytes(&fast_pool);
-	printf("fast_pool_byts %s \n", tmp_s);
+	tmp_s = entropy_pool_bytes(&slow_pool);
+	printf("slow_pool_byts %s \n", tmp_s);
 
 	entropy_pool_clean(&fast_pool);
 	printf("entropy_pool_clean %s", fast_pool.buffer);

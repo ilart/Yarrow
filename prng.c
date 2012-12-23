@@ -1,8 +1,7 @@
-#include "macros.h"
-#include "entropy_pool.h"
-#include "gost.h"
+#include <stdint.h>
 #include "prng.h"
-
+#include "hash_desc.h"
+#include "macros.h"
 /*int
 prng_init(struct prng_context *prng, const char *cipher_name, const char *hash_name)
 {
@@ -13,19 +12,19 @@ prng_init(struct prng_context *prng, const char *cipher_name, const char *hash_n
 
 }
 */
-
 int 
 prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param)
 {
 	unsigned char v0, digest[MAXDIGEST]; 
 	unsigned char val[4];
-	int i, key, len;
-
-	struct hash_desc *hdesc;
+	int i, key; 
+	int len;
+	struct gost_context *gost_ctx;
 
 	v0 = entropy_pool_bytes(pool);
 	len = entropy_pool_length(pool);
 
+	get_hash_desc();
 
 	prng->hdesc->init(&prng->hash_ctx);	
 	prng->hdesc->update(&prng->hash_ctx, v0, len);
@@ -55,7 +54,10 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	for (i = 0; i < ARRAY_SIZE(prng->counter); i++){
 		prng->counter[i] = 0;			
 	}
-	gost_encrypt32z(prng->gost_ctx, prng->counter);
+	
+	gost_ctx = gost_context_new();
+	gost_set_key(gost_ctx, );
+	gost_encrypt_32z(prng->gost_ctx, prng->counter);
 }
 /*
 void

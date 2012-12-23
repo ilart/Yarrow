@@ -1,3 +1,7 @@
+#include "md5.h"
+#include "sha1.h"
+#include "sha256.h"
+#include <stdint.h>
 #ifndef _HASH_H
 #define _HASH_H
 
@@ -16,6 +20,13 @@
  * Each hash function implementation must provide this structure.
  * Entropy pool selects one of the implemenations using its unique name.
 */
+union _hash_ctx {
+		struct md5_context md5; 
+		struct sha1_context sha1;
+		struct sha256_context sha256;
+};
+
+
 struct hash_desc {
 	/* unique hash name as a null-terminated sting */
 	const char *name;
@@ -33,6 +44,7 @@ struct hash_desc {
 	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);
 
 };
+
 
 struct hash_desc *hash_desc_get(const char *name);
 #endif	/* _HASH_H_ */
