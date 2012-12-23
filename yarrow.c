@@ -6,6 +6,7 @@
 #include <limits.h>
 #include "yarrow.h"
 #include "macros.h"
+#include "prng.h"
 #include "gost.h"
 #include "hash_desc.h"
 #define DEFAULT_K 3
@@ -250,7 +251,6 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	unsigned char *v0, digest[MAXDIGEST]; 
 	unsigned char val[4];
 	int i, len;
-	struct gost_context *gost_ctx;
 
 	v0 = entropy_pool_bytes(pool);
 	len = entropy_pool_length(pool);
@@ -283,17 +283,65 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	}
 
 	for (i = 0; i < ARRAY_SIZE(digest); i++) {
-		prng->key[i] = digest[i];
+		prng->key[i] |= digest[i];
+		prng->key[i] |= digest[i+1] << 8;
+		prng->key[i] |= digest[i+2] << 16;
+		prng->key[i] |= digest[i+3] << 24;
 	}
 
 	for (i = 0; i < ARRAY_SIZE(prng->counter); i++) {
 		prng->counter[i] = 0;			
 	}
 	
-	gost_ctx = gost_context_new();
-	gost_set_key(gost_ctx, prng->key);
-	gost_encrypt_32z(gost_ctx, (u_int32_t *) prng->counter);
+	prng->gost_ctx = gost_context_new();
+	gost_set_key(prng->gost_ctx, prng->key);
+	gost_encrypt_32z(prng->gost_ctx, (u_int32_t *) prng->counter);
 
 	return TRUE;
+}
+
+void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
+{
+	int i, cpy_sz; 
+	u_int32_t tmp[2];
+	char *ptr;
+	
+	assert(prng != NULL && buf != NULL && size != NULL);
+
+	for (i = 0; i < ARRAY_SIZE(prng->counter); i++ ) {
+		prng->counter[i] = tmp[i];	
+	}
+
+	printf("size in ecrypt %i \n\n",(int) *size);
+	ptr = (char *)buf;
+
+	while ((*size) > 0) {
+		gost_encrypt_32z(prng->gost_ctx, tmp);
+		cpy_sz = (*size < BLOCK_SIZE) ? *size : BLOCK_SIZE;
+		memcpy(ptr, tmp, cpy_sz);
+		//prng_next();
+
+		prng->param -= 1;
+		if (prng->param == 0)
+			prng_generator_gate(prng); 
+
+		*size -= cpy_sz;
+	}
+}
+
+void prng_generator_gate(struct prng_context *prng)
+{
+	int key;
+	u_int32_t tmp_counter[COUNTER_SIZE];
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(tmp_counter); i++)
+		tmp_counter[i] = prng->counter[i];
+
+	gost_encrypt_32z(prng->gost_ctx, tmp_counter);
+
+	for (i = 0; i < ARRAY_SIZE(prng->key); i++)
+		prng->key[i] = tmp_counter[i];
+	//prng->cdesc->key_size
 }
 

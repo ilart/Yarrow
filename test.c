@@ -7,12 +7,14 @@
 #include "entropy_pool.h"
 #include "hash_desc.h"
 #include "macros.h"
-//#include "prng.h"
-//#include "gost.h"
+#include "prng.h"
+#include "gost.h"
 
 int main(int argc, char **argv)
 {
 	int res, i;
+	size_t size = 690;
+	int buf_random[512];
 	double tmp;
 	struct entropy_pool fast_pool, slow_pool;
 	struct prng_context prng;
@@ -47,23 +49,37 @@ int main(int argc, char **argv)
 	if (res == 0)
 	        printf("entropy_pool_set_nsources %d\n", slow_pool.nsources);
 
-	printf("key before reseedi \n");
+	printf("key before reseed \n");
 	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
 		printf("%u ", prng.key[i]);
 	}
 	res = entropy_pool_get_nsources(&fast_pool);
 
+	prng.param = 9;
 
 //	gost_ctx = gost_context_new();
 	prng_reseed(&prng, &fast_pool, 10);
+	printf("debug of prng, prng->hdesc %p, prng->gost_ctx %p, \n", prng.hdesc, prng.gost_ctx);
 
-	printf("key before reseedi \n");
+	printf("\n key after reseed \n");
 	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
 		printf("%u ", prng.key[i]);
 	}
+	
+	printf("\n counter after reseed \n");
+	for (i = 0; i < ARRAY_SIZE(prng.counter); i++) {
+		printf("%u ", prng.counter[i]);
+	}
+
+	prng_encrypt(&prng, buf_random, &size);	
+	printf("\nrandom values\n");
+	for (i = 0; i < ARRAY_SIZE(buf_random); i++) {
+		printf(" %d, ", buf_random[i]);
+	}
+
 	res = entropy_pool_get_nsources(&fast_pool);
 	if (res != 0)
-                printf("entropy_pool_get_nsources %d\n", res);
+                printf("\n entropy_pool_get_nsources %d\n", res);
 	printf("\n");
 	
 	res = entropy_pool_set_k(&fast_pool, 2);
