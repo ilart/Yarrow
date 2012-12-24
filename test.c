@@ -13,7 +13,7 @@
 int main(int argc, char **argv)
 {
 	int res, i;
-	size_t size = 690;
+	size_t size = 510;
 	int buf_random[512];
 	double tmp;
 	struct entropy_pool fast_pool, slow_pool;
@@ -41,41 +41,13 @@ int main(int argc, char **argv)
 		       slow_pool.k, 
 		       slow_pool.hdesc->name);
 	printf("\n");
-
+	
 	res = entropy_pool_length(&slow_pool);
 	printf("entropy_pool_lenght %u \n", res);
 
 	res = entropy_pool_set_nsources(&fast_pool, 15);
 	if (res == 0)
 	        printf("entropy_pool_set_nsources %d\n", slow_pool.nsources);
-
-	printf("key before reseed \n");
-	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
-		printf("%u ", prng.key[i]);
-	}
-	res = entropy_pool_get_nsources(&fast_pool);
-
-	prng.param = 9;
-
-//	gost_ctx = gost_context_new();
-	prng_reseed(&prng, &fast_pool, 10);
-	printf("debug of prng, prng->hdesc %p, prng->gost_ctx %p, \n", prng.hdesc, prng.gost_ctx);
-
-	printf("\n key after reseed \n");
-	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
-		printf("%u ", prng.key[i]);
-	}
-	
-	printf("\n counter after reseed \n");
-	for (i = 0; i < ARRAY_SIZE(prng.counter); i++) {
-		printf("%u ", prng.counter[i]);
-	}
-
-	prng_encrypt(&prng, buf_random, &size);	
-	printf("\nrandom values\n");
-	for (i = 0; i < ARRAY_SIZE(buf_random); i++) {
-		printf(" %d, ", buf_random[i]);
-	}
 
 	res = entropy_pool_get_nsources(&fast_pool);
 	if (res != 0)
@@ -109,13 +81,46 @@ int main(int argc, char **argv)
 		return EPOOL_FAIL;
 	}
 	printf("\n");
+	
+	//______________________________PRNG___________________
+	//
+	
+	printf("key before reseed \n");
+	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
+		printf("%u ", prng.key[i]);
+	}
+	res = entropy_pool_get_nsources(&fast_pool);
 
+	prng.param = 9;
+
+//	gost_ctx = gost_context_new();
+	prng_reseed(&prng, &fast_pool, 10);
+	printf("debug of prng, prng->hdesc %p, prng->gost_ctx %p, \n", prng.hdesc, prng.gost_ctx);
+
+	printf("\n key after reseed \n");
+	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
+		printf("%u ", prng.key[i]);
+	}
+	
+	printf("\n counter after reseed \n");
+	for (i = 0; i < ARRAY_SIZE(prng.counter); i++) {
+		printf("%u ", prng.counter[i]);
+	}
+
+	prng_encrypt(&prng, buf_random, &size);	
+	printf("\nrandom values\n");
+	for (i = 0; i < ARRAY_SIZE(buf_random); i++) {
+		printf(" %d, ", buf_random[i]);
+	}
+
+//_______________END PRNG____________________
+//
 	res = entropy_pool_is_thresholded(&fast_pool);
 	printf("thresholded = %d \n", res);
 
-	printf("digest_len %d\n", slow_pool.hdesc->digest_len);	
+	printf("digest_len %d\n", fast_pool.hdesc->digest_len);	
 	
-	entropy_pool_feed_to(&fast_pool, &slow_pool);
+	entropy_pool_feed_to(&slow_pool, &fast_pool);
 	printf("feed: buffer = %s\n", fast_pool.buffer);
 	/* how see result, current hash? */		
 	

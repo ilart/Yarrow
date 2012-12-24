@@ -15,7 +15,7 @@ struct prng_context {
 	struct hash_desc *hdesc;
 	struct cipher_desc *cdesc;
 
-	int counter[COUNTER_SIZE]; /*How big should the buffer? */
+	u_int32_t counter[COUNTER_SIZE]; /*How big should the buffer? */
 };
 
 int prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param);
@@ -24,5 +24,6 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size);
 
 void prng_generator_gate(struct prng_context *prng);
 
+void prng_next(struct prng_context *prng);
 #endif
 

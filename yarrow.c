@@ -121,7 +121,6 @@ entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src)
 	assert(dst != NULL || src != NULL);
 
 	src->hdesc->finalize(&src->hash_ctx, (void *)(src->buffer));
-	printf(" digest_len %d \n", src->hdesc->digest_len);
 	dst->hdesc->update(&dst->hash_ctx, (const void *)src->buffer, src->hdesc->digest_len); 
 	
 	return EPOOL_OK;
@@ -251,6 +250,9 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	unsigned char *v0, digest[MAXDIGEST]; 
 	unsigned char val[4];
 	int i, len;
+	u_int32_t tmp[2];
+
+	assert(prng != NULL && pool != NULL);
 
 	v0 = entropy_pool_bytes(pool);
 	len = entropy_pool_length(pool);
@@ -272,7 +274,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	for (i = 2; i <= param; i++) {
 		prng->hdesc->init(&prng->hash_ctx);
 		prng->hdesc->update(&prng->hash_ctx, digest, len);
-		prng->hdesc->update(&prng->hash_ctx, val, len);
+		prng->hdesc->update(&prng->hash_ctx, v0, len);
 		 
 		val[0] = (i & 0xff000000) >> 24;
 		val[1] = (i & 0xff0000) >> 16;
@@ -282,20 +284,24 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 		prng->hdesc->finalize(&prng->hash_ctx, digest);
 	}
 
-	for (i = 0; i < ARRAY_SIZE(digest); i++) {
-		prng->key[i] |= digest[i];
-		prng->key[i] |= digest[i+1] << 8;
-		prng->key[i] |= digest[i+2] << 16;
-		prng->key[i] |= digest[i+3] << 24;
+	for (i = 0; i < ARRAY_SIZE(prng->key); i++ ) {
+		prng->key[i] = digest[i*4];
+		prng->key[i] |= digest[i*4+1] << 8;
+		prng->key[i] |= digest[i*4+2] << 16;
+		prng->key[i] |= digest[i*4+3] << 24;
 	}
 
-	for (i = 0; i < ARRAY_SIZE(prng->counter); i++) {
-		prng->counter[i] = 0;			
+	for (i = 0; i < ARRAY_SIZE(tmp); i++) {
+		tmp[i] = 0;
 	}
-	
+
 	prng->gost_ctx = gost_context_new();
 	gost_set_key(prng->gost_ctx, prng->key);
-	gost_encrypt_32z(prng->gost_ctx, (u_int32_t *) prng->counter);
+	gost_encrypt_32z(prng->gost_ctx, tmp);
+
+	for (i = 0; i < ARRAY_SIZE(tmp); i++) {
+		prng->counter[i] = tmp[i];
+	}
 
 	return TRUE;
 }
@@ -309,7 +315,8 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 	assert(prng != NULL && buf != NULL && size != NULL);
 
 	for (i = 0; i < ARRAY_SIZE(prng->counter); i++ ) {
-		prng->counter[i] = tmp[i];	
+		tmp[i] = prng->counter[i];
+		printf("prng->counter %d tmp %d \n", prng->counter[i], tmp[i]);
 	}
 
 	printf("size in ecrypt %i \n\n",(int) *size);
@@ -319,7 +326,7 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 		gost_encrypt_32z(prng->gost_ctx, tmp);
 		cpy_sz = (*size < BLOCK_SIZE) ? *size : BLOCK_SIZE;
 		memcpy(ptr, tmp, cpy_sz);
-		//prng_next();
+		prng_next(prng);
 
 		prng->param -= 1;
 		if (prng->param == 0)
@@ -331,17 +338,33 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 
 void prng_generator_gate(struct prng_context *prng)
 {
-	int key;
-	u_int32_t tmp_counter[COUNTER_SIZE];
-	int i;
+	int flag;
+	size_t key_size = 256;
+	
+	flag = 0;
 
-	for (i = 0; i < ARRAY_SIZE(tmp_counter); i++)
-		tmp_counter[i] = prng->counter[i];
+	assert(prng != NULL);
 
-	gost_encrypt_32z(prng->gost_ctx, tmp_counter);
+	printf("key_size %d\n", key_size);
+	while (key_size > flag) {
+		
+		gost_encrypt_32z(prng->gost_ctx, prng->counter);
+		memcpy(prng->key + flag, prng->counter, BLOCK_SIZE);
+		printf("flag %d counter %d %d \n", flag, prng->counter[0], prng->counter[1]);
+		flag += BLOCK_SIZE;
+		prng_next(prng);
+	}
 
-	for (i = 0; i < ARRAY_SIZE(prng->key); i++)
-		prng->key[i] = tmp_counter[i];
 	//prng->cdesc->key_size
 }
 
+void prng_next(struct prng_context *prng)
+{
+	int i;
+
+	assert(prng != NULL);
+
+	for (i = 0; i < ARRAY_SIZE(prng->counter); i++) {
+		prng->counter[i] += 1;
+	}
+}
