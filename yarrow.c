@@ -249,7 +249,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 {
 	unsigned char *v0, digest[MAXDIGEST]; 
 	unsigned char val[4];
-	int i, len;
+	int i, m, len;
 	u_int32_t tmp[2];
 
 	assert(prng != NULL && pool != NULL);
@@ -257,11 +257,14 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	v0 = entropy_pool_bytes(pool);
 	len = entropy_pool_length(pool);
 
-	prng->hdesc = hash_desc_get("sha1");
+	printf("len %d\n", len);
+
+	prng->hdesc = hash_desc_get("md5");
 
 	prng->hdesc->init(&prng->hash_ctx);	
 	prng->hdesc->update(&prng->hash_ctx, v0, len);
 	prng->hdesc->update(&prng->hash_ctx, v0, len);
+
 	i = 1;
 	val[0] = (i & 0xff000000) >> 24;
 	val[1] = (i & 0xff0000) >> 16;
@@ -282,10 +285,24 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 		val[3] = (i & 0xff);
 		prng->hdesc->update(&prng->hash_ctx, val, sizeof(val));
 		prng->hdesc->finalize(&prng->hash_ctx, digest);
+		printf("DIGEST \n");
+		for (m = 0; m < ARRAY_SIZE(digest); m++) {
+		printf(" %u", digest[m]);
+		}
+
+		printf("\n");
+		
 	}
 
+	printf("DIGEST \n");
+	for (i = 0; i < ARRAY_SIZE(digest); i++) {
+		printf(" %u", digest[i]);
+	}
+
+	printf("\n");
+
 	for (i = 0; i < ARRAY_SIZE(prng->key); i++ ) {
-		prng->key[i] = digest[i*4];
+		prng->key[i]  = digest[i*4];
 		prng->key[i] |= digest[i*4+1] << 8;
 		prng->key[i] |= digest[i*4+2] << 16;
 		prng->key[i] |= digest[i*4+3] << 24;
@@ -296,6 +313,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	}
 
 	prng->gost_ctx = gost_context_new();
+
 	gost_set_key(prng->gost_ctx, prng->key);
 	gost_encrypt_32z(prng->gost_ctx, tmp);
 
@@ -316,7 +334,7 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 
 	for (i = 0; i < ARRAY_SIZE(prng->counter); i++ ) {
 		tmp[i] = prng->counter[i];
-		printf("prng->counter %d tmp %d \n", prng->counter[i], tmp[i]);
+		printf("prng->counter %u tmp %u \n", prng->counter[i], tmp[i]);
 	}
 
 	printf("size in ecrypt %i \n\n",(int) *size);

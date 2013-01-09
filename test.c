@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 
 	res = entropy_pool_set_nsources(&fast_pool, 15);
 	if (res == 0)
-	        printf("entropy_pool_set_nsources %d\n", slow_pool.nsources);
+	        printf("entropy_pool_set_nsources %d\n", fast_pool.nsources);
 
 	res = entropy_pool_get_nsources(&fast_pool);
 	if (res != 0)
@@ -65,7 +65,12 @@ int main(int argc, char **argv)
 
 	res = entropy_pool_set_threshold(&fast_pool, 0, 121.0);	
 	if (res == 0)
-                printf("entropy_pool_set_threshold %f\n", slow_pool.threshold[0]);
+                printf("entropy_pool_set_threshold in fast %f\n", fast_pool.threshold[0]);
+
+	res = entropy_pool_set_threshold(&slow_pool, 0, 51.0);	
+	if (res == 0)
+                printf("entropy_pool_set_threshold in slow %f\n", slow_pool.threshold[0]);
+	
 	
 	tmp = entropy_pool_get_threshold(&fast_pool, 0);	
 	if (tmp != 0)
@@ -75,7 +80,7 @@ int main(int argc, char **argv)
 	res = entropy_pool_add(&fast_pool, 0, buf, 10, 0.3);
 	if (res == 0)
 		printf("pool.estimate add %f \n", 
-			slow_pool.estimate[0]);
+			fast_pool.estimate[0]);
 	else {
 		printf("error of entropy_pool_add");
 		return EPOOL_FAIL;
@@ -89,7 +94,10 @@ int main(int argc, char **argv)
 	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
 		printf("%u ", prng.key[i]);
 	}
-	res = entropy_pool_get_nsources(&fast_pool);
+	
+	printf("\n");
+
+//	res = entropy_pool_get_nsources(&fast_pool);
 
 	prng.param = 9;
 
