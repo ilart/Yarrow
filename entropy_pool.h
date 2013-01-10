@@ -1,8 +1,8 @@
+
 #ifndef _ENTROPY_POOL_H
 #define _ENTROPY_POOL_H
 
 #include "hash_desc.h"
-
 #define MAXSOURCES 32
 
 enum {

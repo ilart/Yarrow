@@ -94,6 +94,7 @@ entropy_pool_add(struct entropy_pool *pool,
 	pool->hdesc->update(&pool->hash_ctx, buf, len);
 	pool->hdesc->finalize(&pool->hash_ctx, pool->buffer);
 
+	printf("buffer %s \n", pool->buffer );
 	return EPOOL_OK;
 }
 
@@ -258,6 +259,11 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	len = entropy_pool_length(pool);
 
 	printf("len %d\n", len);
+	printf("entropy \n");
+
+	printf("%s ", v0);
+
+	printf("\n");
 
 	prng->hdesc = hash_desc_get("md5");
 
@@ -285,28 +291,33 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 		val[3] = (i & 0xff);
 		prng->hdesc->update(&prng->hash_ctx, val, sizeof(val));
 		prng->hdesc->finalize(&prng->hash_ctx, digest);
-		printf("DIGEST \n");
-		for (m = 0; m < ARRAY_SIZE(digest); m++) {
-		printf(" %u", digest[m]);
+		for (m = 0; m < 16; m++) {
+			printf(" %u", digest[m]);
 		}
 
 		printf("\n");
 		
 	}
 
-	printf("DIGEST \n");
-	for (i = 0; i < ARRAY_SIZE(digest); i++) {
-		printf(" %u", digest[i]);
+	prng->hdesc->init(&prng->hash_ctx);
+	prng->hdesc->update(&prng->hash_ctx, digest, len);
+	prng->hdesc->update(&prng->hash_ctx, prng->key, 32);
+	prng->hdesc->finalize(&prng->hash_ctx, digest);
+	for (m = 0; m < 32; m++ )
+		printf("%d ", prng->key[m]);
+	printf("\n DIGEST \n");
+	for (m = 0; m < 32; m++) {
+		printf(" %u", digest[m]);
+	}
+
+	size_adaptor(digest, prng, param);
+
+	printf("KEY_END \n");
+	for (i = 0; i < 8; i++) {
+		printf(" %u", prng->key[i]);
 	}
 
 	printf("\n");
-
-	for (i = 0; i < ARRAY_SIZE(prng->key); i++ ) {
-		prng->key[i]  = digest[i*4];
-		prng->key[i] |= digest[i*4+1] << 8;
-		prng->key[i] |= digest[i*4+2] << 16;
-		prng->key[i] |= digest[i*4+3] << 24;
-	}
 
 	for (i = 0; i < ARRAY_SIZE(tmp); i++) {
 		tmp[i] = 0;
@@ -314,7 +325,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 
 	prng->gost_ctx = gost_context_new();
 
-	gost_set_key(prng->gost_ctx, prng->key);
+	gost_set_key(prng->gost_ctx, (u_int32_t *) prng->key);
 	gost_encrypt_32z(prng->gost_ctx, tmp);
 
 	for (i = 0; i < ARRAY_SIZE(tmp); i++) {
@@ -386,3 +397,26 @@ void prng_next(struct prng_context *prng)
 		prng->counter[i] += 1;
 	}
 }
+
+void 
+size_adaptor(unsigned char *digest, struct prng_context *prng, int param)
+{
+	unsigned char tmp[param][32];
+	int i, k;
+
+	memcpy(tmp[0], digest, 32);	
+
+	for (i = 1; i < param; i++) {
+		prng->hdesc->init(&prng->hash_ctx);
+		for (k = 0; k < param-1; k++) {
+			prng->hdesc->update(&prng->hash_ctx, tmp[k], 32);
+		}
+		prng->hdesc->finalize(&prng->hash_ctx, tmp[i]);
+	/*	for (k = 0; k < 32; k++)
+			printf("%u ", tmp[i][k]);
+		printf("\n");*/
+	}
+
+	memcpy(prng->key, tmp[param], 32);
+}
+

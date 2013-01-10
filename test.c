@@ -9,17 +9,21 @@
 #include "macros.h"
 #include "prng.h"
 #include "gost.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int main(int argc, char **argv)
 {
-	int res, i;
+	int res, i, fd;
 	size_t size = 510;
 	int buf_random[512];
 	double tmp;
 	struct entropy_pool fast_pool, slow_pool;
 	struct prng_context prng;
 //	struct gost_context *gost_ctx;
-	const char buf[] = "qw qw as zx zx zz zz 11";
+	const char buf[] = "22 333 44 11 aa bb qw qw as zx zx zz zz 11";
 	//char tmp_buf[16];
 	unsigned char *tmp_s;
 
@@ -77,7 +81,7 @@ int main(int argc, char **argv)
                 printf("entropy_pool_get_threshold %f\n", tmp);
 	printf("\n");
 
-	res = entropy_pool_add(&fast_pool, 0, buf, 10, 0.3);
+	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
 	if (res == 0)
 		printf("pool.estimate add %f \n", 
 			fast_pool.estimate[0]);
@@ -89,7 +93,16 @@ int main(int argc, char **argv)
 	
 	//______________________________PRNG___________________
 	//
+
 	
+	fd = open("/dev/urandom" , O_RDONLY);
+	if (fd == -1)
+		perror("Error of open");
+
+	res = read(fd, &prng.key, sizeof(prng.key));
+	if (res == -1)
+		perror("Error of write");
+
 	printf("key before reseed \n");
 	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
 		printf("%u ", prng.key[i]);
@@ -116,11 +129,11 @@ int main(int argc, char **argv)
 	}
 
 	prng_encrypt(&prng, buf_random, &size);	
-	printf("\nrandom values\n");
+/*	printf("\nrandom values\n");
 	for (i = 0; i < ARRAY_SIZE(buf_random); i++) {
 		printf(" %d, ", buf_random[i]);
 	}
-
+*/
 //_______________END PRNG____________________
 //
 	res = entropy_pool_is_thresholded(&fast_pool);
@@ -153,6 +166,7 @@ int main(int argc, char **argv)
 			fast_pool.k);
 
 
+	close(fd);
 
 	return 0;
 }
