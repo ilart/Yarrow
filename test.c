@@ -17,7 +17,7 @@
 int main(int argc, char **argv)
 {
 	int res, i, fd;
-	size_t size = 510;
+	size_t size = 64 ;
 	int buf_random[512];
 	double tmp;
 	struct entropy_pool fast_pool, slow_pool;
@@ -118,7 +118,7 @@ int main(int argc, char **argv)
 	prng_reseed(&prng, &fast_pool, 10);
 	printf("debug of prng, prng->hdesc %p, prng->gost_ctx %p, \n", prng.hdesc, prng.gost_ctx);
 
-	printf("\n key after reseed \n");
+/*	printf("\n key after reseed \n");
 	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
 		printf("%u ", prng.key[i]);
 	}
@@ -127,13 +127,13 @@ int main(int argc, char **argv)
 	for (i = 0; i < ARRAY_SIZE(prng.counter); i++) {
 		printf("%u ", prng.counter[i]);
 	}
-
+*/
 	prng_encrypt(&prng, buf_random, &size);	
-/*	printf("\nrandom values\n");
-	for (i = 0; i < ARRAY_SIZE(buf_random); i++) {
+	printf("\nrandom values\n");
+	for (i = 0; i < 64/4; i++) {
 		printf(" %d, ", buf_random[i]);
 	}
-*/
+
 //_______________END PRNG____________________
 //
 	res = entropy_pool_is_thresholded(&fast_pool);
