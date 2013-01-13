@@ -330,10 +330,8 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	gost_set_key(prng->gost_ctx, (u_int32_t *) prng->key);
 	gost_encrypt_32z(prng->gost_ctx, tmp);
 
-	printf("TMP\n");
 	for (i = 0; i < ARRAY_SIZE(tmp); i++) {
 		prng->counter[i] = tmp[i];
-		printf(" %u", tmp[i]);
 	}
 
 	return TRUE;
@@ -349,7 +347,6 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 
 	for (i = 0; i < ARRAY_SIZE(prng->counter); i++ ) {
 		tmp[i] = prng->counter[i];
-//		printf("prng->counter %u tmp %u \n", prng->counter[i], tmp[i]);
 	}
 
 	printf("size in ecrypt %i \n\n",(int) *size);
@@ -357,24 +354,15 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 
 	while ((*size) > 0) {
 		gost_encrypt_32z(prng->gost_ctx, tmp);
-		printf(" key %u counter %u %u\n", prng->gost_ctx->key, tmp[0], tmp[1]);
-		
 		cpy_sz = (*size < BLOCK_SIZE/8) ? *size : BLOCK_SIZE/8;
 		
 		memcpy(ptr, tmp, cpy_sz);
-		
-		printf("cpy_sz  %d, random:\n", cpy_sz);
-		for (i = 0; i < cpy_sz/4 ; i++) {
-			printf("%u ", (u_int32_t) ptr[i]);
-		}
-		printf("\n");
 		
 		prng_next(prng);
 
 		for (i = 0; i < ARRAY_SIZE(prng->counter); i++ ) {
 			tmp[i] = prng->counter[i];
 		}
-	//	printf("counter befor %d %d\n", tmp[0], tmp[1]);
 		prng->param -= 1;
 		if (prng->param == 0)
 			prng_generator_gate(prng); 
@@ -387,18 +375,18 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 void prng_generator_gate(struct prng_context *prng)
 {
 	int flag;
-	size_t key_size = 256;
+	char *p;
+	size_t key_size = 32;
 	
 	flag = 0;
 
 	assert(prng != NULL);
 
-	printf("key_size %d\n", key_size);
+	p = (char *) prng->key;
 	while (key_size > flag) {
 		
 		gost_encrypt_32z(prng->gost_ctx, prng->counter);
-		memcpy(prng->key + flag, prng->counter, BLOCK_SIZE/8);
-		printf("flag %d counter %d %d \n", flag, prng->counter[0], prng->counter[1]);
+		memcpy(p + flag, prng->counter, BLOCK_SIZE/8);
 		flag += BLOCK_SIZE/8;
 		prng_next(prng);
 	}
@@ -422,7 +410,9 @@ size_adaptor(unsigned char *digest, struct prng_context *prng, int param)
 {
 	unsigned char tmp[param][16];
 	int i, k;
+	char *p;
 
+	p = (char *) prng->key;
 	memcpy(tmp[0], digest, 32);	
 
 	for (i = 1; i < param; i++) {
@@ -436,7 +426,7 @@ size_adaptor(unsigned char *digest, struct prng_context *prng, int param)
 		printf("\n");*/
 	}
 
-	memcpy(prng->key, tmp[0], 16);
-	memcpy(prng->key+16, tmp[1], 16);
+	memcpy(p, tmp[0], 16);
+	memcpy(p+16, tmp[1], 16);
 }
 

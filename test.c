@@ -17,7 +17,7 @@
 int main(int argc, char **argv)
 {
 	int res, i, fd;
-	size_t size = 64 ;
+	size_t size = 510;
 	int buf_random[512];
 	double tmp;
 	struct entropy_pool fast_pool, slow_pool;
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 */
 	prng_encrypt(&prng, buf_random, &size);	
 	printf("\nrandom values\n");
-	for (i = 0; i < 64/4; i++) {
+	for (i = 0; i < 510/4; i++) {
 		printf(" %d, ", buf_random[i]);
 	}
 

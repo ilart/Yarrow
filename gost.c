@@ -141,11 +141,10 @@ gost_basic(u_int32_t *lo, u_int32_t *hi, u_int32_t key, const u_int8_t *sbox)
 
 	/* S = (N_1 + X) mod 2^32 */
 	s = *lo + key;
-
 	/* S = H(s) */
 	s  = SBOX(s, 0)  | SBOX(s, 4)  | SBOX(s, 8)  | SBOX(s, 12) |
 	     SBOX(s, 16) | SBOX(s, 20) | SBOX(s, 24) | SBOX(s, 28);
-
+	
 	/* S = R(s) <- 11 */
 	s = (s << 11) | (s >> 21);
 
@@ -168,6 +167,7 @@ gost_encrypt_32z(struct gost_context *ctx, u_int32_t *block)
 	};
 	u_int32_t *lo, *hi, tmp;
 	int i, x;
+//	printf("bloc %p \n", block);
 
 	lo = block;
 	hi = lo + 1;
