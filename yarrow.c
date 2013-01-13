@@ -91,6 +91,7 @@ entropy_pool_add(struct entropy_pool *pool,
 	printf("nbits %f esitmate %f, len %d \n", nbits, estimate, (int ) len);
 	pool->estimate[source_id] += nbits;
 
+	pool->hdesc->update(&pool->hash_ctx, pool->buffer, pool->hdesc->digest_len);
 	pool->hdesc->update(&pool->hash_ctx, buf, len);
 	pool->hdesc->finalize(&pool->hash_ctx, pool->buffer);
 
@@ -250,7 +251,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 {
 	unsigned char *v0, digest[MAXDIGEST]; 
 	unsigned char val[4];
-	int i, m, len;
+	int i, len;
 	u_int32_t tmp[2];
 
 	assert(prng != NULL && pool != NULL);
@@ -304,17 +305,9 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	prng->hdesc->update(&prng->hash_ctx, prng->key, 32);
 	prng->hdesc->finalize(&prng->hash_ctx, digest);
 	
-	printf("\n KEY BEFOR RESEED");
-	for (m = 0; m < 8; m++ )
-		printf("%u ", prng->key[m]);
-	printf("\n DIGEST \n");
-	for (m = 0; m < 16; m++) {
-		printf(" %u", digest[m]);
-	}
-
 	size_adaptor(digest, prng, param);
 
-	printf("\n KEY AFTER RESEED \n");
+	printf("\n key after reseed \n");
 	for (i = 0; i < 8; i++) {
 		printf(" %u", prng->key[i]);
 	}
@@ -426,7 +419,7 @@ size_adaptor(unsigned char *digest, struct prng_context *prng, int param)
 		printf("\n");*/
 	}
 
-	memcpy(p, tmp[0], 16);
-	memcpy(p+16, tmp[1], 16);
+	memcpy(p, tmp[param], 16);
+	memcpy(p+16, tmp[param-1], 16);
 }
 

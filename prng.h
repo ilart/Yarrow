@@ -28,5 +28,7 @@ void prng_next(struct prng_context *prng);
 
 void size_adaptor(unsigned char *digest, struct prng_context *prng, int param);
 
+//void feed_entropy(int source_id, void *buf, int len, double estimate, struct entropy_pool *fast_pool, struct entropy_pool *slow_pool, struct prng_context *prng)
+
 #endif
 

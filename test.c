@@ -13,10 +13,13 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "common.h"
+#include "feed_entropy.h"
 
 int main(int argc, char **argv)
 {
 	int res, i, fd;
+//int add_to_fast[MAXSOURCES];
 	size_t size = 510;
 	int buf_random[512];
 	double tmp;
@@ -81,7 +84,9 @@ int main(int argc, char **argv)
                 printf("entropy_pool_get_threshold %f\n", tmp);
 	printf("\n");
 
-	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
+	feed_entropy(0, buf, 33, 0.5, fast_pool, slow_pool, prng);
+
+/*	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
 	if (res == 0)
 		printf("pool.estimate add %f \n", 
 			fast_pool.estimate[0]);
@@ -90,7 +95,7 @@ int main(int argc, char **argv)
 		return EPOOL_FAIL;
 	}
 	printf("\n");
-	
+*/	
 	//______________________________PRNG___________________
 	//
 
