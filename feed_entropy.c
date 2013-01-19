@@ -6,7 +6,7 @@
 #include "entropy_pool.h"
 int add_to_fast[MAXSOURCES];
 void
-feed_entropy(int source_id, void *buf, int len, double estimate, struct entropy_pool *fast_pool, struct entropy_pool *slow_pool, struct prng_context *prng)
+feed_entropy(int source_id, void *buf, int len, double estimate, struct entropy_pool *fast_pool, struct entropy_pool *slow_pool, struct prng_context *prng, int param)
 {
 	int add;
 

@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	struct entropy_pool fast_pool, slow_pool;
 	struct prng_context prng;
 //	struct gost_context *gost_ctx;
-	const char buf[] = "22 333 44 11 aa bb qw qw as zx zx zz zz 11";
+	char buf[128];
 	//char tmp_buf[16];
 	unsigned char *tmp_s;
 
@@ -70,11 +70,11 @@ int main(int argc, char **argv)
                 printf("entropy_pool_get_k %d\n", res);
 	printf("\n");
 
-	res = entropy_pool_set_threshold(&fast_pool, 0, 121.0);	
+	res = entropy_pool_set_threshold(&fast_pool, 0, 50.0);	
 	if (res == 0)
                 printf("entropy_pool_set_threshold in fast %f\n", fast_pool.threshold[0]);
 
-	res = entropy_pool_set_threshold(&slow_pool, 0, 51.0);	
+	res = entropy_pool_set_threshold(&slow_pool, 0, 121.0);	
 	if (res == 0)
                 printf("entropy_pool_set_threshold in slow %f\n", slow_pool.threshold[0]);
 	
@@ -83,22 +83,6 @@ int main(int argc, char **argv)
 	if (tmp != 0)
                 printf("entropy_pool_get_threshold %f\n", tmp);
 	printf("\n");
-
-	feed_entropy(0, buf, 33, 0.5, fast_pool, slow_pool, prng);
-
-/*	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
-	if (res == 0)
-		printf("pool.estimate add %f \n", 
-			fast_pool.estimate[0]);
-	else {
-		printf("error of entropy_pool_add");
-		return EPOOL_FAIL;
-	}
-	printf("\n");
-*/	
-	//______________________________PRNG___________________
-	//
-
 	
 	fd = open("/dev/urandom" , O_RDONLY);
 	if (fd == -1)
@@ -115,15 +99,33 @@ int main(int argc, char **argv)
 	
 	printf("\n");
 
-//	res = entropy_pool_get_nsources(&fast_pool);
-
+	res = read(fd, buf, sizeof(buf));
 	prng.param = 9;
 
-//	gost_ctx = gost_context_new();
-	prng_reseed(&prng, &fast_pool, 10);
-	printf("debug of prng, prng->hdesc %p, prng->gost_ctx %p, \n", prng.hdesc, prng.gost_ctx);
 
-/*	printf("\n key after reseed \n");
+	feed_entropy(0, buf, 120, 0.5, &fast_pool, &slow_pool, &prng, 9);
+	feed_entropy(0, buf, 120, 0.5, &fast_pool, &slow_pool, &prng, 9);
+	feed_entropy(0, buf, 120, 0.5, &fast_pool, &slow_pool, &prng, 9);
+	feed_entropy(0, buf, 120, 0.5, &fast_pool, &slow_pool, &prng, 9);
+		
+	/*
+	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
+	if (res == 0)
+		printf("pool.estimate add %f \n", 
+			fast_pool.estimate[0]);
+	else {
+		printf("error of entropy_pool_add");
+		return EPOOL_FAIL;
+	}
+	printf("\n");
+	
+
+	res = entropy_pool_get_nsources(&fast_pool);
+
+	gost_ctx = gost_context_new();
+	prng_reseed(&prng, &fast_pool, 10);
+
+	printf("\n key after reseed \n");
 	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
 		printf("%u ", prng.key[i]);
 	}
@@ -139,16 +141,10 @@ int main(int argc, char **argv)
 		printf(" %d, ", buf_random[i]);
 	}
 
-//_______________END PRNG____________________
-//
-	res = entropy_pool_is_thresholded(&fast_pool);
+/*	res = entropy_pool_is_thresholded(&fast_pool);
 	printf("thresholded = %d \n", res);
-
-	printf("digest_len %d\n", fast_pool.hdesc->digest_len);	
-	
-	entropy_pool_feed_to(&slow_pool, &fast_pool);
-	printf("feed: buffer = %s\n", fast_pool.buffer);
-	/* how see result, current hash? */		
+*/
+	printf("\ndigest_len %d\n", fast_pool.hdesc->digest_len);	
 	
 	tmp_s = entropy_pool_bytes(&slow_pool);
 	printf("slow_pool_byts %s \n", tmp_s);

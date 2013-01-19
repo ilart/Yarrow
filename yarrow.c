@@ -122,7 +122,9 @@ entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src)
 {
 	assert(dst != NULL || src != NULL);
 
-	src->hdesc->finalize(&src->hash_ctx, (void *)(src->buffer));
+	printf("feed -to %p %p digest_len %d\n", dst, src);
+	
+//	src->hdesc->finalize(&src->hash_ctx, (void *)(src->buffer));
 	dst->hdesc->update(&dst->hash_ctx, (const void *)src->buffer, src->hdesc->digest_len); 
 	
 	return EPOOL_OK;
@@ -227,7 +229,6 @@ entropy_pool_clean(struct entropy_pool *pool)
 	}
 
 	memset(&pool->hash_ctx, 0, sizeof(pool->hash_ctx));
-	pool->hdesc = NULL;
 }
 
 struct hash_desc *
@@ -419,7 +420,8 @@ size_adaptor(unsigned char *digest, struct prng_context *prng, int param)
 		printf("\n");*/
 	}
 
-	memcpy(p, tmp[param], 16);
-	memcpy(p+16, tmp[param-1], 16);
+	for (i = 0; i < sizeof(prng->key)/16; i++) {
+		memcpy(p+i*16, tmp[param-i], 16);
+	}
 }
 
