@@ -15,15 +15,16 @@
 #include <unistd.h>
 #include "common.h"
 #include "feed_entropy.h"
+	
+struct entropy_pool fast_pool, slow_pool;
 
 int main(int argc, char **argv)
 {
 	int res, i, fd;
 //int add_to_fast[MAXSOURCES];
-	size_t size = 510;
+	size_t size = 512;
 	int buf_random[512];
 	double tmp;
-	struct entropy_pool fast_pool, slow_pool;
 	struct prng_context prng;
 //	struct gost_context *gost_ctx;
 	char buf[128];
@@ -100,13 +101,22 @@ int main(int argc, char **argv)
 	printf("\n");
 
 	res = read(fd, buf, sizeof(buf));
-	prng.param = 9;
+	if (res < 0) {
+		perror("error of read");		
+	}
 
+	prng.gate_param = 10;
 
-	feed_entropy(0, buf, 120, 0.5, &fast_pool, &slow_pool, &prng, 9);
-	feed_entropy(0, buf, 120, 0.5, &fast_pool, &slow_pool, &prng, 9);
-	feed_entropy(0, buf, 120, 0.5, &fast_pool, &slow_pool, &prng, 9);
-	feed_entropy(0, buf, 120, 0.5, &fast_pool, &slow_pool, &prng, 9);
+	res = prng_set_time_param(&prng, 10);
+	printf("prng_set_time_param %d", res);
+
+	res = prng_get_time_param(&prng);
+	printf("prng_set_time_param %d", res);
+
+	feed_entropy(0, buf, 120, 0.5, &prng);
+	feed_entropy(0, buf, 120, 0.5, &prng);
+	feed_entropy(0, buf, 120, 0.5, &prng);
+	feed_entropy(0, buf, 120, 0.5, &prng);
 		
 	/*
 	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
@@ -137,7 +147,7 @@ int main(int argc, char **argv)
 */
 	prng_encrypt(&prng, buf_random, &size);	
 	printf("\nrandom values\n");
-	for (i = 0; i < 510/4; i++) {
+	for (i = 0; i < 512/4; i++) {
 		printf(" %d, ", buf_random[i]);
 	}
 

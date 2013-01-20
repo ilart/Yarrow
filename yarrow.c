@@ -122,9 +122,6 @@ entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src)
 {
 	assert(dst != NULL || src != NULL);
 
-	printf("feed -to %p %p digest_len %d\n", dst, src);
-	
-//	src->hdesc->finalize(&src->hash_ctx, (void *)(src->buffer));
 	dst->hdesc->update(&dst->hash_ctx, (const void *)src->buffer, src->hdesc->digest_len); 
 	
 	return EPOOL_OK;
@@ -248,7 +245,7 @@ hash_desc_get(const char *hash_name)
 }
 
 int 
-prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param)
+prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 {
 	unsigned char *v0, digest[MAXDIGEST]; 
 	unsigned char val[4];
@@ -282,7 +279,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	prng->hdesc->update(&prng->hash_ctx, val, sizeof(val));
 	prng->hdesc->finalize(&prng->hash_ctx, digest);
 
-	for (i = 2; i <= param; i++) {
+	for (i = 2; i <= prng->time_param; i++) {
 		prng->hdesc->init(&prng->hash_ctx);
 		prng->hdesc->update(&prng->hash_ctx, digest, len);
 		prng->hdesc->update(&prng->hash_ctx, v0, len);
@@ -306,7 +303,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int para
 	prng->hdesc->update(&prng->hash_ctx, prng->key, 32);
 	prng->hdesc->finalize(&prng->hash_ctx, digest);
 	
-	size_adaptor(digest, prng, param);
+	size_adaptor(digest, prng);
 
 	printf("\n key after reseed \n");
 	for (i = 0; i < 8; i++) {
@@ -357,8 +354,8 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 		for (i = 0; i < ARRAY_SIZE(prng->counter); i++ ) {
 			tmp[i] = prng->counter[i];
 		}
-		prng->param -= 1;
-		if (prng->param == 0)
+		prng->gate_param -= 1;
+		if (prng->gate_param == 0)
 			prng_generator_gate(prng); 
 
 		*size -= cpy_sz;
@@ -384,8 +381,7 @@ void prng_generator_gate(struct prng_context *prng)
 		flag += BLOCK_SIZE/8;
 		prng_next(prng);
 	}
-	prng->param = 10;
-	//prng->cdesc->key_size
+	prng->gate_param = 10;
 }
 
 void prng_next(struct prng_context *prng)
@@ -400,28 +396,46 @@ void prng_next(struct prng_context *prng)
 }
 
 void 
-size_adaptor(unsigned char *digest, struct prng_context *prng, int param)
+size_adaptor(unsigned char *digest, struct prng_context *prng)
 {
-	unsigned char tmp[param][16];
+	unsigned char tmp[prng->time_param][16];
 	int i, k;
 	char *p;
 
 	p = (char *) prng->key;
-	memcpy(tmp[0], digest, 32);	
+	memcpy(tmp[0], digest, 16);	
 
-	for (i = 1; i < param; i++) {
+	for (i = 1; i < prng->time_param; i++) {
 		prng->hdesc->init(&prng->hash_ctx);
-		for (k = 0; k < param-1; k++) {
-			prng->hdesc->update(&prng->hash_ctx, tmp[k], 32);
+		for (k = 0; k < i; k++) {
+			prng->hdesc->update(&prng->hash_ctx, tmp[k], 16);
 		}
 		prng->hdesc->finalize(&prng->hash_ctx, tmp[i]);
-	/*	for (k = 0; k < 32; k++)
-			printf("%u ", tmp[i][k]);
-		printf("\n");*/
+//		for (k = 0; k < 32; k++)
+//			printf("%u ", tmp[i][k]);
+//		printf("\n");
 	}
 
-	for (i = 0; i < sizeof(prng->key)/16; i++) {
-		memcpy(p+i*16, tmp[param-i], 16);
-	}
+//	for (i = 0; i < sizeof(prng->key)/16; i++) {
+//		memcpy(p+i*16, tmp[prng->time_param-i], 16);
+//	}
+}
+
+int
+prng_set_time_param(struct prng_context *prng, int time_param)
+{
+	assert(prng != NULL && time_param > 0);
+
+	prng->time_param = time_param;
+	
+	return 0;
+}
+
+
+int
+prng_get_time_param(struct prng_context *prng)
+{
+	assert(prng != NULL);
+	return prng->time_param;
 }
 
