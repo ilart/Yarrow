@@ -1,7 +1,7 @@
 
 #ifndef _ENTROPY_POOL_H
 #define _ENTROPY_POOL_H
-
+#include "common.h"
 #include "hash_desc.h"
 #define MAXSOURCES 32
 

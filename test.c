@@ -1,25 +1,17 @@
-#include <assert.h>
-#include <string.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h> 
 #include "yarrow.h"
-#include "entropy_pool.h"
 #include "hash_desc.h"
 #include "macros.h"
 #include "prng.h"
 #include "gost.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include "common.h"
 #include "feed_entropy.h"
 	
 struct entropy_pool fast_pool, slow_pool;
+int add_to_fast[MAXSOURCES];
 
 int main(int argc, char **argv)
 {
+	extern add_to_fast[MAXSOURCES];
 	int res, i, fd;
 //int add_to_fast[MAXSOURCES];
 	size_t size = 512;
@@ -31,7 +23,9 @@ int main(int argc, char **argv)
 	//char tmp_buf[16];
 	unsigned char *tmp_s;
 
-	res = entropy_pool_init(&fast_pool, 17, HASH_SHA256);
+	memset(add_to_fast, 0, sizeof(add_to_fast));
+
+	res = entropy_pool_init(&fast_pool, 12, HASH_SHA256);
 	if (res == 0)
 		printf("pool.nsources %d "
 		       "pool.k %d "
@@ -40,7 +34,7 @@ int main(int argc, char **argv)
 		       fast_pool.k, 
 		       fast_pool.hdesc->name);
 
-	res = entropy_pool_init(&slow_pool, 12, HASH_SHA256);
+	res = entropy_pool_init(&slow_pool, 17, HASH_SHA256);
 	if (res == 0)
 		printf("slow_pool.nsoursec  %d"
 		       "slow_pool.k %d" 
@@ -62,7 +56,7 @@ int main(int argc, char **argv)
                 printf("\n entropy_pool_get_nsources %d\n", res);
 	printf("\n");
 	
-	res = entropy_pool_set_k(&fast_pool, 2);
+	res = entropy_pool_set_k(&fast_pool, 1);
 	if (res == 0)
 		printf("entropy_pool_set_k %d\n", fast_pool.k);
 
@@ -71,11 +65,11 @@ int main(int argc, char **argv)
                 printf("entropy_pool_get_k %d\n", res);
 	printf("\n");
 
-	res = entropy_pool_set_threshold(&fast_pool, 0, 50.0);	
+	res = entropy_pool_set_threshold(&fast_pool, 0, 120.0);	
 	if (res == 0)
                 printf("entropy_pool_set_threshold in fast %f\n", fast_pool.threshold[0]);
 
-	res = entropy_pool_set_threshold(&slow_pool, 0, 121.0);	
+	res = entropy_pool_set_threshold(&slow_pool, 0, 181.0);	
 	if (res == 0)
                 printf("entropy_pool_set_threshold in slow %f\n", slow_pool.threshold[0]);
 	
@@ -113,10 +107,10 @@ int main(int argc, char **argv)
 	res = prng_get_time_param(&prng);
 	printf("prng_set_time_param %d", res);
 
-	feed_entropy(0, buf, 120, 0.5, &prng);
-	feed_entropy(0, buf, 120, 0.5, &prng);
-	feed_entropy(0, buf, 120, 0.5, &prng);
-	feed_entropy(0, buf, 120, 0.5, &prng);
+	feed_entropy(0, buf, 16, 0.5, &prng);
+	feed_entropy(0, buf+16, 16, 0.5, &prng);
+	feed_entropy(0, buf+32, 16, 0.5, &prng);
+	feed_entropy(0, buf+48, 16, 0.5, &prng);
 		
 	/*
 	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);

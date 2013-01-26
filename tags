@@ -25,12 +25,13 @@ BE32_FROM_PTR	sha1.c	26;"	d	file:
 BE32_FROM_PTR	sha256.c	19;"	d	file:
 BLOCKSIZE	hash/hmac-whirlpool.c	16;"	d	file:
 BLOCKSZ	hash/aes-cbc.c	9;"	d	file:
+BLOCK_SIZE	prng.h	5;"	d
 BSIG0	hash/mp/sha256.c	98;"	d	file:
 BSIG0	sha256.c	98;"	d	file:
 BSIG1	hash/mp/sha256.c	99;"	d	file:
 BSIG1	sha256.c	99;"	d	file:
 BUFFER_LEN	hash/md5-test.c	10;"	d	file:
-BUFFER_SZ	yarrow.c	12;"	d	file:
+BUFFER_SZ	yarrow.c	13;"	d	file:
 CBC	hash/aes-cbc.c	14;"	d	file:
 CBC_DECRYPT	hash/aes-cbc.c	12;"	d	file:
 CBC_ENCRYPT	hash/aes-cbc.c	11;"	d	file:
@@ -41,13 +42,14 @@ CFLAGS	Makefile	/^CFLAGS = -Wall -O2 -fomit-frame-pointer -ggdb -D_GNU_SOURCE -D
 CH	hash/mp/sha256.c	96;"	d	file:
 CH	sha256.c	96;"	d	file:
 COMMON_H_	common.h	2;"	d
+COUNTER_SIZE	prng.h	6;"	d
 DD	hash/mp/sha1.c	75;"	d	file:
 DD	sha1.c	75;"	d	file:
 DEBUG_ONLY	hash/macros.h	14;"	d
 DEBUG_ONLY	hash/macros.h	16;"	d
 DEBUG_ONLY	macros.h	14;"	d
 DEBUG_ONLY	macros.h	16;"	d
-DEFAULT_K	yarrow.c	11;"	d	file:
+DEFAULT_K	yarrow.c	12;"	d	file:
 EMEOAEP_H_	hash/mp/emeoaep.h	2;"	d
 EPOOL_FAIL	entropy_pool.h	/^	EPOOL_FAIL = 1$/;"	e	enum:__anon1
 EPOOL_OK	entropy_pool.h	/^	EPOOL_OK = 0,$/;"	e	enum:__anon1
@@ -75,12 +77,12 @@ GOST_KEY_NELEMS	gost.h	25;"	d
 GOST_SBOX_NELEMS	gost.h	24;"	d
 H	hash/md5.c	23;"	d	file:
 H	md5.c	23;"	d	file:
-HASH_FINAL	yarrow.c	16;"	d	file:
-HASH_INIT	yarrow.c	14;"	d	file:
+HASH_FINAL	yarrow.c	17;"	d	file:
+HASH_INIT	yarrow.c	15;"	d	file:
 HASH_MD5	hash_desc.h	13;"	d
 HASH_SHA1	hash_desc.h	14;"	d
 HASH_SHA256	hash_desc.h	15;"	d
-HASH_UPDATE	yarrow.c	15;"	d	file:
+HASH_UPDATE	yarrow.c	16;"	d	file:
 HH	hash/md5.c	50;"	d	file:
 HH	md5.c	50;"	d	file:
 HMAC_WHIRLPOOL_H_	hash/hmac-whirlpool.h	2;"	d
@@ -237,7 +239,6 @@ MACROS_H_	macros.h	2;"	d
 MAJ	hash/mp/sha256.c	97;"	d	file:
 MAJ	sha256.c	97;"	d	file:
 MAX	hash/mp/mp_common.h	14;"	d
-MAXBLOCK_SIZE	prng.h	4;"	d
 MAXDIGEST	hash_desc.h	8;"	d
 MAXKEY	prng_desc.h	5;"	d
 MAXSOURCES	entropy_pool.h	6;"	d
@@ -356,11 +357,12 @@ W2	hash/whirlpool.c	/^const uint64_t W2[] = {$/;"	v
 W3	hash/whirlpool.c	/^const uint64_t W3[] = {$/;"	v
 WHIRLPOOL_H_	hash/whirlpool.h	2;"	d
 YARROW_H_	yarrow.h	2;"	d
-_ENTROPY_POOL_H	entropy_pool.h	2;"	d
+_ENTROPY_POOL_H	entropy_pool.h	3;"	d
 _HASH_H	hash_desc.h	6;"	d
 _PRNG_H	prng_desc.h	2;"	d
 __CIPHER_DESC_H	cipher_desc.h	2;"	d
-__PRNG_H	prng.h	3;"	d
+__FEED_ENTROPY	feed_entropy.h	2;"	d
+__PRNG_H	prng.h	4;"	d
 _hash_ctx	hash_desc.h	/^union _hash_ctx {$/;"	u
 _hash_ctx::md5	hash_desc.h	/^		struct md5_context md5; $/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::md5_context	access:public
 _hash_ctx::sha1	hash_desc.h	/^		struct sha1_context sha1;$/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::sha1_context	access:public
@@ -450,7 +452,7 @@ count	hash/mp/sha256.h	/^        uint32_t        count[2];       \/* data length
 count	hash/whirlpool.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:whirlpool_context	access:public
 count	sha1.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha1_context	access:public
 count	sha256.h	/^        uint32_t        count[2];       \/* data length counter *\/$/;"	m	struct:sha256_context	access:public
-counter	prng.h	/^	int counter[MAXBLOCK_SIZE \/ 8 \/ 4];$/;"	m	struct:prng_context	access:public
+counter	prng.h	/^	u_int32_t counter[COUNTER_SIZE]; \/*How big should the buffer? *\/$/;"	m	struct:prng_context	access:public
 ctx	hash/aes-cbc.h	/^	void		*ctx;$/;"	m	struct:aes_cbc	access:public
 deinit	cipher_desc.h	/^	void (*deinit)(void **ctx);$/;"	m	struct:cipher_desc	access:public
 desc_tbl	yarrow.c	/^struct hash_desc desc_tbl[] = {$/;"	v	typeref:struct:hash_desc
@@ -503,10 +505,11 @@ entropy_pool_set_nsources	yarrow.c	/^entropy_pool_set_nsources(struct entropy_po
 entropy_pool_set_threshold	entropy_pool.h	/^int entropy_pool_set_threshold(struct entropy_pool *pool, int source_id, double threshold);$/;"	p	signature:(struct entropy_pool *pool, int source_id, double threshold)
 entropy_pool_set_threshold	yarrow.c	/^entropy_pool_set_threshold(struct entropy_pool *pool, int source_id, double threshold)$/;"	f	signature:(struct entropy_pool *pool, int source_id, double threshold)
 estimate	entropy_pool.h	/^	float estimate[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
-feed_entropy	feed_entropy.c	/^feed_entropy(int source_id, void *buf, int len, double estimate)$/;"	f	signature:(int source_id, void *buf, int len, double estimate)
+feed_entropy	feed_entropy.c	/^feed_entropy(int source_id, void *buf, int len, double estimate, struct entropy_pool *fast_pool, struct entropy_pool *slow_pool, struct prng_context *prng, int param)$/;"	f	signature:(int source_id, void *buf, int len, double estimate, struct entropy_pool *fast_pool, struct entropy_pool *slow_pool, struct prng_context *prng, int param)
 finalize	hash_desc.h	/^	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);$/;"	m	struct:hash_desc	access:public
 flags	hash/mp/mp.h	/^	unsigned int	flags;$/;"	m	struct:mp_int	access:public
 gamma	gost.h	/^	u_int8_t gamma[8];$/;"	m	struct:gost_context	access:public
+gate_param	prng.h	/^	int gate_param;$/;"	m	struct:prng_context	access:public
 gost_apply_gamma	gost.c	/^gost_apply_gamma(struct gost_context *ctx, void *data, int len)$/;"	f	signature:(struct gost_context *ctx, void *data, int len)
 gost_apply_gamma	gost.h	/^void gost_apply_gamma(struct gost_context *ctx, void *data, int len);$/;"	p	signature:(struct gost_context *ctx, void *data, int len)
 gost_basic	gost.c	/^gost_basic(u_int32_t *lo, u_int32_t *hi, u_int32_t key, const u_int8_t *sbox)$/;"	f	file:	signature:(u_int32_t *lo, u_int32_t *hi, u_int32_t key, const u_int8_t *sbox)
@@ -521,7 +524,7 @@ gost_context_free	gost.c	/^gost_context_free(struct gost_context **ctx)$/;"	f	si
 gost_context_free	gost.h	/^void gost_context_free(struct gost_context **ctx);$/;"	p	signature:(struct gost_context **ctx)
 gost_context_new	gost.c	/^gost_context_new()$/;"	f
 gost_context_new	gost.h	/^struct gost_context *gost_context_new();$/;"	p	signature:()
-gost_ctx	prng.h	/^	struct gost_context gost_ctx;$/;"	m	struct:prng_context	typeref:struct:prng_context::gost_context	access:public
+gost_ctx	prng.h	/^	struct gost_context *gost_ctx;$/;"	m	struct:prng_context	typeref:struct:prng_context::gost_context	access:public
 gost_decrypt_32r	gost.c	/^gost_decrypt_32r(struct gost_context *ctx, u_int32_t *block)$/;"	f	signature:(struct gost_context *ctx, u_int32_t *block)
 gost_decrypt_32r	gost.c	/^void gost_decrypt_32r(struct gost_context *ctx, u_int32_t *block);$/;"	p	file:	signature:(struct gost_context *ctx, u_int32_t *block)
 gost_decrypt_32r	gost.h	/^void gost_decrypt_32r(struct gost_context *ctx, u_int32_t *block);$/;"	p	signature:(struct gost_context *ctx, u_int32_t *block)
@@ -560,7 +563,7 @@ iv	hash/aes-cbc.h	/^	uint8_t		iv[16];		\/* IV and previous ciphertext are stored
 k	entropy_pool.h	/^	int k;$/;"	m	struct:entropy_pool	access:public
 key	gost.h	/^	u_int32_t key[8];$/;"	m	struct:gost_context	access:public
 key	hash/aes.h	/^	u_int32_t	key[8];$/;"	m	struct:aes_context	access:public
-key	prng.h	/^	u_int32_t key[MAXDIGEST];$/;"	m	struct:prng_context	access:public
+key	prng.h	/^	int key[8];$/;"	m	struct:prng_context	access:public
 key_expansion	hash/aes.c	/^key_expansion(struct aes_context *ctx)$/;"	f	file:	signature:(struct aes_context *ctx)
 key_size	cipher_desc.h	/^	int key_size; 		 $/;"	m	struct:cipher_desc	access:public
 klen	hash/aes.h	/^	aes_key_len_t	klen;$/;"	m	struct:aes_context	access:public
@@ -696,21 +699,27 @@ nbits	md5.h	/^	uint32_t	nbits[2];	\/* message size (in bits) *\/$/;"	m	struct:md
 nk	hash/aes.h	/^	int		nk;$/;"	m	struct:aes_context	access:public
 nr	hash/aes.h	/^	int		nr;$/;"	m	struct:aes_context	access:public
 nsources	entropy_pool.h	/^	int nsources;$/;"	m	struct:entropy_pool	access:public
-objects	Makefile	/^objects = test.o yarrow.o md5.o sha1.o sha256.o gost.o$/;"	m
-parma	prng.h	/^	int parma;$/;"	m	struct:prng_context	access:public
+objects	Makefile	/^objects = test.o yarrow.o md5.o sha1.o sha256.o gost.o feed_entropy.o$/;"	m
 pbkdf2_hmac_whirlpool	hash/hmac-whirlpool.c	/^pbkdf2_hmac_whirlpool(const void	*pass,$/;"	f	signature:(const void *pass, unsigned npass, const void *salt, unsigned nsalt, int niter, void *key, unsigned nkey)
 pbkdf2_hmac_whirlpool	hash/hmac-whirlpool.h	/^pbkdf2_hmac_whirlpool(const void	*pass,$/;"	p	signature:(const void *pass, unsigned npass, const void *salt, unsigned nsalt, int niter, void *key, unsigned nkey)
 prng_context	prng.h	/^struct prng_context {$/;"	s
 prng_context::cdesc	prng.h	/^	struct cipher_desc *cdesc;$/;"	m	struct:prng_context	typeref:struct:prng_context::cipher_desc	access:public
-prng_context::counter	prng.h	/^	int counter[MAXBLOCK_SIZE \/ 8 \/ 4];$/;"	m	struct:prng_context	access:public
-prng_context::gost_ctx	prng.h	/^	struct gost_context gost_ctx;$/;"	m	struct:prng_context	typeref:struct:prng_context::gost_context	access:public
+prng_context::counter	prng.h	/^	u_int32_t counter[COUNTER_SIZE]; \/*How big should the buffer? *\/$/;"	m	struct:prng_context	access:public
+prng_context::gate_param	prng.h	/^	int gate_param;$/;"	m	struct:prng_context	access:public
+prng_context::gost_ctx	prng.h	/^	struct gost_context *gost_ctx;$/;"	m	struct:prng_context	typeref:struct:prng_context::gost_context	access:public
 prng_context::hash_ctx	prng.h	/^	union _hash_ctx hash_ctx;$/;"	m	struct:prng_context	typeref:union:prng_context::_hash_ctx	access:public
 prng_context::hdesc	prng.h	/^	struct hash_desc *hdesc;$/;"	m	struct:prng_context	typeref:struct:prng_context::hash_desc	access:public
-prng_context::key	prng.h	/^	u_int32_t key[MAXDIGEST];$/;"	m	struct:prng_context	access:public
-prng_context::parma	prng.h	/^	int parma;$/;"	m	struct:prng_context	access:public
+prng_context::key	prng.h	/^	int key[8];$/;"	m	struct:prng_context	access:public
+prng_context::time_param	prng.h	/^	int time_param;$/;"	m	struct:prng_context	access:public
+prng_encrypt	prng.h	/^void prng_encrypt(struct prng_context *prng, void *buf, size_t *size);$/;"	p	signature:(struct prng_context *prng, void *buf, size_t *size)
+prng_encrypt	yarrow.c	/^void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)$/;"	f	signature:(struct prng_context *prng, void *buf, size_t *size)
+prng_generator_gate	prng.h	/^void prng_generator_gate(struct prng_context *prng);$/;"	p	signature:(struct prng_context *prng)
+prng_generator_gate	yarrow.c	/^void prng_generator_gate(struct prng_context *prng)$/;"	f	signature:(struct prng_context *prng)
+prng_next	prng.h	/^void prng_next(struct prng_context *prng);$/;"	p	signature:(struct prng_context *prng)
+prng_next	yarrow.c	/^void prng_next(struct prng_context *prng)$/;"	f	signature:(struct prng_context *prng)
 prng_reseed	prng.c	/^prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param)$/;"	f	signature:(struct prng_context *prng, const struct entropy_pool *pool, int param)
-prng_reseed	prng.h	/^int prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param);$/;"	p	signature:(struct prng_context *prng, const struct entropy_pool *pool, int param)
-prng_reseed	yarrow.c	/^prng_reseed(struct prng_context *prng, const struct entropy_pool *pool, int param)$/;"	f	signature:(struct prng_context *prng, const struct entropy_pool *pool, int param)
+prng_reseed	prng.h	/^int prng_reseed(struct prng_context *prng, const struct entropy_pool *pool);$/;"	p	signature:(struct prng_context *prng, const struct entropy_pool *pool)
+prng_reseed	yarrow.c	/^prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)$/;"	f	signature:(struct prng_context *prng, const struct entropy_pool *pool)
 return_if_fail	hash/macros.h	20;"	d
 return_if_fail	hash/macros.h	57;"	d
 return_if_fail	macros.h	20;"	d
@@ -786,7 +795,9 @@ sha256_update	sha256.h	/^void sha256_update(struct sha256_context *ctx, const vo
 shift_columns	hash/whirlpool.c	/^shift_columns(uint64_t state[8])$/;"	f	file:	signature:(uint64_t state[8])
 shift_rows	hash/aes.c	/^shift_rows(uint32_t *state)$/;"	f	file:	signature:(uint32_t *state)
 sign	hash/mp/mp.h	/^	int		sign;	\/* MP_SIGN_POS or MP_SIGN_NEG *\/$/;"	m	struct:mp_int	access:public
-sources	Makefile	/^sources = test.c yarrow.c md5.c sha1.c sha256.c gost.c$/;"	m
+size_adaptor	prng.h	/^void size_adaptor(unsigned char *digest, struct prng_context *prng);$/;"	p	signature:(unsigned char *digest, struct prng_context *prng)
+size_adaptor	yarrow.c	/^size_adaptor(unsigned char *digest, struct prng_context *prng, int param)$/;"	f	signature:(unsigned char *digest, struct prng_context *prng, int param)
+sources	Makefile	/^sources = test.c yarrow.c md5.c sha1.c sha256.c gost.c feed_entropy.c$/;"	m
 state	hash/aes.h	/^	u_int32_t	state[AES_NB];$/;"	m	struct:aes_context	access:public
 state	hash/md5.h	/^	u_int32_t	state[4];	\/* state words *\/$/;"	m	struct:md5_context	access:public
 state	hash/mp/sha1.h	/^        uint32_t        state[5];       \/* H(i) hash state *\/$/;"	m	struct:sha1_context	access:public
@@ -805,6 +816,7 @@ test_rsacrt	hash/mp/test.c	/^test_rsacrt()$/;"	f
 test_sha1_oaep	hash/mp/test.c	/^test_sha1_oaep()$/;"	f
 testrnd	hash/mp/test.c	/^testrnd(void *buf, size_t len, void *ctx)$/;"	f	file:	signature:(void *buf, size_t len, void *ctx)
 threshold	entropy_pool.h	/^	float threshold[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
+time_param	prng.h	/^	int time_param;$/;"	m	struct:prng_context	access:public
 top	hash/mp/mp.h	/^	int		top;	\/* index to top digit *\/$/;"	m	struct:mp_int	access:public
 u_int16_t	common.h	/^  typedef uint16_t	u_int16_t;$/;"	t
 u_int32_t	common.h	/^  typedef uint32_t	u_int32_t;$/;"	t

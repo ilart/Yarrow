@@ -55,7 +55,7 @@ entropy_pool_init(struct entropy_pool *pool,
 	pool->k = DEFAULT_K;
 
 	for (i = 0; i < MAXSOURCES; i++) {
-		pool->threshold[i] = 0.0;
+		pool->threshold[i] = 1024.0;
 		pool->estimate[i] = 0.0;
 	}
 
@@ -90,6 +90,7 @@ entropy_pool_add(struct entropy_pool *pool,
 	nbits = len * CHAR_BIT * estimate;
 	printf("nbits %f esitmate %f, len %d \n", nbits, estimate, (int ) len);
 	pool->estimate[source_id] += nbits;
+	printf("pool_estimate %f\n", pool->estimate[source_id]);
 
 	pool->hdesc->update(&pool->hash_ctx, pool->buffer, pool->hdesc->digest_len);
 	pool->hdesc->update(&pool->hash_ctx, buf, len);
@@ -243,7 +244,7 @@ hash_desc_get(const char *hash_name)
 
 	return FALSE;
 }
-
+/*
 int 
 prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 {
@@ -290,11 +291,11 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 		val[3] = (i & 0xff);
 		prng->hdesc->update(&prng->hash_ctx, val, sizeof(val));
 		prng->hdesc->finalize(&prng->hash_ctx, digest);
-	/*	for (m = 0; m < 16; m++) {
-			printf(" %u", digest[m]);
-		}
-		printf("\n");
-	*/
+//		for (m = 0; m < 16; m++) {
+//			printf(" %u", digest[m]);
+//		}
+//		printf("\n");
+
 		
 	}
 
@@ -438,4 +439,4 @@ prng_get_time_param(struct prng_context *prng)
 	assert(prng != NULL);
 	return prng->time_param;
 }
-
+*/
