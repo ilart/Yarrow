@@ -5,13 +5,13 @@
 void
 feed_entropy(int source_id, void *buf, int len, double estimate, struct prng_context *prng)
 {
-	int add;
+	int fast;
 	extern struct entropy_pool fast_pool, slow_pool;  
 	extern add_to_fast[MAXSOURCES];
-	add = add_to_fast[source_id] = !add_to_fast[source_id];
+	fast = add_to_fast[source_id] = !add_to_fast[source_id];
 
-	printf("\nadd= %d\n", add);
-	if (add) {
+	printf("\nfast= %d\n", fast);
+	if (fast) {
 		entropy_pool_add(&fast_pool, source_id, buf, len, estimate);
 		if (entropy_pool_is_thresholded(&fast_pool)) {
 			printf("THRESHOLDED FAST!!!\n");

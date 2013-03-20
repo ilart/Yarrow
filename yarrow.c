@@ -16,7 +16,7 @@
 #define HASH_UPDATE(x) ((void (*)(void *, const void *, size_t))(x))
 #define HASH_FINAL(x) ((void * (*)(void *, unsigned char *))(x))
 
-struct hash_desc desc_tbl[] = {
+struct hash_desc hash_desc_tbl[] = {
 	{ 
 	  HASH_MD5,
 	  MD5_DIGEST_LEN, 
@@ -228,7 +228,7 @@ entropy_pool_clean(struct entropy_pool *pool)
 
 	memset(&pool->hash_ctx, 0, sizeof(pool->hash_ctx));
 }
-
+/*
 struct hash_desc *
 hash_desc_get(const char *hash_name)
 {
@@ -236,14 +236,14 @@ hash_desc_get(const char *hash_name)
 
 	assert(hash_name != 0);
 	
-	for ( i = 0; i < ARRAY_SIZE(desc_tbl); i++ ) {
-		if (strcmp(hash_name, desc_tbl[i].name) == 0) {
-			return &desc_tbl[i];
+	for ( i = 0; i < ARRAY_SIZE(hash_desc_tbl); i++ ) {
+		if (strcmp(hash_name, hash_desc_tbl[i].name) == 0) {
+			return &hash_desc_tbl[i];
 		}
 	}
 
 	return FALSE;
-}
+}*/
 /*
 int 
 prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)

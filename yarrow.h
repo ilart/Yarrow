@@ -3,7 +3,6 @@
 
 #include "entropy_pool.h"
 #include "hash_desc.h"
-#include "prng.h"
 #endif
 
 

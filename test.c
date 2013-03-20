@@ -4,6 +4,7 @@
 #include "prng.h"
 #include "gost.h"
 #include "common.h"
+#include "cipher_desc.h"
 #include "feed_entropy.h"
 	
 struct entropy_pool fast_pool, slow_pool;
@@ -13,12 +14,11 @@ int main(int argc, char **argv)
 {
 	extern add_to_fast[MAXSOURCES];
 	int res, i, fd;
-//int add_to_fast[MAXSOURCES];
 	size_t size = 512;
 	int buf_random[512];
 	double tmp;
 	struct prng_context prng;
-//	struct gost_context *gost_ctx;
+	
 	char buf[128];
 	//char tmp_buf[16];
 	unsigned char *tmp_s;
@@ -43,7 +43,30 @@ int main(int argc, char **argv)
 		       slow_pool.k, 
 		       slow_pool.hdesc->name);
 	printf("\n");
-	
+
+	if(prng_cipher_init(CIPHER_GOST, &prng))
+		printf("prng.cipher_name %s"
+		       "prng.cipher_len %d"
+		       "prng.cipher_key_size %d",
+		       prng.cdesc->name,
+		       prng.cdesc->block_size,
+		       prng.cdesc->key_size);
+	else {
+		printf("Error of prng_cipher_init\n");
+		return 1;
+	}
+
+	if(prng_hash_init(HASH_SHA256, &prng))
+		printf("prng.hash_name %s"
+		       "prng.digest_len %d",
+		       prng.hdesc->name,
+		       prng.hdesc->digest_len);
+				
+	else {
+		printf("Error of prng_hash_init\n");
+		return 1;
+	}
+/*
 	res = entropy_pool_length(&slow_pool);
 	printf("entropy_pool_lenght %u \n", res);
 
@@ -72,7 +95,6 @@ int main(int argc, char **argv)
 	res = entropy_pool_set_threshold(&slow_pool, 0, 181.0);	
 	if (res == 0)
                 printf("entropy_pool_set_threshold in slow %f\n", slow_pool.threshold[0]);
-	
 	
 	tmp = entropy_pool_get_threshold(&fast_pool, 0);	
 	if (tmp != 0)
@@ -112,7 +134,7 @@ int main(int argc, char **argv)
 	feed_entropy(0, buf+32, 16, 0.5, &prng);
 	feed_entropy(0, buf+48, 16, 0.5, &prng);
 		
-	/*
+*/	/*
 	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
 	if (res == 0)
 		printf("pool.estimate add %f \n", 
@@ -138,21 +160,21 @@ int main(int argc, char **argv)
 	for (i = 0; i < ARRAY_SIZE(prng.counter); i++) {
 		printf("%u ", prng.counter[i]);
 	}
-*/
+*//*
 	prng_encrypt(&prng, buf_random, &size);	
 	printf("\nrandom values\n");
 	for (i = 0; i < 512/4; i++) {
 		printf(" %d, ", buf_random[i]);
 	}
-
+*/
 /*	res = entropy_pool_is_thresholded(&fast_pool);
 	printf("thresholded = %d \n", res);
-*/
+
 	printf("\ndigest_len %d\n", fast_pool.hdesc->digest_len);	
 	
 	tmp_s = entropy_pool_bytes(&slow_pool);
 	printf("slow_pool_byts %s \n", tmp_s);
-
+*/
 	entropy_pool_clean(&fast_pool);
 	printf("entropy_pool_clean %s", fast_pool.buffer);
 
