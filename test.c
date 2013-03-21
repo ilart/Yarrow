@@ -36,8 +36,8 @@ int main(int argc, char **argv)
 
 	res = entropy_pool_init(&slow_pool, 17, HASH_SHA256);
 	if (res == 0)
-		printf("slow_pool.nsoursec  %d"
-		       "slow_pool.k %d" 
+		printf("slow_pool.nsoursec  %d "
+		       "slow_pool.k %d " 
 		       "slow_pool.hdesc->name %s \n", 
 		       slow_pool.nsources, 
 		       slow_pool.k, 
@@ -45,9 +45,9 @@ int main(int argc, char **argv)
 	printf("\n");
 
 	if(prng_cipher_init(CIPHER_GOST, &prng))
-		printf("prng.cipher_name %s"
-		       "prng.cipher_len %d"
-		       "prng.cipher_key_size %d",
+		printf("prng.cipher_name %s "
+		       "prng.cipher_len %d "
+		       "prng.cipher_key_size %d \n",
 		       prng.cdesc->name,
 		       prng.cdesc->block_size,
 		       prng.cdesc->key_size);
@@ -55,10 +55,12 @@ int main(int argc, char **argv)
 		printf("Error of prng_cipher_init\n");
 		return 1;
 	}
+	
+	prng.cipher_ctx = prng.cdesc->context_new();
 
 	if(prng_hash_init(HASH_SHA256, &prng))
-		printf("prng.hash_name %s"
-		       "prng.digest_len %d",
+		printf("prng.hash_name %s "
+		       "prng.digest_len %d \n",
 		       prng.hdesc->name,
 		       prng.hdesc->digest_len);
 				
@@ -66,18 +68,17 @@ int main(int argc, char **argv)
 		printf("Error of prng_hash_init\n");
 		return 1;
 	}
-/*
+
 	res = entropy_pool_length(&slow_pool);
 	printf("entropy_pool_lenght %u \n", res);
 
 	res = entropy_pool_set_nsources(&fast_pool, 15);
 	if (res == 0)
-	        printf("entropy_pool_set_nsources %d\n", fast_pool.nsources);
+	        printf("entropy_pool_set_nsources %d \n", fast_pool.nsources);
 
 	res = entropy_pool_get_nsources(&fast_pool);
 	if (res != 0)
-                printf("\n entropy_pool_get_nsources %d\n", res);
-	printf("\n");
+                printf("entropy_pool_get_nsources %d\n", res);
 	
 	res = entropy_pool_set_k(&fast_pool, 1);
 	if (res == 0)
@@ -134,7 +135,7 @@ int main(int argc, char **argv)
 	feed_entropy(0, buf+32, 16, 0.5, &prng);
 	feed_entropy(0, buf+48, 16, 0.5, &prng);
 		
-*/	/*
+
 	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
 	if (res == 0)
 		printf("pool.estimate add %f \n", 
@@ -148,8 +149,7 @@ int main(int argc, char **argv)
 
 	res = entropy_pool_get_nsources(&fast_pool);
 
-	gost_ctx = gost_context_new();
-	prng_reseed(&prng, &fast_pool, 10);
+//	prng_reseed(&prng, &fast_pool, 10);
 
 	printf("\n key after reseed \n");
 	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
@@ -160,21 +160,21 @@ int main(int argc, char **argv)
 	for (i = 0; i < ARRAY_SIZE(prng.counter); i++) {
 		printf("%u ", prng.counter[i]);
 	}
-*//*
+
 	prng_encrypt(&prng, buf_random, &size);	
 	printf("\nrandom values\n");
 	for (i = 0; i < 512/4; i++) {
 		printf(" %d, ", buf_random[i]);
 	}
-*/
-/*	res = entropy_pool_is_thresholded(&fast_pool);
+
+	res = entropy_pool_is_thresholded(&fast_pool);
 	printf("thresholded = %d \n", res);
 
 	printf("\ndigest_len %d\n", fast_pool.hdesc->digest_len);	
 	
 	tmp_s = entropy_pool_bytes(&slow_pool);
 	printf("slow_pool_byts %s \n", tmp_s);
-*/
+
 	entropy_pool_clean(&fast_pool);
 	printf("entropy_pool_clean %s", fast_pool.buffer);
 

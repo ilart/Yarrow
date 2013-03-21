@@ -2,8 +2,8 @@ CC = gcc
 CFLAGS = -Wall -O2 -fomit-frame-pointer -ggdb -D_GNU_SOURCE -D_XOPEN_SOUCE=600
 #CFLAGS = -Wall -O0 -D_GNU_SOURCE -D_XOPEN_SOURCE=600
 #CFLAGS = -Wall -mtune=k8 -march=k8 -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOURCE=600
-objects = test.o yarrow.o md5.o sha1.o sha256.o gost.o feed_entropy.o prng.o cipher_desc.o
-sources = test.c yarrow.c md5.c sha1.c sha256.c gost.c feed_entropy.c prng.c cipher_desc.h
+objects = test.o yarrow.o md5.o sha1.o sha256.o gost.o feed_entropy.o prng.o cipher_desc.o hash_desc.o
+sources = test.c yarrow.c md5.c sha1.c sha256.c gost.c feed_entropy.c prng.c cipher_desc.h hash_desc.h
 #headers = yarrow.h  
 binaries = test 
 
@@ -35,10 +35,12 @@ gost.o: gost.c gost.h macros.h common.h
 prng.o: prng.c prng.h  hash_desc.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-cipher.o: cipher_desc.c cipher_desc.h
+cipher_desc.o: cipher_desc.c cipher_desc.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-	
+hash_desc.o: hash_desc.c hash_desc.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 #%.o : %.c
 #	$(CC) $(CFLAGS) -c -o $@ $<
 

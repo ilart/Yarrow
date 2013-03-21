@@ -22,18 +22,19 @@
 #include <endian.h>
 
 #include "sha1.h"
-
+#include "common.h"
+#include "macros.h"
 #define BE32_FROM_PTR(ptr) \
-	((((uint8_t *)(ptr))[0]) << 24 | (((uint8_t *)(ptr))[1]) << 16 | \
- 	 (((uint8_t *)(ptr))[2]) << 8 | (((uint8_t *)(ptr))[3]))
+	((((u_int8_t *)(ptr))[0]) << 24 | (((u_int8_t *)(ptr))[1]) << 16 | \
+ 	 (((u_int8_t *)(ptr))[2]) << 8 | (((u_int8_t *)(ptr))[3]))
 
 /* Rotate 32-bit word left. */
 #define ROL32(x, n) \
-	((((uint32_t)(x)) << (n)) | (((uint32_t)(x)) >> (32-(n))))
+	((((u_int32_t)(x)) << (n)) | (((u_int32_t)(x)) >> (32-(n))))
 
 /* Rotate 32-bit word right. */
 #define ROR32(x, n) \
-	((((uint32_t)(x)) >> (n)) | (((uint32_t)(x)) << (32-(n))))
+	((((u_int32_t)(x)) >> (n)) | (((u_int32_t)(x)) << (32-(n))))
 
 #define T0(b, c, d)	(((b) & (c)) | (~(b) & (d)))
 #define T1(b, c, d)	((b) ^ (c) ^ (d))
@@ -41,7 +42,7 @@
 
 #define AA(a, b, c, d, e, W) \
 { \
-	uint32_t tmp; \
+	u_int32_t tmp; \
 	tmp = ROL32(a, 5) + T0(b, c, d) + e + 0x5a827999 + W; \
 	e = d; \
 	d = c; \
@@ -52,7 +53,7 @@
 
 #define BB(a, b, c, d, e, W) \
 { \
-	uint32_t tmp; \
+	u_int32_t tmp; \
 	tmp = ROL32(a, 5) + T1(b, c, d) + e + 0x6ed9eba1 + W; \
 	e = d; \
 	d = c; \
@@ -63,7 +64,7 @@
 
 #define CC(a, b, c, d, e, W) \
 { \
-	uint32_t tmp; \
+	u_int32_t tmp; \
 	tmp = ROL32(a, 5) + T2(b, c, d) + e + 0x8f1bbcdc + W; \
 	e = d; \
 	d = c; \
@@ -74,7 +75,7 @@
 
 #define DD(a, b, c, d, e, W) \
 { \
-	uint32_t tmp; \
+	u_int32_t tmp; \
 	tmp = ROL32(a, 5) + T1(b, c, d) + e + 0xca62c1d6 + W; \
 	e = d; \
 	d = c; \
@@ -84,10 +85,10 @@
 }
 
 void
-sha1_hash(uint32_t s[8], const unsigned char buffer[64])
+sha1_hash(u_int32_t s[8], const unsigned char buffer[64])
 {
-	uint32_t W[80];
-	uint32_t a, b, c, d, e;
+	u_int32_t W[80];
+	u_int32_t a, b, c, d, e;
 
 	W[ 0] = BE32_FROM_PTR(buffer);
 	W[ 1] = BE32_FROM_PTR(buffer + 4);
@@ -346,8 +347,8 @@ sha1_final(struct sha1_context *ctx, unsigned char digest[20])
 {
 	static const unsigned char pad[64] = { 0x80, 0x0 };
 	unsigned int n, npad;
-	uint32_t nbits[2];
-	uint8_t nb[8];
+	u_int32_t nbits[2];
+	u_int8_t nb[8];
 
 	n = ctx->count[0] & 0x3f;
 	npad = ((n < 56) ? 56: 120) - n; 

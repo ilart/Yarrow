@@ -21,22 +21,23 @@ struct cipher_desc {
 
 	int block_size;
 
-	/* size of key in byts*/
-	int key_size; 		 
+	/*key size in bytes*/
+	int key_size;
+
 	/* function of creat context*/
 	void *(*context_new)();
 
 	/* function of encrypt */
 	void (*encrypt)(void *ctx, void *block);
 
-	/* function set key into context ctx*/
-	void (*set_key)(void *ctx, void *key);
-
 	/* function of decrypt*/
 	void (*decrypt)(void *ctx, void *block);
 
 	/* fuction deinit context*/
 	void (*context_free)(void **ctx);
+
+	/* function set key into context ctx*/
+	void (*set_key)(void *ctx, void *key);
 };
 
 struct cipher_desc *cipher_desc_get(const char *cipher_name);

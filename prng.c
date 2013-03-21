@@ -14,7 +14,8 @@
 struct cipher_desc cipher_desc_tbl[] = {
 	{ 
   	  CIPHER_GOST,
- 	  GOST_BLOCK_LEN, 
+ 	  GOST_BLOCK_LEN,
+	  GOST_KEY_NELEMS,
  	  NEW_CONTEXT(gost_context_new),
   	  ENCRYPT(gost_encrypt_32z),
   	  DECRYPT(gost_decrypt_32r),

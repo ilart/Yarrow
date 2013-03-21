@@ -3,6 +3,8 @@
 #include "sha256.h"
 #include <unistd.h>
 #include <stdint.h>
+#include "macros.h"
+#include "common.h"
 #ifndef _HASH_H
 #define _HASH_H
 
