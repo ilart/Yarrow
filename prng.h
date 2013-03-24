@@ -29,6 +29,8 @@ struct prng_context {
 
 	union _hash_ctx hash_ctx;
 	u_int32_t counter[COUNTER_SIZE]; 
+
+	char random_storage[512];
 };
 
 int prng_reseed(struct prng_context *prng, const struct entropy_pool *pool);

@@ -4,6 +4,7 @@
 typedef struct {
 	tok_id id;
 	char *name;
+	int nline;
 } attribute_table;
 
 attribute_table attr[] = { 
