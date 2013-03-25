@@ -10,20 +10,29 @@
 #define ATT_NSOURCES 6
 #define ATT_K 5
 
-typedef struct {
-	int id;
-	char *name;
-} attribute_table;
+typedef enum {
+	PrngCipher, PrngHash,
+	EntropyHash, 
+	TimeParam, GateParam,
+	Nsources,
+	K
+} ServerOpCode
 
 static const char	*program_name;
 
-attribute_table attr_table[] = { 
-	{ATT_PRNG_CIPHER, "prng_cipher"},
-	{ATT_PRNG_HASH, "prng_hash"},
-	{ATT_ENTROPY_HASH, "entropy_hash"},
-	{ATT_GATE, "gate"},
-	{ATT_NSOURCES, "nsources"},
-	{ATT_K, "k"}
+static struct {
+	char *name;
+	ServerOpCode opcode;
+
+} attribute_table [] = { 
+
+	{"prng_cipher", PrngCipher},
+	{"prng_hash", PrngHash},
+	{"entropy_hash", EntropyHash},
+	{"time_param", TimeParam}
+	{"gate", GateParam},
+	{"nsources", Nsources},
+	{"k", K}
 };
 
 static void set_program_name(int argc, char *argv[])
@@ -43,20 +52,8 @@ static void print_used()
 	       program_name);
 }
 
-char *get_arg(char **line)
-{
-	char *old;
-
-	old = *line;
-	*line = strpbrk(*line, " \t\n=");
-	if (*line == NULL) 
-		return old;
-
-	*line[0] = '\0';
-
-	return old;
-	
-}
+#define WHITESPACE " \n\t\r"
+#define QUOTE "\""
 
 char *
 strdelim(char **s)
@@ -98,28 +95,38 @@ strdelim(char **s)
 	return (old);
 }
 
-int parce_attr(const char *path)
+
+
+int process_server_config(const char *path)
 {
 	int i, res;
 	FILE *fd;
-	char *line;
+	char *line, *arg;
 
 	line = calloc(128, 1);
 	
 	fd = fopen(path, "rw");
 	
-	while (fgets(line, sizeof(line), fd) != NULL) {
-		line = get_arg(&line);
-		printf("line = %s,\n", get_arg(&line));
-		printf("line = %s,\n", get_arg(&line));
-		printf("line = %s,\n", get_arg(&line));
-		printf("line = %s,\n", get_arg(&line));
-		/*
+	while (fgets(line, 127, fd) != NULL) {
+		
+		if ((arg = strdelim(&line)) == NULL)
+			return 0;
+		
+		printf("arg = %s,\n", arg);
+		
+		/* Ignore leading whitespace */
+		if (*arg == '\0')
+			arg = strdelim(&line);
+
+		if (!arg || !*arg || *arg == '#')
+		return 0;
+
+
 		for (i = 0; attr_table[i].name; i++) {
-			if (strcasecmp(line, attr_table[i].name) == 0) {
-				*flags 
+			if (strcasecmp(arg, attr_table[i].name) == 0) {
+				
 			}
-*/		}
+		}
 	return 0;
 }
 
@@ -146,7 +153,7 @@ int main(int argc, char **argv)
 	argv += optind;
 
 	printf("path %s \n", path);
-	res = parce_attr(path);
+	res = proccess_server_config(path);
 
 	/*when call init functions*/
 
