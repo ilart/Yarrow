@@ -16,24 +16,36 @@ typedef enum {
 	TimeParam, GateParam,
 	Nsources,
 	K
-} ServerOpCode
+} ServerOpCodes;
 
 static const char	*program_name;
 
 static struct {
 	char *name;
-	ServerOpCode opcode;
+	ServerOpCodes opcode;
 
-} attribute_table [] = { 
+} attr_table [] = { 
 
 	{"prng_cipher", PrngCipher},
 	{"prng_hash", PrngHash},
 	{"entropy_hash", EntropyHash},
-	{"time_param", TimeParam}
+	{"time_param", TimeParam},
 	{"gate", GateParam},
 	{"nsources", Nsources},
 	{"k", K}
 };
+
+typedef struct {
+	char *prng_cipher;
+	char *prng_hash;
+	char *entropy_hash;
+	int time_param;
+	int gate_param;
+	int nsources;
+	int k;
+}	Options;
+
+Options options;
 
 static void set_program_name(int argc, char *argv[])
 {
@@ -97,21 +109,23 @@ strdelim(char **s)
 
 
 
-int process_server_config(const char *path)
+int process_server_config(const char *filename)
 {
-	int i, res;
+	int i, res, value, linenum;
 	FILE *fd;
 	char *line, *arg;
+	ServerOpCodes opcode;
 
+	linenum = 1;
 	line = calloc(128, 1);
 	
-	fd = fopen(path, "rw");
+	fd = fopen(filename, "rw");
 	
 	while (fgets(line, 127, fd) != NULL) {
-		
+		linenum++;
+
 		if ((arg = strdelim(&line)) == NULL)
 			return 0;
-		
 		printf("arg = %s,\n", arg);
 		
 		/* Ignore leading whitespace */
@@ -121,12 +135,64 @@ int process_server_config(const char *path)
 		if (!arg || !*arg || *arg == '#')
 		return 0;
 
-
 		for (i = 0; attr_table[i].name; i++) {
 			if (strcasecmp(arg, attr_table[i].name) == 0) {
-				
+				opcode = attr_table[i].opcode;
 			}
 		}
+
+		switch(opcode) {
+		case PrngCipher:
+			arg = strdelim(&line);
+			options.prng_cipher = arg;
+			break;
+		case PrngHash:
+			arg = strdelim(&line);
+			options.prng_hash = arg;
+			break;
+		case EntropyHash:
+			arg = strdelim(&line);
+			options.entropy_hash = arg;
+			break;
+		case GateParam:
+			arg = strdelim(&line);
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				     filename, linenum);
+			value = atoi(arg);
+			options.gate_param = value;
+			break;
+		case TimeParam:
+			arg = strdelim(&line);
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				    filename, linenum);
+			value = atoi(arg);
+			options.time_param = value;
+			break;
+		case Nsources:
+			arg = strdelim(&line);
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				      filename, linenum);
+			value = atoi(arg);
+			options.nsources = value;
+			break;
+		case K:
+			arg = strdelim(&line);
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				      filename, linenum);
+			value = atoi(arg);
+			options.k = value;
+			break;
+		default:
+			printf("%s: line %d: mising handler for opcode %s\n", filename, linenum, arg);
+		}
+		if ((arg = strdelim(&line)) != NULL && *arg != '\0')
+			printf("%s line %d: garbage at end of line; \"%.200s\".",
+			       filename, linenum, arg);
+	}
 	return 0;
 }
 
