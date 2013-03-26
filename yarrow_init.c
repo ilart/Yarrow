@@ -1,7 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "common.h"
+#include "prng.h"
+#include "entropy_pool.h"
+#include "yarrow.h"
+#include "hash_desc.h"
+#include "macros.h"
+#include "prng.h"
+#include "gost.h"
+#include "cipher_desc.h"
+#include "feed_entropy.h"
 
 #define ATT_PRNG_CIPHER 1
 #define ATT_PRNG_HASH 2
@@ -36,9 +42,9 @@ static struct {
 };
 
 typedef struct {
-	char *prng_cipher;
-	char *prng_hash;
-	char *entropy_hash;
+	char prng_cipher[16];
+	char prng_hash[16];
+	char entropy_hash[16];
 	int time_param;
 	int gate_param;
 	int nsources;
@@ -111,22 +117,23 @@ strdelim(char **s)
 
 int process_server_config(const char *filename)
 {
-	int i, res, value, linenum;
+	int i, value, linenum;
 	FILE *fd;
-	char *line, *arg;
+	char *line, *ptr;
+	char *arg;
 	ServerOpCodes opcode;
 
 	linenum = 1;
-	line = calloc(128, 1);
+	ptr = line = calloc(128, 1);
 	
 	fd = fopen(filename, "rw");
-	
+
 	while (fgets(line, 127, fd) != NULL) {
+		printf("SIGFAULT %s \n", line);
 		linenum++;
 
 		if ((arg = strdelim(&line)) == NULL)
 			return 0;
-		printf("arg = %s,\n", arg);
 		
 		/* Ignore leading whitespace */
 		if (*arg == '\0')
@@ -140,19 +147,20 @@ int process_server_config(const char *filename)
 				opcode = attr_table[i].opcode;
 			}
 		}
-
+		
+//		printf("arg %s name %s", arg, attr_table[i].name);
 		switch(opcode) {
 		case PrngCipher:
 			arg = strdelim(&line);
-			options.prng_cipher = arg;
+			strncpy(options.prng_cipher, arg, 16);
 			break;
 		case PrngHash:
 			arg = strdelim(&line);
-			options.prng_hash = arg;
+			strncpy(options.prng_hash, arg, 16);
 			break;
 		case EntropyHash:
 			arg = strdelim(&line);
-			options.entropy_hash = arg;
+			strncpy(options.entropy_hash, arg, 16);
 			break;
 		case GateParam:
 			arg = strdelim(&line);
@@ -189,24 +197,36 @@ int process_server_config(const char *filename)
 		default:
 			printf("%s: line %d: mising handler for opcode %s\n", filename, linenum, arg);
 		}
+	
 		if ((arg = strdelim(&line)) != NULL && *arg != '\0')
 			printf("%s line %d: garbage at end of line; \"%.200s\".",
 			       filename, linenum, arg);
+		line = ptr;
+	}
+
+	free(ptr);
+
+	if(fclose(fd) != 0) {
+		printf("error of fclose\n");
+		exit(1);
 	}
 	return 0;
 }
+
+struct entropy_pool fast_pool, slow_pool;
+int add_to_fast[MAXSOURCES];
 
 int main(int argc, char **argv)
 {
 	int opt, res;
 	char *path;
+	struct prng_context prng;
 
 	set_program_name(argc, argv);
 	
 	while ((opt = getopt(argc, argv, "f:")) != -1) {
 		switch (opt) {
 		case 'f':
-			printf("flag optarg %s\n", optarg);
 			path = optarg;
 			break;
 		default: 
@@ -218,10 +238,63 @@ int main(int argc, char **argv)
 	argc -= optind;
 	argv += optind;
 
-	printf("path %s \n", path);
-	res = proccess_server_config(path);
+	
+	res = process_server_config(path);
+/*	
+	res = entropy_pool_init(&fast_pool, options.nsources, options.entropy_hash);
+	if (res == 0)
+		printf("pool.nsources %d\n"
+		       "pool.k %d\n"
+		       "pool.hdesc->name %s\n\n",
+		       fast_pool.nsources, 
+		       fast_pool.k, 
+		       fast_pool.hdesc->name);
 
-	/*when call init functions*/
+	res = entropy_pool_set_k(&fast_pool, options.k);
+	
+	res = entropy_pool_init(&slow_pool, options.nsources, options.entropy_hash);
+	if (res == 0)
+		printf("slow_pool.nsoursec %d\n"
+		       "slow_pool.k %d\n" 
+		       "slow_pool.hdesc->name %s\n\n", 
+		       slow_pool.nsources, 
+		       slow_pool.k, 
+		       slow_pool.hdesc->name);
 
-return 0;
+	if (prng_cipher_init(options.prng_cipher, &prng)) {
+		printf("prng.cipher_name %s "
+		       "prng.cipher_len %d "
+		       "prng.cipher_key_size %d \n",
+		       prng.cdesc->name,
+		       prng.cdesc->block_size,
+		       prng.cdesc->key_size);
+	} else {
+		printf("Error of prng_cipher_init\n");
+		return 1;
+	}
+
+	prng.cipher_ctx = prng.cdesc->context_new();
+
+	if (prng_hash_init(options.prng_hash, &prng)) {
+		printf("prng.hash_name %s "
+		       "prng.digest_len %d \n",
+		       prng.hdesc->name,
+		       prng.hdesc->digest_len);
+				
+	} else {
+		printf("Error of prng_hash_init\n");
+		return 1;
+	}
+
+	res = entropy_pool_deinit(&fast_pool);
+
+	if (res == 0)
+		printf ("fast_pool_hdesc %p,"
+			"pool.nsources %d "
+			"pool.k %d \n", 
+			fast_pool.hdesc, 
+			fast_pool.nsources, 
+			fast_pool.k);
+
+*/return 0;
 }

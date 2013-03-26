@@ -1,7 +1,8 @@
-ATTPRNGCIPHER gost 
-ATTPRNGHASH 0
-ATTENTROPY_HASH 1234
-ATTGATE "asf"
-ATT_NSOURCES "nsources"
-ATT_K 2
+prng_cipher gost 
+time_param 10
+Prng_hash sha256
+Entropy_hash md5
+NSOURCES 10 
+K 2
+gate 9
 

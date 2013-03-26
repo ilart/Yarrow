@@ -2,16 +2,16 @@ CC = gcc
 CFLAGS = -Wall -O2 -fomit-frame-pointer -ggdb -D_GNU_SOURCE -D_XOPEN_SOUCE=600
 #CFLAGS = -Wall -O0 -D_GNU_SOURCE -D_XOPEN_SOURCE=600
 #CFLAGS = -Wall -mtune=k8 -march=k8 -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOURCE=600
-objects = test.o yarrow.o md5.o sha1.o sha256.o gost.o feed_entropy.o prng.o cipher_desc.o hash_desc.o
-sources = test.c yarrow.c md5.c sha1.c sha256.c gost.c feed_entropy.c prng.c cipher_desc.h hash_desc.h
+objects = yarrow_init.o yarrow.o md5.o sha1.o sha256.o gost.o feed_entropy.o prng.o cipher_desc.o hash_desc.o
+sources = yarrow_init.c yarrow.c md5.c sha1.c sha256.c gost.c feed_entropy.c prng.c cipher_desc.h hash_desc.h
 #headers = yarrow.h  
-binaries = test 
+binaries = yarrow_init 
 
 .PHONY: clean
 
-all: test  
+all: yarrow_init  
 
-test: $(objects)
+yarrow_init: $(objects)
 	$(CC) $(CFLAGS) -o $@ $^
 
 yarrow.o: yarrow.c entropy_pool.h hash_desc.h
