@@ -83,7 +83,6 @@ strdelim(char **s)
 		return NULL;
 
 	old = *s;
-
 	*s = strpbrk(*s, WHITESPACE QUOTE "=");
 	if (*s == NULL)
 		return (old);
@@ -127,13 +126,16 @@ int process_server_config(const char *filename)
 	ptr = line = calloc(128, 1);
 	
 	fd = fopen(filename, "rw");
+	if (fd == 0)
+		exit(1);
 
 	while (fgets(line, 127, fd) != NULL) {
-		printf("SIGFAULT %s \n", line);
 		linenum++;
 
-		if ((arg = strdelim(&line)) == NULL)
+		if ((arg = strdelim(&line)) == NULL) {
+		//	printf("arg %s\n", arg);
 			return 0;
+		}
 		
 		/* Ignore leading whitespace */
 		if (*arg == '\0')
@@ -145,6 +147,7 @@ int process_server_config(const char *filename)
 		for (i = 0; attr_table[i].name; i++) {
 			if (strcasecmp(arg, attr_table[i].name) == 0) {
 				opcode = attr_table[i].opcode;
+				break;
 			}
 		}
 		
@@ -240,7 +243,7 @@ int main(int argc, char **argv)
 
 	
 	res = process_server_config(path);
-/*	
+	
 	res = entropy_pool_init(&fast_pool, options.nsources, options.entropy_hash);
 	if (res == 0)
 		printf("pool.nsources %d\n"
@@ -262,8 +265,8 @@ int main(int argc, char **argv)
 		       slow_pool.hdesc->name);
 
 	if (prng_cipher_init(options.prng_cipher, &prng)) {
-		printf("prng.cipher_name %s "
-		       "prng.cipher_len %d "
+		printf("prng.cipher_name %s \n"
+		       "prng.cipher_len %d \n"
 		       "prng.cipher_key_size %d \n",
 		       prng.cdesc->name,
 		       prng.cdesc->block_size,
@@ -276,8 +279,8 @@ int main(int argc, char **argv)
 	prng.cipher_ctx = prng.cdesc->context_new();
 
 	if (prng_hash_init(options.prng_hash, &prng)) {
-		printf("prng.hash_name %s "
-		       "prng.digest_len %d \n",
+		printf("prng.hash_name %s\n"
+		       "prng.digest_len %d\n",
 		       prng.hdesc->name,
 		       prng.hdesc->digest_len);
 				
@@ -289,12 +292,12 @@ int main(int argc, char **argv)
 	res = entropy_pool_deinit(&fast_pool);
 
 	if (res == 0)
-		printf ("fast_pool_hdesc %p,"
-			"pool.nsources %d "
+		printf ("fast_pool_hdesc %p\n"
+			"pool.nsources %d\n"
 			"pool.k %d \n", 
 			fast_pool.hdesc, 
 			fast_pool.nsources, 
 			fast_pool.k);
 
-*/return 0;
+return 0;
 }

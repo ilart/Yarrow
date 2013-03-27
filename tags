@@ -40,12 +40,12 @@ ARRAY_SIZE	hash/macros.h	11;"	d
 ARRAY_SIZE	libaes/macros.h	11;"	d
 ARRAY_SIZE	libgost/macros.h	12;"	d
 ARRAY_SIZE	macros.h	11;"	d
-ATT_ENTROPY_HASH	yarrow_init.c	8;"	d	file:
-ATT_GATE	yarrow_init.c	9;"	d	file:
-ATT_K	yarrow_init.c	11;"	d	file:
-ATT_NSOURCES	yarrow_init.c	10;"	d	file:
-ATT_PRNG_CIPHER	yarrow_init.c	6;"	d	file:
-ATT_PRNG_HASH	yarrow_init.c	7;"	d	file:
+ATT_ENTROPY_HASH	yarrow_init.c	14;"	d	file:
+ATT_GATE	yarrow_init.c	15;"	d	file:
+ATT_K	yarrow_init.c	17;"	d	file:
+ATT_NSOURCES	yarrow_init.c	16;"	d	file:
+ATT_PRNG_CIPHER	yarrow_init.c	12;"	d	file:
+ATT_PRNG_HASH	yarrow_init.c	13;"	d	file:
 BB	hash/mp/sha1.c	53;"	d	file:
 BB	sha1.c	54;"	d	file:
 BE32_FROM_PTR	hash/mp/sha1.c	26;"	d	file:
@@ -366,7 +366,7 @@ PRNG_GOST	prng_desc.h	7;"	d
 PRTCHAR	libaes/test.c	116;"	d	file:
 PrngCipher	yarrow_init.c	/^	PrngCipher, PrngHash,$/;"	e	enum:__anon7	file:
 PrngHash	yarrow_init.c	/^	PrngCipher, PrngHash,$/;"	e	enum:__anon7	file:
-QUOTE	yarrow_init.c	68;"	d	file:
+QUOTE	yarrow_init.c	74;"	d	file:
 R64	hash/whirlpool.c	32;"	d	file:
 RIJNDAEL_POLY	libaes/galois.c	7;"	d	file:
 ROL	hash/md5.c	26;"	d	file:
@@ -457,7 +457,7 @@ W1	hash/whirlpool.c	/^const uint64_t W1[] = {$/;"	v
 W2	hash/whirlpool.c	/^const uint64_t W2[] = {$/;"	v
 W3	hash/whirlpool.c	/^const uint64_t W3[] = {$/;"	v
 WHIRLPOOL_H_	hash/whirlpool.h	2;"	d
-WHITESPACE	yarrow_init.c	67;"	d	file:
+WHITESPACE	yarrow_init.c	73;"	d	file:
 YARROW_H_	yarrow.h	2;"	d
 _ENTROPY_POOL_H	entropy_pool.h	3;"	d
 _HASH_H	hash_desc.h	9;"	d
@@ -472,12 +472,12 @@ __LITTLE_ENDIAN	libaes/common.h	42;"	d
 __PRNG_H	prng.h	2;"	d
 __anon8::name	yarrow_init.c	/^	char *name;$/;"	m	struct:__anon8	file:	access:public
 __anon8::opcode	yarrow_init.c	/^	ServerOpCodes opcode;$/;"	m	struct:__anon8	file:	access:public
-__anon9::entropy_hash	yarrow_init.c	/^	char entropy_hash[32];$/;"	m	struct:__anon9	file:	access:public
+__anon9::entropy_hash	yarrow_init.c	/^	char entropy_hash[16];$/;"	m	struct:__anon9	file:	access:public
 __anon9::gate_param	yarrow_init.c	/^	int gate_param;$/;"	m	struct:__anon9	file:	access:public
 __anon9::k	yarrow_init.c	/^	int k;$/;"	m	struct:__anon9	file:	access:public
 __anon9::nsources	yarrow_init.c	/^	int nsources;$/;"	m	struct:__anon9	file:	access:public
-__anon9::prng_cipher	yarrow_init.c	/^	char prng_cipher[32];$/;"	m	struct:__anon9	file:	access:public
-__anon9::prng_hash	yarrow_init.c	/^	char prng_hash[32];$/;"	m	struct:__anon9	file:	access:public
+__anon9::prng_cipher	yarrow_init.c	/^	char prng_cipher[16];$/;"	m	struct:__anon9	file:	access:public
+__anon9::prng_hash	yarrow_init.c	/^	char prng_hash[16];$/;"	m	struct:__anon9	file:	access:public
 __anon9::time_param	yarrow_init.c	/^	int time_param;$/;"	m	struct:__anon9	file:	access:public
 _cipher_ctx	cipher_desc.h	/^union _cipher_ctx {$/;"	u
 _cipher_ctx::gost	cipher_desc.h	/^	struct gost_context gost; $/;"	m	union:_cipher_ctx	typeref:struct:_cipher_ctx::gost_context	access:public
@@ -506,6 +506,7 @@ add_round_key	hash/aes.c	/^add_round_key(struct aes_context *ctx, int round)$/;"
 add_round_key	hash/whirlpool.c	/^add_round_key(uint64_t state[8], uint64_t rk[8])$/;"	f	file:	signature:(uint64_t state[8], uint64_t rk[8])
 add_round_key	libaes/aes.c	/^add_round_key(struct aes_context *ctx, int round)$/;"	f	file:	signature:(struct aes_context *ctx, int round)
 add_to_fast	test.c	/^int add_to_fast[MAXSOURCES];$/;"	v
+add_to_fast	yarrow_init.c	/^int add_to_fast[MAXSOURCES];$/;"	v
 addinv	idea.c	/^addinv(u_int16_t x)$/;"	f	signature:(u_int16_t x)
 addinv	idea.h	/^u_int16_t addinv(u_int16_t x);/;"	p	signature:(u_int16_t x)
 aes_cbc	hash/aes-cbc.h	/^struct aes_cbc {$/;"	s
@@ -626,7 +627,7 @@ assert	libaes/macros.h	44;"	d
 assert	libaes/macros.h	59;"	d
 assert	macros.h	59;"	d
 attr_table	yarrow_init.c	/^} attr_table [] = { $/;"	v	typeref:struct:__anon8	file:
-binaries	Makefile	/^binaries = test $/;"	m
+binaries	Makefile	/^binaries = yarrow_init $/;"	m
 blen	libaes/aes-stream.c	/^	size_t			blen;		\/* cipher block length *\/$/;"	m	struct:aes_stream	file:	access:public
 block_size	cipher_desc.h	/^	int block_size;$/;"	m	struct:cipher_desc	access:public
 buffer	entropy_pool.h	/^	unsigned char buffer[MAXDIGEST];$/;"	m	struct:entropy_pool	access:public
@@ -678,7 +679,7 @@ emeoaep_sha256_encode	hash/mp/emeoaep.h	/^int emeoaep_sha256_encode(const void *
 encode	hash/aes-cbc.h	/^	void (*encode)(void *ctx, const void *in, void *out);$/;"	m	struct:aes_cbc	access:public
 encrypt	cipher_desc.h	/^	void (*encrypt)(void *ctx, void *block);$/;"	m	struct:cipher_desc	access:public
 encrypt	libaes/aes-stream.c	/^	aes_encrypt_func	encrypt;	\/* block cipher encryption routine *\/$/;"	m	struct:aes_stream	file:	access:public
-entropy_hash	yarrow_init.c	/^	char entropy_hash[32];$/;"	m	struct:__anon9	file:	access:public
+entropy_hash	yarrow_init.c	/^	char entropy_hash[16];$/;"	m	struct:__anon9	file:	access:public
 entropy_pool	entropy_pool.h	/^struct entropy_pool {$/;"	s
 entropy_pool::buffer	entropy_pool.h	/^	unsigned char buffer[MAXDIGEST];$/;"	m	struct:entropy_pool	access:public
 entropy_pool::estimate	entropy_pool.h	/^	float estimate[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
@@ -718,6 +719,7 @@ entropy_pool_set_threshold	yarrow.c	/^entropy_pool_set_threshold(struct entropy_
 estimate	entropy_pool.h	/^	float estimate[MAXSOURCES];$/;"	m	struct:entropy_pool	access:public
 exptab	libaes/galois.c	/^static u_int8_t exptab[256];$/;"	v	file:
 fast_pool	test.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:entropy_pool
+fast_pool	yarrow_init.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:entropy_pool
 feed_entropy	feed_entropy.c	/^feed_entropy(int source_id, void *buf, int len, double estimate, struct prng_context *prng)$/;"	f	signature:(int source_id, void *buf, int len, double estimate, struct prng_context *prng)
 feed_entropy	feed_entropy.h	/^void feed_entropy(int source_id, void *buf, int len, double estimate, struct prng_context *prng);$/;"	p	signature:(int source_id, void *buf, int len, double estimate, struct prng_context *prng)
 finalize	hash_desc.h	/^	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);$/;"	m	struct:hash_desc	access:public
@@ -1022,7 +1024,7 @@ nr	hash/aes.h	/^	int		nr;$/;"	m	struct:aes_context	access:public
 nr	libaes/aes.c	/^	int		nr;$/;"	m	struct:aes_context	file:	access:public
 nsources	entropy_pool.h	/^	int nsources;$/;"	m	struct:entropy_pool	access:public
 nsources	yarrow_init.c	/^	int nsources;$/;"	m	struct:__anon9	file:	access:public
-objects	Makefile	/^objects = test.o yarrow.o md5.o sha1.o sha256.o gost.o feed_entropy.o prng.o cipher_desc.o hash_desc.o$/;"	m
+objects	Makefile	/^objects = yarrow_init.o yarrow.o md5.o sha1.o sha256.o gost.o feed_entropy.o prng.o cipher_desc.o hash_desc.o$/;"	m
 opcode	yarrow_init.c	/^	ServerOpCodes opcode;$/;"	m	struct:__anon8	file:	access:public
 open_read_close	libaes/aescat.c	/^open_read_close(const char *file, void *buf, size_t len)$/;"	f	signature:(const char *file, void *buf, size_t len)
 open_read_close	libgost/gostcat.c	/^open_read_close(const char *file, void *buf, size_t len)$/;"	f	signature:(const char *file, void *buf, size_t len)
@@ -1042,7 +1044,7 @@ print_usage	libaes/aescat.c	/^print_usage()$/;"	f	file:
 print_usage	libgost/gostcat.c	/^print_usage()$/;"	f	file:
 print_used	yarrow_init.c	/^static void print_used()$/;"	f	file:
 print_used	yarrow_init.h	/^static void print_used();$/;"	p	signature:()
-prng_cipher	yarrow_init.c	/^	char prng_cipher[32];$/;"	m	struct:__anon9	file:	access:public
+prng_cipher	yarrow_init.c	/^	char prng_cipher[16];$/;"	m	struct:__anon9	file:	access:public
 prng_cipher_init	prng.c	/^int prng_cipher_init(const char *cipher_name, struct prng_context *prng)$/;"	f	signature:(const char *cipher_name, struct prng_context *prng)
 prng_cipher_init	prng.h	/^int prng_cipher_init(const char *cipher_name, struct prng_context *prng);$/;"	p	signature:(const char *cipher_name, struct prng_context *prng)
 prng_context	prng.h	/^struct prng_context {$/;"	s
@@ -1061,7 +1063,7 @@ prng_generator_gate	prng.c	/^void prng_generator_gate(struct prng_context *prng)
 prng_generator_gate	prng.h	/^void prng_generator_gate(struct prng_context *prng);$/;"	p	signature:(struct prng_context *prng)
 prng_get_time_param	prng.c	/^prng_get_time_param(struct prng_context *prng)$/;"	f	signature:(struct prng_context *prng)
 prng_get_time_param	prng.h	/^int prng_get_time_param(struct prng_context *prng);$/;"	p	signature:(struct prng_context *prng)
-prng_hash	yarrow_init.c	/^	char prng_hash[32];$/;"	m	struct:__anon9	file:	access:public
+prng_hash	yarrow_init.c	/^	char prng_hash[16];$/;"	m	struct:__anon9	file:	access:public
 prng_hash_init	prng.c	/^int prng_hash_init(const char *hash_name, struct prng_context *prng)$/;"	f	signature:(const char *hash_name, struct prng_context *prng)
 prng_hash_init	prng.h	/^int prng_hash_init(const char *hash_name, struct prng_context *prng);$/;"	p	signature:(const char *hash_name, struct prng_context *prng)
 prng_next	prng.c	/^void prng_next(struct prng_context *prng)$/;"	f	signature:(struct prng_context *prng)
@@ -1179,7 +1181,8 @@ sign	hash/mp/mp.h	/^	int		sign;	\/* MP_SIGN_POS or MP_SIGN_NEG *\/$/;"	m	struct:
 size_adaptor	prng.c	/^size_adaptor(unsigned char *digest, struct prng_context *prng)$/;"	f	signature:(unsigned char *digest, struct prng_context *prng)
 size_adaptor	prng.h	/^void size_adaptor(unsigned char *digest, struct prng_context *prng);$/;"	p	signature:(unsigned char *digest, struct prng_context *prng)
 slow_pool	test.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:
-sources	Makefile	/^sources = test.c yarrow.c md5.c sha1.c sha256.c gost.c feed_entropy.c prng.c cipher_desc.h hash_desc.h$/;"	m
+slow_pool	yarrow_init.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:
+sources	Makefile	/^sources = yarrow_init.c yarrow.c md5.c sha1.c sha256.c gost.c feed_entropy.c prng.c cipher_desc.h hash_desc.h$/;"	m
 state	aes.c	/^	u_int32_t	state[AES_NB];$/;"	m	struct:aes_context	file:	access:public
 state	hash/aes.h	/^	u_int32_t	state[AES_NB];$/;"	m	struct:aes_context	access:public
 state	hash/md5.h	/^	u_int32_t	state[4];	\/* state words *\/$/;"	m	struct:md5_context	access:public

@@ -1,8 +1,8 @@
-prng_cipher gost 
+prng_cipher gost
 time_param 10
 Prng_hash sha256
 Entropy_hash md5
-NSOURCES 10 
+NSOURCES 10
 K 2
 gate 9
 
