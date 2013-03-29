@@ -17,7 +17,7 @@ struct idea_context *idea_context_new();
 void idea_context_free(struct idea_context **ctx);
 void idea_set_key(struct idea_context *ctx, u_int16_t *key);
 void idea_encrypt(struct idea_context *enc, u_int16_t *block);
-void idea_decrypt(struct idea_context *dec, u_int16_t *block)
+void idea_decrypt(struct idea_context *dec, u_int16_t *block);
 
 u_int16_t mulinv(u_int16_t x);
 u_int16_t addinv(u_int16_t x);

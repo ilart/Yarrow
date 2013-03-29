@@ -13,7 +13,7 @@
 
 #include "gost.h"
 
-#include "idea.h"
+//#include "idea.h"
 
 struct prng_context {
 

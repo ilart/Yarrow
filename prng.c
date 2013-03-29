@@ -4,7 +4,7 @@
 #include "cipher_desc.h"
 #include "macros.h"
 #include "gost.h"
-#include "./libaes/aes.h"
+#include "idea.h"
 
 #define INIT(x) ((void * (*)())(x))
 #define ENCRYPT(x) ((void (*)(void *, size_t *))(x))
@@ -105,7 +105,6 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 
 	prng->cipher_ctx = prng->cdesc->context_new();
 
-	if (prng->cdesc->name == AES_128)
 	prng->cdesc->set_key(&(prng->cipher_ctx), (u_int32_t *) prng->key);
 	prng->cdesc->encrypt(&(prng->cipher_ctx), tmp);
 
