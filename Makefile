@@ -35,6 +35,6 @@ hash_desc.o: hash_desc.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 clean:
-	-rm -rf *~ *.o $(binaries)
+	rm -rf *~ *.o $(binaries)
 	make -C ./lib/ clean
 

@@ -16,3 +16,5 @@ $(crypto): $(objects)
 .c.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $^ -o $@
 
+clean:
+	rm -rf *~ *.o $(crypto)
