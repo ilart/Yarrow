@@ -6,15 +6,9 @@
 #include "macros.h"
 #include "prng.h"
 #include "gost.h"
+#include "idea.h"
 #include "cipher_desc.h"
 #include "feed_entropy.h"
-
-#define ATT_PRNG_CIPHER 1
-#define ATT_PRNG_HASH 2
-#define ATT_ENTROPY_HASH 3
-#define ATT_GATE 4
-#define ATT_NSOURCES 6
-#define ATT_K 5
 
 typedef enum {
 	PrngCipher, PrngHash,
@@ -127,14 +121,14 @@ int process_server_config(const char *filename)
 	
 	fd = fopen(filename, "rw");
 	if (fd == 0)
-		exit(1);
+		return FALSE;
 
 	while (fgets(line, 127, fd) != NULL) {
 		linenum++;
 
 		if ((arg = strdelim(&line)) == NULL) {
 		//	printf("arg %s\n", arg);
-			return 0;
+			continue;
 		}
 		
 		/* Ignore leading whitespace */
@@ -142,7 +136,7 @@ int process_server_config(const char *filename)
 			arg = strdelim(&line);
 
 		if (!arg || !*arg || *arg == '#')
-		return 0;
+		continue;
 
 		for (i = 0; attr_table[i].name; i++) {
 			if (strcasecmp(arg, attr_table[i].name) == 0) {
@@ -210,10 +204,10 @@ int process_server_config(const char *filename)
 	free(ptr);
 
 	if(fclose(fd) != 0) {
-		printf("error of fclose\n");
+//		printf("error of fclose\n");
 		exit(1);
 	}
-	return 0;
+	return TRUE;
 }
 
 struct entropy_pool fast_pool, slow_pool;
@@ -242,8 +236,9 @@ int main(int argc, char **argv)
 	argv += optind;
 
 	
-	res = process_server_config(path);
-	
+	if (process_server_config(path) != 1)
+		return 1;
+		
 	res = entropy_pool_init(&fast_pool, options.nsources, options.entropy_hash);
 	if (res == 0)
 		printf("pool.nsources %d\n"

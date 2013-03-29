@@ -13,6 +13,8 @@
 
 #include "gost.h"
 
+#include "idea.h"
+
 struct prng_context {
 
 	union _cipher_ctx *cipher_ctx;

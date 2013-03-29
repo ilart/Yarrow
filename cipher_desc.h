@@ -5,14 +5,17 @@
 #include "macros.h"
 #include "common.h"
 #include "gost.h"
-#include "aes.h"
+//#include "aes.h"
+#include "idea.h"
 
 #define CIPHER_GOST	"gost"
 #define CIPHER_AES	"aes"
+#define CIPHER_IDEA	"idea"
 
 union _cipher_ctx {
 	struct gost_context gost; 
 //	struct aes_context aes;
+	struct idea_context idea;
 };
 
 struct cipher_desc {

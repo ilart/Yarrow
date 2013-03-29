@@ -10,6 +10,7 @@
 #include <assert.h>
 
 #include "idea.h"
+//#include "macros.h"
 
 static void idea_scrambling(struct idea_context *ctx, u_int16_t *block);
 static void idea_invertkey(struct idea_context  *ctx);
@@ -17,11 +18,6 @@ static void idea_invertkey(struct idea_context  *ctx);
 static inline u_int16_t mul(u_int16_t a, u_int16_t b);
 static inline u_int16_t sum(u_int16_t a, u_int16_t b);
 
-struct idea_context 
-{
-	u_int16_t tabl_key[IDEA_ROUND_KEY_NELEMS];
-	u_int16_t key[IDEA_KEY_NELEMS];
-};
 
 struct idea_context *
 idea_context_new()
@@ -63,7 +59,7 @@ idea_context_free(struct idea_context **ctx)
 }
 
 void 
-idea_get_key(u_int16_t *key, struct idea_context *ctx)
+idea_set_key(struct idea_context *ctx, u_int16_t *key)
 {	
 	return_if_fail(ctx != NULL);
 	return_if_fail(key != NULL);

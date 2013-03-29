@@ -4,8 +4,9 @@
 #include "cipher_desc.h"
 #include "macros.h"
 #include "gost.h"
+#include "./libaes/aes.h"
 
-#define NEW_CONTEXT(x) ((void * (*)())(x))
+#define INIT(x) ((void * (*)())(x))
 #define ENCRYPT(x) ((void (*)(void *, size_t *))(x))
 #define DECRYPT(x) ((void (*)(void *, size_t *))(x))
 #define FREE_CONTEXT(x) ((void (*)(void * (*)))(x)) 
@@ -16,21 +17,21 @@ struct cipher_desc cipher_desc_tbl[] = {
   	  CIPHER_GOST,
  	  GOST_BLOCK_LEN,
 	  GOST_KEY_NELEMS,
- 	  NEW_CONTEXT(gost_context_new),
+ 	  INIT(gost_context_new),
   	  ENCRYPT(gost_encrypt_32z),
   	  DECRYPT(gost_decrypt_32r),
 	  FREE_CONTEXT(gost_context_free),
 	  SET_KEY(gost_set_key)
   	},
-//	{
-//	  CIPHER_AES, 
-//	  AES_BLOCK_NBYTES,
-//	  NEW_CONTEXT(aes_context_new),
-//	  ENCRYPT(aes_encrypt),
-//	  DECRYPT(des_encrypt),
-//	  FREE_CONTEXT(aes_context_free),
-//	  SET_KEY(aes_set_key)
-//	},
+	{
+	  CIPHER_IDEA, 
+	  IDEA_BLOCK_NBYTES,
+	  INIT(idea_context_new),
+	  ENCRYPT(idea_encrypt),
+	  DECRYPT(idea_decrypt),
+	  FREE_CONTEXT(idea_context_free),
+	  SET_KEY(idea_set_key)
+	}
 };
 
 int 
@@ -104,6 +105,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 
 	prng->cipher_ctx = prng->cdesc->context_new();
 
+	if (prng->cdesc->name == AES_128)
 	prng->cdesc->set_key(&(prng->cipher_ctx), (u_int32_t *) prng->key);
 	prng->cdesc->encrypt(&(prng->cipher_ctx), tmp);
 

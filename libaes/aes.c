@@ -394,6 +394,10 @@ aes_set_key(struct aes_context *ctx, const void *key, aes_key_len_t klen)
 {
 	int nr, nbytes;
 
+//	aes_key_len_t klen;
+
+//	klen = AES_KLEN;
+
 	return_val_if_fail(ctx != NULL, -1);
 
 	switch (klen) {
