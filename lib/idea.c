@@ -7,10 +7,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <assert.h>
 
 #include "idea.h"
-//#include "macros.h"
+#include "macros.h"
 
 static void idea_scrambling(struct idea_context *ctx, u_int16_t *block);
 static void idea_invertkey(struct idea_context  *ctx);

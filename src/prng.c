@@ -4,6 +4,7 @@
 #include "cipher_desc.h"
 #include "macros.h"
 #include "gost.h"
+#include "assert.h"
 #include "idea.h"
 
 #define INIT(x) ((void * (*)())(x))
@@ -26,6 +27,7 @@ struct cipher_desc cipher_desc_tbl[] = {
 	{
 	  CIPHER_IDEA, 
 	  IDEA_BLOCK_NBYTES,
+	  IDEA_KEY_NELEMS,
 	  INIT(idea_context_new),
 	  ENCRYPT(idea_encrypt),
 	  DECRYPT(idea_decrypt),
