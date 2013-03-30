@@ -79,9 +79,9 @@ entropy_pool_add(struct entropy_pool *pool,
 	float nbits;
 	assert( pool != NULL && source_id >= 0 && buf != NULL);
 
-	printf("Debug pool_nsources = %d "
-	       "source_id %d "
-	       "buf %p "
+	printf("Debug pool_nsources = %d \n"
+	       "source_id %d \n"
+	       "buf %p \n"
 	       "pool %p \n ", pool->nsources, source_id, buf, pool);
 
 	if (source_id >= pool->nsources)

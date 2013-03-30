@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define MD5_DIGEST_LEN 64
+#define MD5_DIGEST_LEN 16 
 
 struct md5_context {
 	uint32_t	nbits[2];	/* message size (in bits) */

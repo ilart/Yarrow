@@ -187,24 +187,29 @@ void prng_next(struct prng_context *prng)
 void 
 size_adaptor(unsigned char *digest, struct prng_context *prng)
 {
-	unsigned char tmp[prng->time_param][16];
-	int i, k;
+	unsigned char **tmp;
+	int i, k, len;
 	char *p;
 
+	len = prng->cdesc->key_size;
+	*tmp = calloc(prng->time_param, len);
+
 	p = (char *) prng->key;
-	memcpy(tmp[0], digest, 16);	
+	memcpy(tmp[0], digest, len);	
 
 	for (i = 1; i < prng->time_param; i++) {
 		prng->hdesc->init(&prng->hash_ctx);
 		for (k = 0; k < i; k++) {
-			prng->hdesc->update(&prng->hash_ctx, tmp[k], 16);
+			prng->hdesc->update(&prng->hash_ctx, tmp[k], len);
 		}
 		prng->hdesc->finalize(&prng->hash_ctx, tmp[i]);
 	}
-	for (i = 0; i < sizeof(prng->key)/16; i++) {
-		memcpy(p+i*16, tmp[prng->time_param-i-1], 16);
+	for (i = 0; i < sizeof(prng->key)/len; i++) {
+		memcpy(p+i*len, tmp[prng->time_param-i-1], len);
 
 	}
+	
+	free(tmp);
 }
 
 int

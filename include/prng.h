@@ -5,6 +5,8 @@
 
 #define COUNTER_SIZE	2
 
+#define MIN_TIME_PARAM 16
+
 #include "hash_desc.h"
 
 #include "entropy_pool.h"

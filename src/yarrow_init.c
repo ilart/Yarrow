@@ -164,6 +164,7 @@ int process_server_config(const char *filename)
 			if (!arg || *arg == '\0')
 				printf("%s line %d: missing integer value.",
 				     filename, linenum);
+			
 			value = atoi(arg);
 			options.gate_param = value;
 			break;
@@ -172,7 +173,10 @@ int process_server_config(const char *filename)
 			if (!arg || *arg == '\0')
 				printf("%s line %d: missing integer value.",
 				    filename, linenum);
+			
 			value = atoi(arg);
+			if (value < MIN_TIME_PARAM)
+				value = MIN_TIME_PARAM;
 			options.time_param = value;
 			break;
 		case Nsources:
@@ -180,6 +184,7 @@ int process_server_config(const char *filename)
 			if (!arg || *arg == '\0')
 				printf("%s line %d: missing integer value.",
 				      filename, linenum);
+			
 			value = atoi(arg);
 			options.nsources = value;
 			break;
@@ -188,6 +193,7 @@ int process_server_config(const char *filename)
 			if (!arg || *arg == '\0')
 				printf("%s line %d: missing integer value.",
 				      filename, linenum);
+			
 			value = atoi(arg);
 			options.k = value;
 			break;
@@ -215,10 +221,16 @@ int add_to_fast[MAXSOURCES];
 
 int main(int argc, char **argv)
 {
-	int opt, res;
+	int opt, res, i, fd;
+//	size_t size = 512;
+//	int buf_random[512];
+//	char buf[128];
+//	double treshd;
+//	unsigned char *tmp_s;
 	char *path;
 	struct prng_context prng;
 
+	memset(add_to_fast, 0, sizeof(add_to_fast));
 	set_program_name(argc, argv);
 	
 	while ((opt = getopt(argc, argv, "f:")) != -1) {

@@ -6,7 +6,7 @@ cipher_desc_get(const char *cipher_name)
 {
 	int i;
 
-	extern struct cipher_desc cipher_desc_tbl[1];
+	extern struct cipher_desc cipher_desc_tbl[2];
 	assert(cipher_name != 0);
 	
 	for ( i = 0; i < ARRAY_SIZE(cipher_desc_tbl); i++ ) {

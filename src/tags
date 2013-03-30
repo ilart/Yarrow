@@ -1,0 +1,89 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BUFFER_SZ	yarrow.c	13;"	d	file:
+DECRYPT	prng.c	12;"	d	file:
+DEFAULT_K	yarrow.c	12;"	d	file:
+ENCRYPT	prng.c	11;"	d	file:
+EntropyHash	yarrow_init.c	/^	EntropyHash, $/;"	e	enum:__anon1	file:
+FREE_CONTEXT	prng.c	13;"	d	file:
+GateParam	yarrow_init.c	/^	TimeParam, GateParam,$/;"	e	enum:__anon1	file:
+HASH_FINAL	yarrow.c	17;"	d	file:
+HASH_INIT	yarrow.c	15;"	d	file:
+HASH_UPDATE	yarrow.c	16;"	d	file:
+INIT	prng.c	10;"	d	file:
+K	yarrow_init.c	/^	K$/;"	e	enum:__anon1	file:
+Nsources	yarrow_init.c	/^	Nsources,$/;"	e	enum:__anon1	file:
+Options	yarrow_init.c	/^}	Options;$/;"	t	typeref:struct:__anon3	file:
+PrngCipher	yarrow_init.c	/^	PrngCipher, PrngHash,$/;"	e	enum:__anon1	file:
+PrngHash	yarrow_init.c	/^	PrngCipher, PrngHash,$/;"	e	enum:__anon1	file:
+QUOTE	yarrow_init.c	68;"	d	file:
+SET_KEY	prng.c	14;"	d	file:
+ServerOpCodes	yarrow_init.c	/^} ServerOpCodes;$/;"	t	typeref:enum:__anon1	file:
+TimeParam	yarrow_init.c	/^	TimeParam, GateParam,$/;"	e	enum:__anon1	file:
+WHITESPACE	yarrow_init.c	67;"	d	file:
+__anon2::name	yarrow_init.c	/^	char *name;$/;"	m	struct:__anon2	file:	access:public
+__anon2::opcode	yarrow_init.c	/^	ServerOpCodes opcode;$/;"	m	struct:__anon2	file:	access:public
+__anon3::entropy_hash	yarrow_init.c	/^	char entropy_hash[16];$/;"	m	struct:__anon3	file:	access:public
+__anon3::gate_param	yarrow_init.c	/^	int gate_param;$/;"	m	struct:__anon3	file:	access:public
+__anon3::k	yarrow_init.c	/^	int k;$/;"	m	struct:__anon3	file:	access:public
+__anon3::nsources	yarrow_init.c	/^	int nsources;$/;"	m	struct:__anon3	file:	access:public
+__anon3::prng_cipher	yarrow_init.c	/^	char prng_cipher[16];$/;"	m	struct:__anon3	file:	access:public
+__anon3::prng_hash	yarrow_init.c	/^	char prng_hash[16];$/;"	m	struct:__anon3	file:	access:public
+__anon3::time_param	yarrow_init.c	/^	int time_param;$/;"	m	struct:__anon3	file:	access:public
+add_to_fast	test.c	/^int add_to_fast[MAXSOURCES];$/;"	v
+add_to_fast	yarrow_init.c	/^int add_to_fast[MAXSOURCES];$/;"	v
+attr_table	yarrow_init.c	/^} attr_table [] = { $/;"	v	typeref:struct:__anon2	file:
+cipher_desc_get	cipher_desc.c	/^cipher_desc_get(const char *cipher_name)$/;"	f	signature:(const char *cipher_name)
+cipher_desc_tbl	prng.c	/^struct cipher_desc cipher_desc_tbl[] = {$/;"	v	typeref:struct:cipher_desc
+entropy_hash	yarrow_init.c	/^	char entropy_hash[16];$/;"	m	struct:__anon3	file:	access:public
+entropy_pool_add	yarrow.c	/^entropy_pool_add(struct entropy_pool *pool,$/;"	f	signature:(struct entropy_pool *pool, int source_id, const void *buf, size_t len, double estimate)
+entropy_pool_bytes	yarrow.c	/^entropy_pool_bytes(const struct entropy_pool *pool)$/;"	f	signature:(const struct entropy_pool *pool)
+entropy_pool_clean	yarrow.c	/^entropy_pool_clean(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_deinit	yarrow.c	/^entropy_pool_deinit(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_feed_to	yarrow.c	/^entropy_pool_feed_to(struct entropy_pool *dst, struct entropy_pool *src)$/;"	f	signature:(struct entropy_pool *dst, struct entropy_pool *src)
+entropy_pool_get_k	yarrow.c	/^entropy_pool_get_k(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_get_nsources	yarrow.c	/^entropy_pool_get_nsources(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_get_threshold	yarrow.c	/^entropy_pool_get_threshold(struct entropy_pool *pool, int source_id)$/;"	f	signature:(struct entropy_pool *pool, int source_id)
+entropy_pool_init	yarrow.c	/^entropy_pool_init(struct entropy_pool *pool,$/;"	f	signature:(struct entropy_pool *pool, int nsources, const char *hash_name)
+entropy_pool_is_thresholded	yarrow.c	/^entropy_pool_is_thresholded(struct entropy_pool *pool)$/;"	f	signature:(struct entropy_pool *pool)
+entropy_pool_length	yarrow.c	/^entropy_pool_length(const struct entropy_pool *pool)$/;"	f	signature:(const struct entropy_pool *pool)
+entropy_pool_set_k	yarrow.c	/^entropy_pool_set_k(struct entropy_pool *pool, int k)$/;"	f	signature:(struct entropy_pool *pool, int k)
+entropy_pool_set_nsources	yarrow.c	/^entropy_pool_set_nsources(struct entropy_pool *pool, int nsources)$/;"	f	signature:(struct entropy_pool *pool, int nsources)
+entropy_pool_set_threshold	yarrow.c	/^entropy_pool_set_threshold(struct entropy_pool *pool, int source_id, double threshold)$/;"	f	signature:(struct entropy_pool *pool, int source_id, double threshold)
+fast_pool	test.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:entropy_pool
+fast_pool	yarrow_init.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:entropy_pool
+feed_entropy	feed_entropy.c	/^feed_entropy(int source_id, void *buf, int len, double estimate, struct prng_context *prng)$/;"	f	signature:(int source_id, void *buf, int len, double estimate, struct prng_context *prng)
+gate_param	yarrow_init.c	/^	int gate_param;$/;"	m	struct:__anon3	file:	access:public
+hash_desc_get	hash_desc.c	/^hash_desc_get(const char *hash_name)$/;"	f	signature:(const char *hash_name)
+hash_desc_tbl	yarrow.c	/^struct hash_desc hash_desc_tbl[] = {$/;"	v	typeref:struct:hash_desc
+k	yarrow_init.c	/^	int k;$/;"	m	struct:__anon3	file:	access:public
+main	test.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+main	yarrow_init.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+name	yarrow_init.c	/^	char *name;$/;"	m	struct:__anon2	file:	access:public
+nsources	yarrow_init.c	/^	int nsources;$/;"	m	struct:__anon3	file:	access:public
+opcode	yarrow_init.c	/^	ServerOpCodes opcode;$/;"	m	struct:__anon2	file:	access:public
+options	yarrow_init.c	/^Options options;$/;"	v
+print_used	yarrow_init.c	/^static void print_used()$/;"	f	file:
+prng_cipher	yarrow_init.c	/^	char prng_cipher[16];$/;"	m	struct:__anon3	file:	access:public
+prng_cipher_init	prng.c	/^int prng_cipher_init(const char *cipher_name, struct prng_context *prng)$/;"	f	signature:(const char *cipher_name, struct prng_context *prng)
+prng_encrypt	prng.c	/^void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)$/;"	f	signature:(struct prng_context *prng, void *buf, size_t *size)
+prng_generator_gate	prng.c	/^void prng_generator_gate(struct prng_context *prng)$/;"	f	signature:(struct prng_context *prng)
+prng_get_time_param	prng.c	/^prng_get_time_param(struct prng_context *prng)$/;"	f	signature:(struct prng_context *prng)
+prng_hash	yarrow_init.c	/^	char prng_hash[16];$/;"	m	struct:__anon3	file:	access:public
+prng_hash_init	prng.c	/^int prng_hash_init(const char *hash_name, struct prng_context *prng)$/;"	f	signature:(const char *hash_name, struct prng_context *prng)
+prng_next	prng.c	/^void prng_next(struct prng_context *prng)$/;"	f	signature:(struct prng_context *prng)
+prng_reseed	prng.c	/^prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)$/;"	f	signature:(struct prng_context *prng, const struct entropy_pool *pool)
+prng_set_time_param	prng.c	/^prng_set_time_param(struct prng_context *prng, int time_param)$/;"	f	signature:(struct prng_context *prng, int time_param)
+process_server_config	yarrow_init.c	/^int process_server_config(const char *filename)$/;"	f	signature:(const char *filename)
+program_name	yarrow_init.c	/^static const char	*program_name;$/;"	v	file:
+reseed_prng	reseed_prng.c	/^reseed_prng(:)$/;"	f	signature:(:)
+set_program_name	yarrow_init.c	/^static void set_program_name(int argc, char *argv[])$/;"	f	file:	signature:(int argc, char *argv[])
+size_adaptor	prng.c	/^size_adaptor(unsigned char *digest, struct prng_context *prng)$/;"	f	signature:(unsigned char *digest, struct prng_context *prng)
+slow_pool	test.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:
+slow_pool	yarrow_init.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:
+strdelim	yarrow_init.c	/^strdelim(char **s)$/;"	f	signature:(char **s)
+time_param	yarrow_init.c	/^	int time_param;$/;"	m	struct:__anon3	file:	access:public
