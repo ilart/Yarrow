@@ -5,7 +5,7 @@
 
 #define COUNTER_SIZE	2
 
-#define MIN_TIME_PARAM 16
+#define MIN_TIME_PARAM 2 
 
 #include "hash_desc.h"
 
