@@ -107,8 +107,8 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 
 	prng->cipher_ctx = prng->cdesc->context_new();
 
-	prng->cdesc->set_key(&(prng->cipher_ctx), (u_int32_t *) prng->key);
-	prng->cdesc->encrypt(&(prng->cipher_ctx), tmp);
+	prng->cdesc->set_key(prng->cipher_ctx, (u_int32_t *) prng->key);
+	prng->cdesc->encrypt(prng->cipher_ctx, tmp);
 
 	for (i = 0; i < ARRAY_SIZE(tmp); i++) {
 		prng->counter[i] = tmp[i];
@@ -133,7 +133,7 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 	ptr = (char *)buf;
 
 	while ((*size) > 0) {
-		prng->cdesc->encrypt(&(prng->cipher_ctx), tmp);
+		prng->cdesc->encrypt(prng->cipher_ctx, tmp);
 		cpy_sz = (*size < BLOCK_SIZE/8) ? *size : BLOCK_SIZE/8;
 		
 		memcpy(ptr, tmp, cpy_sz);
@@ -165,7 +165,7 @@ void prng_generator_gate(struct prng_context *prng)
 	p = (char *) prng->key;
 	while (key_size > flag) {
 		
-		prng->cdesc->encrypt(&(prng->cipher_ctx), prng->counter);
+		prng->cdesc->encrypt(prng->cipher_ctx, prng->counter);
 		memcpy(p + flag, prng->counter, BLOCK_SIZE/8);
 		flag += BLOCK_SIZE/8;
 		prng_next(prng);
@@ -197,7 +197,7 @@ size_adaptor(unsigned char *digest, struct prng_context *prng)
 	tmp = calloc(prng->time_param * hash_len, 1);
 
 	p = (char *) prng->key;
-	memcpy(tmp[0], digest, hash_len);	
+	memcpy(tmp, digest, hash_len);	
 
 	for (i = 1; i < prng->time_param; i++) {
 		prng->hdesc->init(&prng->hash_ctx);
@@ -206,10 +206,10 @@ size_adaptor(unsigned char *digest, struct prng_context *prng)
 		}
 		prng->hdesc->finalize(&prng->hash_ctx, tmp + i*hash_len);
 	}
-	memcpy(p, tmp[prng->time_param - i-1], key_len);
 
 	
-	
+	memcpy(p, tmp, key_len);
+
 	free(tmp);
 }
 
