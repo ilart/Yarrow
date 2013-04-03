@@ -33,7 +33,38 @@ struct cipher_desc cipher_desc_tbl[] = {
 	  DECRYPT(idea_decrypt),
 	  FREE_CONTEXT(idea_context_free),
 	  SET_KEY(idea_set_key)
-	}
+	},
+/*	{
+	  CIPHER_AES_128,
+	  AES_BLOCK_LEN,
+	  AES_KEY_NELEMS,
+	  INIT(aes_context_new),
+	  ENCRYPT(aes_encrypt),
+	  DECRYPT(aes_decrypt),
+	  FREE_CONTEXT(aes_context_free),
+	  SET_KEY(aes_set_key_128)
+	},
+	{
+	  CIPHER_AES_192,
+	  AES_BLOCK_LEN,
+	  AES_KEY_NELEMS,
+	  INIT(aes_context_new),
+	  ENCRYPT(aes_encrypt),
+	  DECRYPT(aes_decrypt),
+	  FREE_CONTEXT(aes_context_free),
+	  SET_KEY(aes_set_key_192)
+	},
+	{
+	  CIPHER_AES_256,
+	  AES_BLOCK_LEN,
+	  AES_KEY_NELEMS,
+	  INIT(aes_context_new),
+	  ENCRYPT(aes_encrypt),
+	  DECRYPT(aes_decrypt),
+	  FREE_CONTEXT(aes_context_free),
+	  SET_KEY(aes_set_key_256)
+	},
+*/
 };
 
 int 
@@ -79,7 +110,6 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 		val[3] = (i & 0xff);
 		prng->hdesc->update(&prng->hash_ctx, val, sizeof(val));
 		prng->hdesc->finalize(&prng->hash_ctx, digest);
-//		for (m = 0; m < 16; m++) {
 //			printf(" %u", digest[m]);
 //		}
 //		printf("\n");
@@ -179,9 +209,20 @@ void prng_next(struct prng_context *prng)
 
 	assert(prng != NULL);
 
-	for (i = 0; i < ARRAY_SIZE(prng->counter); i++) {
-		prng->counter[i] += 1;
+	for (i = 0; i < ARRAY_SIZE(prng->counter) - 1; i++) {
+		if (prng->counter[i] < 2^(sizeof(prng->counter[0])*4) ) {
+			prng->counter[i] += 1;
+			return;
+		} else if (prng->counter[i] == 2^(sizeof(prng->counter[0])*4))
+			prng->counter[i] = 0; 
 	}
+	/*If all elements prng->counter == (2^32)-1 then do mod 2^n and increment */
+
+	for (i = 0; i < ARRAY_SIZE(prng->counter); i++) {
+		prng->counter[i] = 0;
+	}
+	
+	prng->counter[0] = 1;
 }
 
 void 

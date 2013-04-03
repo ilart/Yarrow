@@ -80,7 +80,6 @@ prng_reseed	prng.c	/^prng_reseed(struct prng_context *prng, const struct entropy
 prng_set_time_param	prng.c	/^prng_set_time_param(struct prng_context *prng, int time_param)$/;"	f	signature:(struct prng_context *prng, int time_param)
 process_server_config	yarrow_init.c	/^int process_server_config(const char *filename)$/;"	f	signature:(const char *filename)
 program_name	yarrow_init.c	/^static const char	*program_name;$/;"	v	file:
-reseed_prng	reseed_prng.c	/^reseed_prng(:)$/;"	f	signature:(:)
 set_program_name	yarrow_init.c	/^static void set_program_name(int argc, char *argv[])$/;"	f	file:	signature:(int argc, char *argv[])
 size_adaptor	prng.c	/^size_adaptor(unsigned char *digest, struct prng_context *prng)$/;"	f	signature:(unsigned char *digest, struct prng_context *prng)
 slow_pool	test.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:

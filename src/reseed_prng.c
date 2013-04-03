@@ -1,7 +1,0 @@
-
-int
-reseed_prng(:)
-{
-
-	
-}
