@@ -2,17 +2,14 @@
 #define __PRNG_H
 
 #define	BLOCK_SIZE	64
-
 #define COUNTER_SIZE	2
-
 #define MIN_TIME_PARAM 2 
 
+#define MASK ((1 << CHAR_BIT) - 1)
+
 #include "hash_desc.h"
-
 #include "entropy_pool.h"
-
 #include "cipher_desc.h"
-
 #include "gost.h"
 
 //#include "idea.h"

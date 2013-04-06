@@ -205,24 +205,19 @@ void prng_generator_gate(struct prng_context *prng)
 
 void prng_next(struct prng_context *prng)
 {
-	int i;
+	int i, tmp;
+	unsigned char *c;
 
 	assert(prng != NULL);
+	c = prng->counter;
 
-	for (i = 0; i < ARRAY_SIZE(prng->counter) - 1; i++) {
-		if (prng->counter[i] < 2^(sizeof(prng->counter[0])*4) ) {
-			prng->counter[i] += 1;
-			return;
-		} else if (prng->counter[i] == 2^(sizeof(prng->counter[0])*4))
-			prng->counter[i] = 0; 
-	}
-	/*If all elements prng->counter == (2^32)-1 then do mod 2^n and increment */
+	for (i = 0; i < ARRAY_SIZE(c); i++) {
+		tmp = c[i] + 1;
+		c[i] = tmp & MASK;
 
-	for (i = 0; i < ARRAY_SIZE(prng->counter); i++) {
-		prng->counter[i] = 0;
+		if (tmp <= UCHAR_MAX)
+			break;
 	}
-	
-	prng->counter[0] = 1;
 }
 
 void 

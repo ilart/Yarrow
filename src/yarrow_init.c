@@ -228,6 +228,7 @@ int main(int argc, char **argv)
 	double treshd;
 	unsigned char *tmp_s;
 	char *path;
+	FILE socket;
 	struct prng_context prng;
 
 	memset(add_to_fast, 0, sizeof(add_to_fast));
@@ -249,7 +250,7 @@ int main(int argc, char **argv)
 
 	
 	if (process_server_config(path) != 1)
-		return 1;
+		exit(1);
 		
 	res = entropy_pool_init(&fast_pool, options.nsources, options.entropy_hash);
 	if (res == 0)
@@ -280,7 +281,7 @@ int main(int argc, char **argv)
 		       prng.cdesc->key_size);
 	} else {
 		printf("Error of prng_cipher_init\n");
-		return 1;
+		exit(1);
 	}
 
 	prng.cipher_ctx = prng.cdesc->context_new();
@@ -293,7 +294,7 @@ int main(int argc, char **argv)
 				
 	} else {
 		printf("Error of prng_hash_init\n");
-		return 1;
+		exit(1);
 	}
 	
 	res = entropy_pool_set_nsources(&fast_pool, 15);
@@ -304,6 +305,15 @@ int main(int argc, char **argv)
 	if (res != 0)
                 printf("entropy_pool_get_nsources %d\n", res);
 	
+	socket = sock_unix_listen(DEFAULT_SOCK_PATH);
+	if (socket == -1) {
+		printf("Error of sock_unix_connect");
+		exit(1);
+	}
+
+	
+
+/*
 	res = entropy_pool_set_k(&fast_pool, 1);
 	if (res == 0)
 		printf("entropy_pool_set_k %d\n", fast_pool.k);
@@ -406,7 +416,7 @@ int main(int argc, char **argv)
 //	slow_pool.hdesc->finalize(&slow_pool, (void *)tmp_buf);
 //	printf("hash = %s \n", tmp_buf);
 	
-	res = entropy_pool_deinit(&fast_pool);
+*/	res = entropy_pool_deinit(&fast_pool);
 
 	if (res == 0)
 		printf ("fast_pool_hdesc %p,"

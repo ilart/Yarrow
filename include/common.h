@@ -21,6 +21,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
+#include <sys/fcntl.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <linux/un.h>
 
 #ifndef u_int8_t
   typedef uint8_t	u_int8_t;
