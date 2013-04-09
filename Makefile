@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -O2 -fomit-frame-pointer -ggdb -D_GNU_SOURCE -D_XOPEN_SOUCE=600
-objects = yarrow_init.o yarrow.o feed_entropy.o prng.o cipher_desc.o hash_desc.o
+objects = yarrow_init.o yarrow.o feed_entropy.o prng.o cipher_desc.o hash_desc.o sock-unix.o
 VPATH = ./src
 INCLUDES = -I ./include/ -I ./lib/  
 binaries = yarrow_init 
@@ -32,6 +32,9 @@ cipher_desc.o: cipher_desc.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 hash_desc.o: hash_desc.c 
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+
+sock-unix.o: sock-unix.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 clean:
