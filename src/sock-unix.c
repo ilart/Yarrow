@@ -1,3 +1,59 @@
+#include "common.h"
+#include "sock-unix.h"
+
+char *xstrncpy(char *dst, const char *src, size_t max)
+{
+	size_t len;
+
+	if (!dst || !src) {
+		perror("xstrncpy: dst or src NULL");
+		exit(1);
+	}
+
+	if (max > SSIZE_MAX) {
+		printf("xstrncpy: max %lu bytes", (unsigned long) max);
+		exit(1);
+	}
+
+	len = strnlen(src, max-1);
+	memcpy(dst, src, len);
+	dst[len] = '\0';
+
+	return dst;
+}
+
+int sock_unix_connect(const char *path)
+{
+	int res, sock, len;
+	struct sockaddr_un addr;
+
+	if (!path)
+		perror("path NULL");
+
+	printf("path %s\n", path);
+		memset(&addr, 0, sizeof(addr));
+	addr.sun_family = PF_UNIX;
+	len = strlen(path);
+	memcpy(addr.sun_path, path, len);
+	addr.sun_path[len] = '\0';
+
+	sock = socket(PF_UNIX, SOCK_STREAM, 0);
+	if (sock == -1) {
+	 	printf("sock_unix_connect: socket() '%s': %s\n", path, strerror(errno));
+		return -1;
+	}
+//	printf();
+	res = connect(sock, (struct sockaddr *)&addr, sizeof(addr));
+	if (res == -1) {
+		do {
+			res = close(sock);
+		} while (res == -1 && errno == EINTR);
+		printf("sock_unix_connect: connect() '%s': %s\n", path, strerror(errno));
+		return -1;
+	}
+	return sock;
+}
+
 /* sets nonblocking mode on socket descriptor */
 void sock_nonblock(int sock)
 {
@@ -34,9 +90,11 @@ int sock_unix_close(int sock)
 	struct sockaddr_un addr;
 	struct stat st;
 
-	if (sock < 0)
-		error("sock_unix_unlink: sock=%d", sock);
-
+	if (sock < 0) {
+		printf("sock_unix_unlink: sock=%d", sock);
+		exit(1);
+	}
+	
 	slen = sizeof(struct sockaddr_un);
 	res = getsockname(sock, (struct sockaddr *)&addr, &slen);
 	if (res) {
@@ -68,9 +126,10 @@ int sock_unix_listen(const char *path)
 	int res, sock;
 	struct sockaddr_un addr;
 
-	if (!path)
-		error("sock_unix_listen: path NULL");
-
+	if (!path) {
+		perror("sock_unix_listen: path NULL");
+		exit(1);
+	}
 	memset(&addr, 0, sizeof(addr));
 	addr.sun_family = PF_UNIX;
 	xstrncpy(addr.sun_path, path, UNIX_PATH_MAX);
@@ -89,6 +148,7 @@ int sock_unix_listen(const char *path)
 		} while (res == -1 && errno == EINTR);
 		return -1;
 	}
+	
 	res = listen(sock, 10);
 	if (res == -1) {
 		printf("sock_unix_listen: can't listen() on '%s': %s",
@@ -103,22 +163,5 @@ int sock_unix_listen(const char *path)
 		return -1;
 	}
 	return sock;
-}
-
-char *xstrncpy(char *dst, const char *src, size_t max)
-{
-	size_t len;
-
-	if (!dst || !src)
-		error("xstrncpy: dst or src NULL");
-
-	if (max > SSIZE_MAX)
-		error("xstrncpy: max %lu bytes", (unsigned long) max);
-
-	len = strnlen(src, max-1);
-	memcpy(dst, src, len);
-	dst[len] = '\0';
-
-	return dst;
 }
 

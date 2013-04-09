@@ -25,6 +25,7 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <linux/un.h>
+#include <sys/poll.h>
 
 #ifndef u_int8_t
   typedef uint8_t	u_int8_t;

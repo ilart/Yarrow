@@ -9,6 +9,8 @@
 #include "idea.h"
 #include "cipher_desc.h"
 #include "feed_entropy.h"
+#include "sock-unix.h"
+#include "yarrow_init.h"
 
 typedef enum {
 	PrngCipher, PrngHash,
@@ -216,20 +218,58 @@ int process_server_config(const char *filename)
 	return TRUE;
 }
 
+int
+parse_request(const char *buf)
+{	
+	int len, val;
+
+	len = strlen(buf);	
+	val = atoi(buf);
+	printf("Parsed request len of request %d val %d\n", len, val);
+
+	return val;
+}
+
+int 
+process(int fd)
+{	
+	int res = 0;
+	char buf[128];
+
+	while (res <= 0) {
+		res = read(fd, buf, sizeof(buf));	
+		if (res < 0) {
+			if (errno != EINTR)
+				return -1;
+		}
+		printf("Read from client in buf %s\n", buf);	
+	} 
+
+//	printf("buf %s\n", buf);	
+	res = parse_request(buf);
+
+	sprintf(buf, "I recived request of %u bytes", res);
+	res = write(fd, buf, strlen(buf));
+//	printf("buf %s res %d\n", buf, res);
+	
+	
+}
+
 struct entropy_pool fast_pool, slow_pool;
 int add_to_fast[MAXSOURCES];
 
 int main(int argc, char **argv)
 {
-	int opt, res, i, fd;
+	int socket, client_fd, opt, res, i, fd;
 	size_t size = 512;
 	int buf_random[512];
-	char buf[128];
+	char *path;
 	double treshd;
 	unsigned char *tmp_s;
-	char *path;
-	FILE socket;
 	struct prng_context prng;
+	struct pollfd events[1];
+	struct sockaddr saddr;
+	socklen_t slen;
 
 	memset(add_to_fast, 0, sizeof(add_to_fast));
 	set_program_name(argc, argv);
@@ -311,7 +351,33 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+//	sock_nonblock(socket);
+
+	slen = sizeof(saddr);
+
+	for(i = 0; i < 10; i++) {
+		int pid = fork();
+		if(pid == 0) {
+			while(1) {
+				client_fd = accept(socket, &saddr, &slen );
+				process(client_fd);
+				close(client_fd);
+			}
+		} else if (pid > 0) {
+			printf("Pid number is %d\n", pid);
+		} else {
+			perror("Fork:");
+		}
+	}
+
+	while(1) {
+		client_fd = accept(socket, &saddr, &slen );
+		process(client_fd);
+		close(client_fd);
+	}
 	
+	close(fd);
+	unlink("/var/run/yarrow.socket");
 
 /*
 	res = entropy_pool_set_k(&fast_pool, 1);
