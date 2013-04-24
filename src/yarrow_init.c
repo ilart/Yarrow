@@ -221,53 +221,157 @@ int process_server_config(const char *filename)
 int
 parse_request(const char *buf)
 {	
-	int len, val;
+	int len;
 
 	len = strlen(buf);	
-	val = atoi(buf);
-	printf("Parsed request len of request %d val %d\n", len, val);
+	if (strspn(buf, "\n")) {
+		return 1;
+	}
+	return 0;
+}
 
-	return val;
+void *
+read_fd(int fd, char *buf) 
+{
+	int res, end, left;
+	char *tmp;
+	end = 0;
+	res = 0;
+	left = LINE_MAX;
+	tmp = buf;
+
+	while (!end) { 
+		res = read(fd, buf, left);
+		printf("read %d byts: %s\n", res, buf);
+		if (res == -1)
+			perror("Error of read");
+
+		end = parse_request(buf);
+		left -= res;
+		buf += res;
+	}
+	
+	buf = tmp;
+
+	printf("Read str: %s, strlen %d from fd %d \n", buf, (int) strlen(buf),  fd);
+	return buf;
+}
+
+void
+write_fd(int fd, char *buf)
+{
+	int res;
+
+	res = write(fd, buf, LINE_MAX);
+	if (res == -1)
+		perror("Error of write");
+		
+}
+
+
+void xfree(void *ptr)
+{
+	if (ptr == NULL)
+		printf("xfree NULL pointer");
+
+	free(ptr);
+}
+
+void *xrealloc0(void *mem, size_t old_size, size_t new_size)
+{
+	void *ptr;
+
+	if (mem == NULL && old_size)
+		perror("xrealloc0 old_size != 0 on NULL memory");
+
+	if (new_size == 0 || new_size > SSIZE_MAX)
+		printf("xrealloc0 requested %lu bytes", (unsigned long) new_size);
+
+	if (mem == NULL)
+		ptr = malloc(new_size);
+	else {
+		ptr = realloc(mem, new_size);
+		printf("Realloc new_size %d old_size %d\n", (int) new_size, (int) old_size);
+	}
+	if (ptr == NULL) {
+		printf("xrealloc0 out of memory allocating %lu bytes",
+				(unsigned long) new_size);
+	}
+
+	if (new_size > old_size)
+		memset(ptr + old_size, 0, new_size - old_size);
+
+	printf("xrealloc: old ptr %p new ptr %p sizeof new %d\n", mem, ptr, (int) sizeof(ptr));
+	return ptr;
+}
+
+void 
+process_events(struct pollfd *ufds, int count) 
+{
+	int i;
+	char request_buf[LINE_MAX];
+
+//	printf("count of desc %d\n", count);
+	for(i = 0; i < count; i++) {
+		
+		if (ufds[i].revents & POLLHUP) {
+			ufds[i].fd = -1;
+			ufds[i].events = 0;
+			continue;
+
+		} else	if (ufds[i].revents & (POLLIN|POLLPRI)) {
+			read_fd(ufds[i].fd, request_buf);
+			printf("revents %d, Client send: %s\n", ufds[i].revents, request_buf);
+			//res = parse_request(request_buf);
+			//
+			//now, server echo.
+			write_fd(ufds[i].fd, request_buf);
+		}
+		if (ufds[i].revents & (POLLERR|POLLNVAL)) {
+			printf("we recived %d event from %d desc\n", ufds[i].revents, ufds[i].fd);
+			ufds[i].fd = -1;
+			ufds[i].events = 0;
+			ufds[i].revents = 0;
+		}
+
+//		printf("ufds %d event %d revent %d\n", ufds[i].fd, ufds[i].events, ufds[i].revents);
+
+		ufds[i].revents = 0;
+	}
+
 }
 
 int 
-process(int fd)
-{	
-	int res = 0;
-	char buf[128];
+find_unused_fd(struct pollfd *poll_fd, int *count)
+{
+	int i, size;
 
-	while (res <= 0) {
-		res = read(fd, buf, sizeof(buf));	
-		if (res < 0) {
-			if (errno != EINTR)
-				return -1;
-		}
-		printf("Read from client in buf %s\n", buf);	
-	} 
+	for(i = 0; i < count[0]; i++) {
+		if (poll_fd[i].fd == -1 && poll_fd[i].events == 0)
+			return i;
+	}
 
-//	printf("buf %s\n", buf);	
-	res = parse_request(buf);
-
-	sprintf(buf, "I recived request of %u bytes", res);
-	res = write(fd, buf, strlen(buf));
-//	printf("buf %s res %d\n", buf, res);
-	
-	
+	size = count[0] * sizeof(struct pollfd);
+	poll_fd = xrealloc0(poll_fd, size, size + sizeof(struct pollfd));	
+	count[0] += 1;
+	return count[0]-1;
 }
+
+
 
 struct entropy_pool fast_pool, slow_pool;
 int add_to_fast[MAXSOURCES];
 
 int main(int argc, char **argv)
 {
-	int socket, client_fd, opt, res, i, fd;
+	int server_fd, client_fd, opt, res, i, fd;
 	size_t size = 512;
 	int buf_random[512];
 	char *path;
 	double treshd;
 	unsigned char *tmp_s;
 	struct prng_context prng;
-	struct pollfd events[1];
+	struct pollfd *events;
 	struct sockaddr saddr;
 	socklen_t slen;
 
@@ -345,37 +449,65 @@ int main(int argc, char **argv)
 	if (res != 0)
                 printf("entropy_pool_get_nsources %d\n", res);
 	
-	socket = sock_unix_listen(DEFAULT_SOCK_PATH);
-	if (socket == -1) {
+	server_fd = sock_unix_listen(DEFAULT_SOCK_PATH);
+	if (server_fd == -1) {
 		printf("Error of sock_unix_connect");
 		exit(1);
 	}
 
-//	sock_nonblock(socket);
+	sock_nonblock(server_fd);
 
 	slen = sizeof(saddr);
 
-	for(i = 0; i < 10; i++) {
-		int pid = fork();
-		if(pid == 0) {
-			while(1) {
-				client_fd = accept(socket, &saddr, &slen );
-				process(client_fd);
-				close(client_fd);
-			}
-		} else if (pid > 0) {
-			printf("Pid number is %d\n", pid);
-		} else {
-			perror("Fork:");
-		}
+	events = calloc(1, sizeof(struct pollfd));
+	if (events == NULL) {
+		perror("error of calloc");
+		exit(1);
 	}
 
-	while(1) {
-		client_fd = accept(socket, &saddr, &slen );
-		process(client_fd);
-		close(client_fd);
-	}
+	nelems = 1;
+	events[0].fd = server_fd;
+	events[0].events = (POLLIN|POLLPRI);
+
+	terminated = 0;
+	i = 0;
+	client_fd = 12;
+
+	while (!terminated) {
+		res = poll(events, nelems, -1);
+		if (res >= 0) {
+			client_fd = accept(server_fd, &saddr, &slen);
+			if (client_fd > 0) {
+				idx = find_unused_fd(events, &nelems);
+				events[idx].fd = client_fd;
+				events[idx].events = (POLLIN|POLLPRI|POLLHUP|POLLERR);
+			
+				printf("we recive connect fd=%d nelems %d sizeof events %d sizeof events[1] %d \n", client_fd, nelems, (int ) sizeof(events), (int) sizeof(events[1]));
+
+				sock_nonblock(client_fd);
+				client_fd = 0;
+				if (res == 1)
+					continue;
+			} else if (client_fd == -1 && errno != EAGAIN) {
+				printf("error of accept");
+				exit(1);
+			}
+			
+			process_events(events, nelems); 
+//			printf("iter \n");
+		}
+		else {
+			perror("error of poll or timeout");
+			exit(1);	
+		}
+	}	
 	
+	close(server_fd);
+	close(client_fd);
+	unlink("/var/run/yarrow.socket");
+
+	
+
 	close(fd);
 	unlink("/var/run/yarrow.socket");
 
