@@ -8,11 +8,11 @@
 #include "feed_entropy.h"
 	
 struct entropy_pool fast_pool, slow_pool;
-int add_to_fast[MAXSOURCES];
+int add_to_fast[MAX_SOURCES];
 
 int main(int argc, char **argv)
 {
-	extern add_to_fast[MAXSOURCES];
+	extern add_to_fast[MAX_SOURCES];
 	int res, i, fd;
 	size_t size = 512;
 	int buf_random[512];

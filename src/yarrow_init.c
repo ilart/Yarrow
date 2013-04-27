@@ -17,7 +17,10 @@ typedef enum {
 	EntropyHash, 
 	TimeParam, GateParam,
 	Nsources,
-	K
+	K,
+	path,
+	estimate,
+	lenght_entropy
 } ServerOpCodes;
 
 static const char	*program_name;
@@ -34,7 +37,10 @@ static struct {
 	{"time_param", TimeParam},
 	{"gate", GateParam},
 	{"nsources", Nsources},
-	{"k", K}
+	{"k", K},
+	{"path_to_src", path},
+	{"estimate", estimate},
+	{"lenght_entropy", lenght_entropy}
 };
 
 typedef struct {
@@ -45,7 +51,11 @@ typedef struct {
 	int gate_param;
 	int nsources;
 	int k;
+	char path_to_src[MAX_SOURCES][MAX_LENGHT_NAME]; //paths to sources 
+	int estimate[MAX_SOURCES];
+	int lenght_entropy[MAX_SOURCES];
 }	Options;
+
 
 Options options;
 
@@ -112,24 +122,28 @@ strdelim(char **s)
 
 int process_server_config(const char *filename)
 {
-	int i, value, linenum;
+	int i, value, linenum, nsrc;
 	FILE *fd;
 	char *line, *ptr;
 	char *arg;
 	ServerOpCodes opcode;
 
+	nsrc = 0;
 	linenum = 1;
 	ptr = line = calloc(128, 1);
 	
 	fd = fopen(filename, "rw");
 	if (fd == 0)
 		return FALSE;
+	
+	printf("open socket\n");
 
 	while (fgets(line, 127, fd) != NULL) {
 		linenum++;
 
+
 		if ((arg = strdelim(&line)) == NULL) {
-		//	printf("arg %s\n", arg);
+			printf("arg %s\n", arg);
 			continue;
 		}
 		
@@ -147,7 +161,7 @@ int process_server_config(const char *filename)
 			}
 		}
 		
-//		printf("arg %s name %s", arg, attr_table[i].name);
+		printf("arg %s name %s\n", arg, attr_table[i].name);
 		switch(opcode) {
 		case PrngCipher:
 			arg = strdelim(&line);
@@ -199,20 +213,47 @@ int process_server_config(const char *filename)
 			value = atoi(arg);
 			options.k = value;
 			break;
+		case path:
+			nsrc++;
+			arg = strdelim(&line); 
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				      filename, linenum);
+
+			strncpy(options.path_to_src[nsrc], arg, MAX_LENGHT_NAME);
+			break;
+		case estimate:
+			arg = strdelim(&line); 
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				      filename, linenum);
+			value = atoi(arg);
+			options.estimate[nsrc-1] = value;
+			break;
+		case lenght_entropy:
+			arg = strdelim(&line); 
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				      filename, linenum);
+			value = atoi(arg);
+			options.lenght_entropy[nsrc-1] = value;
+			break;
 		default:
-			printf("%s: line %d: mising handler for opcode %s\n", filename, linenum, arg);
+			printf("%s: line %d: mising handler for opcode %s\n",
+			      filename, linenum, arg);
 		}
-	
+		
+		printf("parse end\n");
 		if ((arg = strdelim(&line)) != NULL && *arg != '\0')
 			printf("%s line %d: garbage at end of line; \"%.200s\".",
-			       filename, linenum, arg);
+			      filename, linenum, arg);
 		line = ptr;
 	}
 
 	free(ptr);
 
 	if(fclose(fd) != 0) {
-//		printf("error of fclose\n");
+		printf("error of fclose\n");
 		exit(1);
 	}
 	return TRUE;
@@ -224,7 +265,7 @@ parse_request(const char *buf)
 	int len;
 
 	len = strlen(buf);	
-	if (strspn(buf, "\n")) {
+	if (strchr(buf, '\n')) {
 		return 1;
 	}
 	return 0;
@@ -253,7 +294,8 @@ read_fd(int fd, char *buf)
 	
 	buf = tmp;
 
-	printf("Read str: %s, strlen %d from fd %d \n", buf, (int) strlen(buf),  fd);
+	printf("Read str: %s, strlen %d from fd %d \n",
+	      buf, (int) strlen(buf),  fd);
 	return buf;
 }
 
@@ -360,16 +402,12 @@ find_unused_fd(struct pollfd *poll_fd, int *count)
 
 
 struct entropy_pool fast_pool, slow_pool;
-int add_to_fast[MAXSOURCES];
+int add_to_fast[MAX_SOURCES];
 
 int main(int argc, char **argv)
 {
-	int server_fd, client_fd, opt, res, i, fd;
-	size_t size = 512;
-	int buf_random[512];
+	int server_fd, client_fd, opt, res, i, fd, nelems, terminated, idx;
 	char *path;
-	double treshd;
-	unsigned char *tmp_s;
 	struct prng_context prng;
 	struct pollfd *events;
 	struct sockaddr saddr;
@@ -378,6 +416,7 @@ int main(int argc, char **argv)
 	memset(add_to_fast, 0, sizeof(add_to_fast));
 	set_program_name(argc, argv);
 	
+	printf("getopt start\n");
 	while ((opt = getopt(argc, argv, "f:")) != -1) {
 		switch (opt) {
 		case 'f':
@@ -388,6 +427,7 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 	}
+	printf("getopt end\n");
 	
 	argc -= optind;
 	argv += optind;
@@ -395,6 +435,8 @@ int main(int argc, char **argv)
 	
 	if (process_server_config(path) != 1)
 		exit(1);
+
+	printf("process_server_config end\n");
 		
 	res = entropy_pool_init(&fast_pool, options.nsources, options.entropy_hash);
 	if (res == 0)

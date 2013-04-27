@@ -8,7 +8,7 @@
 #ifndef _HASH_H
 #define _HASH_H
 
-#define MAXDIGEST	64
+#define MAX_DIGEST	64
 
 /*
     * Well-known hash implementations and their respective names.
@@ -44,7 +44,7 @@ struct hash_desc {
 	void (*update)(void *ctx, const void *buf, size_t len);
 
 	/* finalize function outputs hash digest to `digest' */
-	void *(*finalize)(void *ctx, unsigned char digest[MAXDIGEST]);
+	void *(*finalize)(void *ctx, unsigned char digest[MAX_DIGEST]);
 
 };
 

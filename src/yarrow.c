@@ -54,7 +54,7 @@ entropy_pool_init(struct entropy_pool *pool,
 	pool->nsources = nsources;
 	pool->k = DEFAULT_K;
 
-	for (i = 0; i < MAXSOURCES; i++) {
+	for (i = 0; i < MAX_SOURCES; i++) {
 		pool->threshold[i] = 1024.0;
 		pool->estimate[i] = 0.0;
 	}

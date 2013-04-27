@@ -72,7 +72,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 {
 	
 
-	unsigned char *v0, digest[MAXDIGEST]; 
+	unsigned char *v0, digest[MAX_DIGEST]; 
 	unsigned char val[4];
 	int i, len;
 	u_int32_t tmp[2];

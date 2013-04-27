@@ -3,7 +3,7 @@
 #define _ENTROPY_POOL_H
 #include "common.h"
 #include "hash_desc.h"
-#define MAXSOURCES 32
+#define MAX_SOURCES 32
 
 enum {
 	EPOOL_OK = 0,
@@ -21,13 +21,13 @@ struct entropy_pool {
 	int k;
 
 	/* entropy threshold values (in bits) for each source */
-	float threshold[MAXSOURCES];
+	float threshold[MAX_SOURCES];
 
 	/* entropy estimation (in bits) for each source */
-	float estimate[MAXSOURCES];
+	float estimate[MAX_SOURCES];
 
 	/* current hash */ 
-	unsigned char buffer[MAXDIGEST];
+	unsigned char buffer[MAX_DIGEST];
 
 	/* hash context */
 	union _hash_ctx hash_ctx;

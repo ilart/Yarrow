@@ -7,7 +7,7 @@ feed_entropy(int source_id, void *buf, int len, double estimate, struct prng_con
 {
 	int fast;
 	extern struct entropy_pool fast_pool, slow_pool;  
-	extern add_to_fast[MAXSOURCES];
+	extern add_to_fast[MAX_SOURCES];
 	fast = add_to_fast[source_id] = !add_to_fast[source_id];
 
 	printf("\nfast= %d\n", fast);
