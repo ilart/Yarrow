@@ -12,6 +12,10 @@
 #include "sock-unix.h"
 #include "yarrow_init.h"
 
+#define SSIZE_MAX	LONG_MAX
+
+#define NELEMS(x)	(sizeof(x)/sizeof(x[0]))
+
 typedef enum {
 	PrngCipher, PrngHash,
 	EntropyHash, 
@@ -58,6 +62,200 @@ typedef struct {
 
 
 Options options;
+
+
+struct peer {
+	int sfd;
+	char buf[LINE_MAX+1];
+	int bufused;
+} *peer_ctx;
+
+struct pollfd *poll_fd;
+
+void
+write_fd(int fd, struct peer *p)
+{
+	int res, left;
+	left = p->bufused;
+
+	p->bufused = 0;
+
+	while (left) {
+		res = write(fd, p->buf+p->bufused, left);
+		if (res == -1 && errno != EINTR) {
+			printf("Write returned %d: %s\n", res, strerror(res));
+			exit(1);
+		}
+		
+		p->bufused += res;
+		left -= res;
+	}
+	return;
+}
+
+int 
+read_fd(int fd, struct peer *p) 
+{
+	int res;
+	char *cp;
+	res = 0;
+
+	for (;;) {
+		res = read(fd, (p->buf)+(p->bufused), LINE_MAX-(p->bufused));
+		if (res > 0) {
+			cp = p->buf;
+			p->bufused += res;
+			p->buf[p->bufused] = '\0';
+			while (*cp != '\0') {
+				if (cp[0] == '\r' && cp[1] == '\n') {
+					*cp = '\0';
+					return 0;
+				} else {
+					cp++;
+				}
+			}
+		} else if (res == 0) {
+			p->sfd = -1;
+			return 0;
+		} else {
+			if (errno == EAGAIN)
+				break;
+			else {
+				printf("read returned %d: %s", res, strerror(res));
+				exit(1);
+			}
+		}
+	}
+		return 1;
+}
+
+void xfree(void *ptr)
+{
+	if (ptr == NULL)
+		printf("xfree NULL pointer");
+
+	free(ptr);
+}
+
+void *xrealloc0(void *mem, size_t old_size, size_t new_size)
+{
+	void *ptr;
+
+	if (mem == NULL && old_size)
+		perror("xrealloc0 old_size != 0 on NULL memory");
+
+	if (new_size == 0 || new_size > SSIZE_MAX)
+		printf("xrealloc0 requested %lu bytes", (unsigned long) new_size);
+
+	if (mem == NULL)
+		ptr = malloc(new_size);
+	else {
+		ptr = realloc(mem, new_size);
+		printf("Realloc new_size %d old_size %d\n", (int) new_size, (int) old_size);
+	}
+	if (ptr == NULL) {
+		printf("xrealloc0 out of memory allocating %lu bytes",
+				(unsigned long) new_size);
+	}
+
+	if (new_size > old_size)
+		memset(ptr + old_size, 0, new_size - old_size);
+
+	printf("xrealloc: old ptr %p new ptr %p\n", mem, ptr);
+	return ptr;
+}
+
+void 
+process_events(int count) 
+{
+	int idx, res;
+
+	printf("count of desc %d\n", count);
+	for (idx = 1; idx < count; idx++) {
+		if (poll_fd[idx].revents & (POLLIN|POLLPRI)) {
+
+			res = read_fd(poll_fd[idx].fd, &peer_ctx[idx]);
+			if (res == 0 && peer_ctx[idx].sfd != -1)
+				write_fd(poll_fd[idx].fd, &peer_ctx[idx]);
+			else if (res == 0 && peer_ctx[idx].sfd == -1) {
+				close(poll_fd[idx].fd);
+				poll_fd[idx].fd = -1;
+				poll_fd[idx].events = 0;
+				poll_fd[idx].revents = 0;
+				continue;
+			} else 
+				continue;
+
+			printf("revents %d, Client send: %s\n",
+			       poll_fd[idx].revents, peer_ctx[idx].buf);
+		}
+		if (poll_fd[idx].revents & (POLLERR|POLLNVAL)) {
+			printf("we recived %d event from %d desc\n",
+			       poll_fd[idx].revents, poll_fd[idx].fd);
+			poll_fd[idx].fd = -1;
+			poll_fd[idx].events = 0;
+			poll_fd[idx].revents = 0;
+		}
+
+	}
+}
+
+int 
+find_unused_fd(int *count)
+{
+	int i, size;
+
+	for (i = 0; i < *count; i++) {
+		if (poll_fd[i].fd == -1 && poll_fd[i].events == 0) {
+			assert(peer_ctx[i].sfd == -1);
+			return i;
+		}
+	}
+
+	size = *count * sizeof(struct pollfd);
+	poll_fd = xrealloc0(poll_fd, size, size + sizeof(struct pollfd));
+	
+	size = *count * sizeof(struct peer);
+	printf("xrealloc peer size %d \n ", size);
+	peer_ctx = xrealloc0(peer_ctx, size, size + sizeof(struct peer));
+
+	*count += 1;
+	return *count-1;
+}
+
+void
+accept_connect(int *nelems)
+{
+	int client_fd, idx;
+	struct sockaddr saddr;
+	socklen_t slen;
+
+	while (1) {
+		printf("iter\n");
+		printf("poll_fd revents %d\n", poll_fd[0].revents);
+		printf("iter poll_fd %d\n", poll_fd[0].fd);
+		client_fd = accept(poll_fd[0].fd, &saddr, &slen);
+		printf("accept %d\n", client_fd);
+		if (client_fd > 0) {
+			idx = find_unused_fd(nelems);
+			poll_fd[idx].fd = client_fd;
+			poll_fd[idx].events = (POLLIN|POLLPRI);
+		
+			peer_ctx[idx].sfd = client_fd;
+			peer_ctx[idx].bufused = 0;
+		
+			sock_nonblock(client_fd);
+			printf("we recive connect fd=%d nelems %d\n",
+			       client_fd, *nelems);
+		} else if (client_fd == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+			return;
+		} else if (client_fd == -1 && errno != EINTR) {
+			printf("accept returned %d: %s", client_fd, strerror(client_fd));
+			exit(1);	
+		}
+	}
+	return;
+}
 
 static void set_program_name(int argc, char *argv[])
 {
@@ -259,159 +457,15 @@ int process_server_config(const char *filename)
 	return TRUE;
 }
 
-int
-parse_request(const char *buf)
-{	
-	int len;
-
-	len = strlen(buf);	
-	if (strchr(buf, '\n')) {
-		return 1;
-	}
-	return 0;
-}
-
-void *
-read_fd(int fd, char *buf) 
-{
-	int res, end, left;
-	char *tmp;
-	end = 0;
-	res = 0;
-	left = LINE_MAX;
-	tmp = buf;
-
-	while (!end) { 
-		res = read(fd, buf, left);
-		printf("read %d byts: %s\n", res, buf);
-		if (res == -1)
-			perror("Error of read");
-
-		end = parse_request(buf);
-		left -= res;
-		buf += res;
-	}
-	
-	buf = tmp;
-
-	printf("Read str: %s, strlen %d from fd %d \n",
-	      buf, (int) strlen(buf),  fd);
-	return buf;
-}
-
-void
-write_fd(int fd, char *buf)
-{
-	int res;
-
-	res = write(fd, buf, LINE_MAX);
-	if (res == -1)
-		perror("Error of write");
-		
-}
-
-
-void xfree(void *ptr)
-{
-	if (ptr == NULL)
-		printf("xfree NULL pointer");
-
-	free(ptr);
-}
-
-void *xrealloc0(void *mem, size_t old_size, size_t new_size)
-{
-	void *ptr;
-
-	if (mem == NULL && old_size)
-		perror("xrealloc0 old_size != 0 on NULL memory");
-
-	if (new_size == 0 || new_size > SSIZE_MAX)
-		printf("xrealloc0 requested %lu bytes", (unsigned long) new_size);
-
-	if (mem == NULL)
-		ptr = malloc(new_size);
-	else {
-		ptr = realloc(mem, new_size);
-		printf("Realloc new_size %d old_size %d\n", (int) new_size, (int) old_size);
-	}
-	if (ptr == NULL) {
-		printf("xrealloc0 out of memory allocating %lu bytes",
-				(unsigned long) new_size);
-	}
-
-	if (new_size > old_size)
-		memset(ptr + old_size, 0, new_size - old_size);
-
-	printf("xrealloc: old ptr %p new ptr %p sizeof new %d\n", mem, ptr, (int) sizeof(ptr));
-	return ptr;
-}
-
-void 
-process_events(struct pollfd *ufds, int count) 
-{
-	int i;
-	char request_buf[LINE_MAX];
-
-//	printf("count of desc %d\n", count);
-	for(i = 0; i < count; i++) {
-		
-		if (ufds[i].revents & POLLHUP) {
-			ufds[i].fd = -1;
-			ufds[i].events = 0;
-			continue;
-
-		} else	if (ufds[i].revents & (POLLIN|POLLPRI)) {
-			read_fd(ufds[i].fd, request_buf);
-			printf("revents %d, Client send: %s\n", ufds[i].revents, request_buf);
-			//res = parse_request(request_buf);
-			//
-			//now, server echo.
-			write_fd(ufds[i].fd, request_buf);
-		}
-		if (ufds[i].revents & (POLLERR|POLLNVAL)) {
-			printf("we recived %d event from %d desc\n", ufds[i].revents, ufds[i].fd);
-			ufds[i].fd = -1;
-			ufds[i].events = 0;
-			ufds[i].revents = 0;
-		}
-
-//		printf("ufds %d event %d revent %d\n", ufds[i].fd, ufds[i].events, ufds[i].revents);
-
-		ufds[i].revents = 0;
-	}
-
-}
-
-int 
-find_unused_fd(struct pollfd *poll_fd, int *count)
-{
-	int i, size;
-
-	for(i = 0; i < count[0]; i++) {
-		if (poll_fd[i].fd == -1 && poll_fd[i].events == 0)
-			return i;
-	}
-
-	size = count[0] * sizeof(struct pollfd);
-	poll_fd = xrealloc0(poll_fd, size, size + sizeof(struct pollfd));	
-	count[0] += 1;
-	return count[0]-1;
-}
-
-
-
 struct entropy_pool fast_pool, slow_pool;
 int add_to_fast[MAX_SOURCES];
 
 int main(int argc, char **argv)
 {
-	int server_fd, client_fd, opt, res, i, fd, nelems, terminated, idx;
+	int server_fd, opt, res, i, fd, nelems;
 	char *path;
 	struct prng_context prng;
-	struct pollfd *events;
-	struct sockaddr saddr;
-	socklen_t slen;
+	struct pollfd *poll_fd;
 
 	memset(add_to_fast, 0, sizeof(add_to_fast));
 	set_program_name(argc, argv);
@@ -498,59 +552,48 @@ int main(int argc, char **argv)
 	}
 
 	sock_nonblock(server_fd);
+	printf("server_fd %d\n", server_fd);
 
-	slen = sizeof(saddr);
-
-	events = calloc(1, sizeof(struct pollfd));
-	if (events == NULL) {
+	poll_fd = calloc(1, sizeof(struct pollfd));
+	if (poll_fd == NULL) {
 		perror("error of calloc");
 		exit(1);
 	}
 
+	poll_fd[0].fd = server_fd;
+	poll_fd[0].events = (POLLIN|POLLPRI);
+
+	peer_ctx = calloc(1, sizeof(struct peer));
+	if (peer_ctx == NULL) {
+		perror("Calloc returned NULL");
+		exit(1);
+	}
+	
+	peer_ctx[0].sfd = server_fd;
+	peer_ctx[0].bufused = 0;
 	nelems = 1;
-	events[0].fd = server_fd;
-	events[0].events = (POLLIN|POLLPRI);
 
-	terminated = 0;
 	i = 0;
-	client_fd = 12;
-
-	while (!terminated) {
-		res = poll(events, nelems, -1);
-		if (res >= 0) {
-			client_fd = accept(server_fd, &saddr, &slen);
-			if (client_fd > 0) {
-				idx = find_unused_fd(events, &nelems);
-				events[idx].fd = client_fd;
-				events[idx].events = (POLLIN|POLLPRI|POLLHUP|POLLERR);
-			
-				printf("we recive connect fd=%d nelems %d sizeof events %d sizeof events[1] %d \n", client_fd, nelems, (int ) sizeof(events), (int) sizeof(events[1]));
-
-				sock_nonblock(client_fd);
-				client_fd = 0;
-				if (res == 1)
-					continue;
-			} else if (client_fd == -1 && errno != EAGAIN) {
-				printf("error of accept");
-				exit(1);
+	
+	while (1) {
+		res = poll(poll_fd, nelems, -1);
+		printf("poll %d %d\n", res, poll_fd[0].revents);
+		if (res > 0) {
+			if (poll_fd[0].revents & POLLIN) {
+				printf("poll_fd after poll %d nelems %d\n", poll_fd[0].fd, nelems);
+				accept_connect(&nelems);
 			}
-			
-			process_events(events, nelems); 
-//			printf("iter \n");
-		}
-		else {
-			perror("error of poll or timeout");
-			exit(1);	
-		}
+ 		
+
+			process_events(nelems); 
+		} else if (res < 0 && errno != EINTR) {
+			printf("poll returned %d: %s\n",
+			      res, strerror(errno));
+			break;
+		} 
 	}	
 	
 	close(server_fd);
-	close(client_fd);
-	unlink("/var/run/yarrow.socket");
-
-	
-
-	close(fd);
 	unlink("/var/run/yarrow.socket");
 
 /*

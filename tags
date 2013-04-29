@@ -164,6 +164,7 @@ MAX_SOURCES	include/entropy_pool.h	6;"	d
 MD5_DIGEST_LEN	lib/md5.h	8;"	d
 MD5_H_	lib/md5.h	2;"	d
 MIN_TIME_PARAM	include/prng.h	6;"	d
+NELEMS	src/yarrow_init.c	17;"	d	file:
 Nsources	src/yarrow_init.c	/^	Nsources,$/;"	e	enum:__anon3	file:
 Options	src/yarrow_init.c	/^}	Options;$/;"	t	typeref:struct:__anon5	file:
 POLY_VECTOR	lib/sbox.c	7;"	d	file:
@@ -172,7 +173,7 @@ PRNG_GOST	include/prng_desc.h	7;"	d
 PRTCHAR	lib/test.c	116;"	d	file:
 PrngCipher	src/yarrow_init.c	/^	PrngCipher, PrngHash,$/;"	e	enum:__anon3	file:
 PrngHash	src/yarrow_init.c	/^	PrngCipher, PrngHash,$/;"	e	enum:__anon3	file:
-QUOTE	src/yarrow_init.c	80;"	d	file:
+QUOTE	src/yarrow_init.c	275;"	d	file:
 RIJNDAEL_POLY	lib/galois.c	7;"	d	file:
 ROL	lib/md5.c	26;"	d	file:
 ROL32	lib/sha1.c	32;"	d	file:
@@ -190,6 +191,7 @@ SHA256_H_	lib/sha256.h	2;"	d
 SOCK_UNIX_H_	include/sock-unix.h	5;"	d
 SSIG0	lib/sha256.c	100;"	d	file:
 SSIG1	lib/sha256.c	101;"	d	file:
+SSIZE_MAX	src/yarrow_init.c	15;"	d	file:
 ServerOpCodes	src/yarrow_init.c	/^} ServerOpCodes;$/;"	t	typeref:enum:__anon3	file:
 T0	lib/sha1.c	39;"	d	file:
 T00	lib/md5.c	65;"	d	file:
@@ -214,7 +216,7 @@ TRUE	include/macros.h	8;"	d
 TRUE	lib/macros.h	8;"	d
 TimeParam	src/yarrow_init.c	/^	TimeParam, GateParam,$/;"	e	enum:__anon3	file:
 VPATH	Makefile	/^VPATH = .\/src$/;"	m
-WHITESPACE	src/yarrow_init.c	79;"	d	file:
+WHITESPACE	src/yarrow_init.c	274;"	d	file:
 YARROW_H_	include/yarrow.h	2;"	d
 _ENTROPY_POOL_H	include/entropy_pool.h	3;"	d
 _HASH_H	include/hash_desc.h	9;"	d
@@ -247,6 +249,7 @@ _hash_ctx	include/hash_desc.h	/^union _hash_ctx {$/;"	u
 _hash_ctx::md5	include/hash_desc.h	/^		struct md5_context md5; $/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::md5_context	access:public
 _hash_ctx::sha1	include/hash_desc.h	/^		struct sha1_context sha1;$/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::sha1_context	access:public
 _hash_ctx::sha256	include/hash_desc.h	/^		struct sha256_context sha256;$/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::sha256_context	access:public
+accept_connect	src/yarrow_init.c	/^accept_connect(int *nelems)$/;"	f	signature:(int *nelems)
 add_round_key	lib/aes.c	/^add_round_key(struct aes_context *ctx, int round)$/;"	f	file:	signature:(struct aes_context *ctx, int round)
 add_to_fast	src/test.c	/^int add_to_fast[MAX_SOURCES];$/;"	v
 add_to_fast	src/yarrow_init.c	/^int add_to_fast[MAX_SOURCES];$/;"	v
@@ -279,10 +282,12 @@ assert	lib/macros.h	59;"	d
 attr_table	src/yarrow_init.c	/^} attr_table [] = { $/;"	v	typeref:struct:__anon4	file:
 binaries	Makefile	/^binaries = yarrow_init $/;"	m
 block_size	include/cipher_desc.h	/^	int block_size;$/;"	m	struct:cipher_desc	access:public
+buf	src/yarrow_init.c	/^	char buf[LINE_MAX+1];$/;"	m	struct:peer	file:	access:public
 buffer	include/entropy_pool.h	/^	unsigned char buffer[MAX_DIGEST];$/;"	m	struct:entropy_pool	access:public
 buffer	lib/md5.h	/^	uint8_t	buffer[64];	\/* message buffer *\/$/;"	m	struct:md5_context	access:public
 buffer	lib/sha1.h	/^        u_int8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha1_context	access:public
 buffer	lib/sha256.h	/^        uint8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha256_context	access:public
+bufused	src/yarrow_init.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
 cdesc	include/prng.h	/^	struct cipher_desc *cdesc;$/;"	m	struct:prng_context	typeref:struct:prng_context::cipher_desc	access:public
 cipher_ctx	include/prng.h	/^	union _cipher_ctx *cipher_ctx;$/;"	m	struct:prng_context	typeref:union:prng_context::_cipher_ctx	access:public
 cipher_desc	include/cipher_desc.h	/^struct cipher_desc {$/;"	s
@@ -353,7 +358,7 @@ fast_pool	src/yarrow_init.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	ty
 feed_entropy	include/feed_entropy.h	/^void feed_entropy(int source_id, void *buf, int len, double estimate, struct prng_context *prng);$/;"	p	signature:(int source_id, void *buf, int len, double estimate, struct prng_context *prng)
 feed_entropy	src/feed_entropy.c	/^feed_entropy(int source_id, void *buf, int len, double estimate, struct prng_context *prng)$/;"	f	signature:(int source_id, void *buf, int len, double estimate, struct prng_context *prng)
 finalize	include/hash_desc.h	/^	void *(*finalize)(void *ctx, unsigned char digest[MAX_DIGEST]);$/;"	m	struct:hash_desc	access:public
-find_unused_fd	src/yarrow_init.c	/^find_unused_fd(struct pollfd *poll_fd, int *count)$/;"	f	signature:(struct pollfd *poll_fd, int *count)
+find_unused_fd	src/yarrow_init.c	/^find_unused_fd(int *count)$/;"	f	signature:(int *count)
 galois_add	lib/galois.c	/^galois_add(u_int8_t a, u_int8_t b)$/;"	f	signature:(u_int8_t a, u_int8_t b)
 galois_add	lib/galois.h	/^u_int8_t galois_add(u_int8_t a, u_int8_t b);$/;"	p	signature:(u_int8_t a, u_int8_t b)
 galois_div	lib/galois.c	/^galois_div(u_int8_t a, u_int8_t b)$/;"	f	signature:(u_int8_t a, u_int8_t b)
@@ -492,9 +497,14 @@ opt_show_vec	lib/test.c	/^int opt_show_vec;	\/* test encrypt\/decrypt and print 
 options	src/yarrow_init.c	/^Options options;$/;"	v
 packet	client_connect.c	/^char packet[128];$/;"	v
 parce_attr	include/yarrow_init.h	/^int parce_attr(const char *path);$/;"	p	signature:(const char *path)
-parse_request	src/yarrow_init.c	/^parse_request(const char *buf)$/;"	f	signature:(const char *buf)
 path	src/yarrow_init.c	/^	path,$/;"	e	enum:__anon3	file:
 path_to_src	src/yarrow_init.c	/^	char path_to_src[MAX_SOURCES][MAX_LENGHT_NAME]; \/\/paths to sources $/;"	m	struct:__anon5	file:	access:public
+peer	src/yarrow_init.c	/^struct peer {$/;"	s	file:
+peer::buf	src/yarrow_init.c	/^	char buf[LINE_MAX+1];$/;"	m	struct:peer	file:	access:public
+peer::bufused	src/yarrow_init.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
+peer::sfd	src/yarrow_init.c	/^	int sfd;$/;"	m	struct:peer	file:	access:public
+peer_ctx	src/yarrow_init.c	/^} *peer_ctx;$/;"	v	typeref:struct:peer
+poll_fd	src/yarrow_init.c	/^struct pollfd *poll_fd;$/;"	v	typeref:struct:pollfd
 print_used	include/yarrow_init.h	/^static void print_used();$/;"	p	signature:()
 print_used	src/yarrow_init.c	/^static void print_used()$/;"	f	file:
 prng_cipher	src/yarrow_init.c	/^	char prng_cipher[16];$/;"	m	struct:__anon5	file:	access:public
@@ -525,11 +535,11 @@ prng_reseed	include/prng.h	/^int prng_reseed(struct prng_context *prng, const st
 prng_reseed	src/prng.c	/^prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)$/;"	f	signature:(struct prng_context *prng, const struct entropy_pool *pool)
 prng_set_time_param	include/prng.h	/^int prng_set_time_param(struct prng_context *prng, int time_param);$/;"	p	signature:(struct prng_context *prng, int time_param)
 prng_set_time_param	src/prng.c	/^prng_set_time_param(struct prng_context *prng, int time_param)$/;"	f	signature:(struct prng_context *prng, int time_param)
-process_events	src/yarrow_init.c	/^process_events(struct pollfd *ufds, int count) $/;"	f	signature:(struct pollfd *ufds, int count)
+process_events	src/yarrow_init.c	/^process_events(int count) $/;"	f	signature:(int count)
 process_server_config	src/yarrow_init.c	/^int process_server_config(const char *filename)$/;"	f	signature:(const char *filename)
 program_name	src/yarrow_init.c	/^static const char	*program_name;$/;"	v	file:
 random_storage	include/prng.h	/^	char random_storage[512];$/;"	m	struct:prng_context	access:public
-read_fd	src/yarrow_init.c	/^read_fd(int fd, char *buf) $/;"	f	signature:(int fd, char *buf)
+read_fd	src/yarrow_init.c	/^read_fd(int fd, struct peer *p) $/;"	f	signature:(int fd, struct peer *p)
 request_send	client_connect.c	/^request_send(const char *buf)$/;"	f	signature:(const char *buf)
 return_if_fail	include/macros.h	20;"	d
 return_if_fail	include/macros.h	57;"	d
@@ -551,6 +561,7 @@ sbox_default	lib/gost.c	/^static u_int8_t sbox_default[] = {$/;"	v	file:
 set_key	include/cipher_desc.h	/^	void (*set_key)(void *ctx, void *key);$/;"	m	struct:cipher_desc	access:public
 set_program_name	include/yarrow_init.h	/^static void set_program_name();$/;"	p	signature:()
 set_program_name	src/yarrow_init.c	/^static void set_program_name(int argc, char *argv[])$/;"	f	file:	signature:(int argc, char *argv[])
+sfd	src/yarrow_init.c	/^	int sfd;$/;"	m	struct:peer	file:	access:public
 sha1	include/hash_desc.h	/^		struct sha1_context sha1;$/;"	m	union:_hash_ctx	typeref:struct:_hash_ctx::sha1_context	access:public
 sha1_context	lib/sha1.h	/^struct sha1_context {$/;"	s
 sha1_context::buffer	lib/sha1.h	/^        u_int8_t         buffer[64];     \/* 512-bit message buffer *\/$/;"	m	struct:sha1_context	access:public
@@ -618,7 +629,7 @@ uint32_to_bytes	lib/sha1.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t
 uint32_to_bytes	lib/sha256.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
 update	include/hash_desc.h	/^	void (*update)(void *ctx, const void *buf, size_t len);$/;"	m	struct:hash_desc	access:public
 w	lib/aes.c	/^	u_int32_t	w[AES_NB*(AES_NR_MAX+1)];$/;"	m	struct:aes_context	file:	access:public
-write_fd	src/yarrow_init.c	/^write_fd(int fd, char *buf)$/;"	f	signature:(int fd, char *buf)
+write_fd	src/yarrow_init.c	/^write_fd(int fd, struct peer *p)$/;"	f	signature:(int fd, struct peer *p)
 xfree	src/yarrow_init.c	/^void xfree(void *ptr)$/;"	f	signature:(void *ptr)
 xrealloc0	src/yarrow_init.c	/^void *xrealloc0(void *mem, size_t old_size, size_t new_size)$/;"	f	signature:(void *mem, size_t old_size, size_t new_size)
 xstrncpy	src/sock-unix.c	/^char *xstrncpy(char *dst, const char *src, size_t max)$/;"	f	signature:(char *dst, const char *src, size_t max)
