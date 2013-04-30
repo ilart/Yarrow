@@ -170,7 +170,6 @@ process_events(int count)
 {
 	int idx, res;
 
-	printf("count of desc %d\n", count);
 	for (idx = 1; idx < count; idx++) {
 		if (poll_fd[idx].revents & (POLLIN|POLLPRI)) {
 
@@ -231,11 +230,7 @@ accept_connect(int *nelems)
 	socklen_t slen;
 
 	while (1) {
-		printf("iter\n");
-		printf("poll_fd revents %d\n", poll_fd[0].revents);
-		printf("iter poll_fd %d\n", poll_fd[0].fd);
 		client_fd = accept(poll_fd[0].fd, &saddr, &slen);
-		printf("accept %d\n", client_fd);
 		if (client_fd > 0) {
 			idx = find_unused_fd(nelems);
 			poll_fd[idx].fd = client_fd;
@@ -465,7 +460,6 @@ int main(int argc, char **argv)
 	int server_fd, opt, res, i, fd, nelems;
 	char *path;
 	struct prng_context prng;
-	struct pollfd *poll_fd;
 
 	memset(add_to_fast, 0, sizeof(add_to_fast));
 	set_program_name(argc, argv);
@@ -577,10 +571,9 @@ int main(int argc, char **argv)
 	
 	while (1) {
 		res = poll(poll_fd, nelems, -1);
-		printf("poll %d %d\n", res, poll_fd[0].revents);
+		//printf("poll %d %d\n", res, poll_fd[0].revents);
 		if (res > 0) {
 			if (poll_fd[0].revents & POLLIN) {
-				printf("poll_fd after poll %d nelems %d\n", poll_fd[0].fd, nelems);
 				accept_connect(&nelems);
 			}
  		
