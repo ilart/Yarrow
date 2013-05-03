@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <strings.h>
 
 int
@@ -12,6 +13,7 @@ main (int argc, char **argv)
 	val = atoi(argv[1]);
 	base = 16;
 	d = val;
+	printf("sizeof %d\n", sizeof("\r\n"));
 	r = 1;
 	for (i = 0; r != 0; i++) {
 		r = d / base;

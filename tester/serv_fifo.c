@@ -323,9 +323,9 @@ dec_to_hex(int val, char *str)
 		t = d % base;
 		printf("r = %d, t = %d\n", r,t);
 		if (t < 10)
-			str[i] = t + '1';
+			str[i] = t + '0';
 		else
-			str[i] = t + 'A';
+			str[i] = t - 10 + 'A';
 
 		printf("%c ", str[i]);
 		d = r;
@@ -335,23 +335,22 @@ dec_to_hex(int val, char *str)
 int
 accumulate_samples(int id) 
 {
-	int res, left, fifo_fd, fd;
-	char buf[PACKET_SIZE], packet[PACKET_SIZE], *tmp;	//Our packet will have max size of 128
-			//including id and special characters '\r\n'
-	left = PACKET_SIZE-3;
-
-	fd 	= open(entropy_src[0].path, S_IRUSR);
+	int res, left, fifo_fd, fd, used;
+	char buf[PACKET_SIZE];		//Our packet will have max size of 128
+						//including id and special characters '\r\n'
+	fd 	= open(entropy_src[id].path, O_RDONLY);
 	fifo_fd = open(FIFO_PATH, O_NONBLOCK | O_WRONLY);
 	
 	printf("id %d pid %d: open fifo_fd %d, src_fd %d\n", id, getpid(), fifo_fd, fd);
 
 	if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
 		printf("signal returned SIG_ERR\n");
-	
-	tmp = buf;
+
+	used = sprintf(buf, "%d", id);
+	left = PACKET_SIZE - used - strlen("\r\n");
 
 	while (left) {
-		res = read(fd, tmp, left);
+		res = read(fd, buf + used, left);
 		if (res == -1) {
 			if (errno == EINTR)
 				continue;
@@ -361,15 +360,16 @@ accumulate_samples(int id)
 			}
 		} else {
 			left -= res;
-			tmp += res;
+			used += res;
 		}
 	}
 	
-	sprintf(packet, "%d%s\r\n", id, buf);
-	printf("accumulate buf %s\n"
-	       "id %d\n", packet, atoi(packet));
+	sprintf(buf+used, "\r\n");
 
-	write(fifo_fd, packet, PACKET_SIZE);
+	printf("accumulate buf %s\n"
+	       "id %d\n", buf, atoi(buf));
+
+	res = write(fifo_fd, buf, PACKET_SIZE);
 	if (res == -1) {
 		printf("write returned %d: %s\n", res, strerror(res));
 		exit(1);
@@ -384,7 +384,10 @@ accumulate_samples(int id)
 			buf[res+2] = '\n';
 			buf[res+3] = '\0';
 
-			printf("pid %d: I send packet %d byts, strlen %d, from %s\n", getpid(), res, strlen(buf), entropy_src[id].path);
+			printf("pid %d: I send packet %d byts,"
+			       "strlen %d, from %s\n",
+			       getpid(), res,
+			       strlen(buf), entropy_src[id].path);
 //			build_packet(buf); 
 			//write(fifo_fd, buf, sizeof(buf));
 		} else if (res < 0 && errno == EINTR) {
@@ -459,7 +462,7 @@ init_peer(int fd, int i)
 
 int main (int argc, char **argv) 
 {
-	int server_fd, pid, nsources, left, fifo_fd, res, i, nelems;
+	int pid, nsources, left, fifo_fd, res, i, nelems;
 
 //--------------- This part of code will produce entropy_pool_init() fuction
 	entropy_src[0].id = 120;
@@ -502,7 +505,7 @@ int main (int argc, char **argv)
 			       pid, strerror(pid));
 			exit(1);
 		case 0:
-			accumulate_samples(120); 
+			accumulate_samples(i); 
 			return 0;
 		default:
 			break;
