@@ -1,0 +1,86 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+FIFO_PATH	serv_fifo.c	18;"	d	file:
+FIFO_PATH	sock_serv.c	17;"	d	file:
+NELEMS	serv_fifo.c	20;"	d	file:
+NELEMS	sock_serv.c	19;"	d	file:
+PACKET_SIZE	serv_fifo.c	19;"	d	file:
+PACKET_SIZE	sock_serv.c	18;"	d	file:
+SSIZE_MAX	serv_fifo.c	17;"	d	file:
+SSIZE_MAX	sock_serv.c	16;"	d	file:
+accept_connect	serv_fifo.c	/^accept_connect(int *nelems)$/;"	f	signature:(int *nelems)
+accept_connect	sock_serv.c	/^accept_connect(int *nelems)$/;"	f	signature:(int *nelems)
+accumulate_entropy	serv_fifo.c	/^accumulate_entropy (char *buf)$/;"	f	signature:(char *buf)
+accumulate_entropy	sock_serv.c	/^accumulate_entropy (char *buf)$/;"	f	signature:(char *buf)
+accumulate_samples	serv_fifo.c	/^accumulate_samples(int id) $/;"	f	signature:(int id)
+accumulate_samples	sock_serv.c	/^accumulate_samples(int id) $/;"	f	signature:(int id)
+buf	serv_fifo.c	/^	char buf[LINE_MAX+1];$/;"	m	struct:peer	file:	access:public
+buf	sock_serv.c	/^	char buf[LINE_MAX+1];$/;"	m	struct:peer	file:	access:public
+bufused	serv_fifo.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
+bufused	sock_serv.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
+entropy_source	serv_fifo.c	/^struct entropy_source {$/;"	s	file:
+entropy_source	sock_serv.c	/^struct entropy_source {$/;"	s	file:
+entropy_source::estimate	serv_fifo.c	/^	int estimate;$/;"	m	struct:entropy_source	file:	access:public
+entropy_source::estimate	sock_serv.c	/^	double estimate;$/;"	m	struct:entropy_source	file:	access:public
+entropy_source::id	serv_fifo.c	/^	int id;$/;"	m	struct:entropy_source	file:	access:public
+entropy_source::id	sock_serv.c	/^	int id;$/;"	m	struct:entropy_source	file:	access:public
+entropy_source::len	serv_fifo.c	/^	int len;$/;"	m	struct:entropy_source	file:	access:public
+entropy_source::len	sock_serv.c	/^	int len;$/;"	m	struct:entropy_source	file:	access:public
+entropy_source::path	serv_fifo.c	/^	char *path;$/;"	m	struct:entropy_source	file:	access:public
+entropy_source::path	sock_serv.c	/^	char *path;$/;"	m	struct:entropy_source	file:	access:public
+entropy_src	serv_fifo.c	/^} entropy_src[32];$/;"	v	typeref:struct:entropy_source
+entropy_src	sock_serv.c	/^} entropy_src[2];$/;"	v	typeref:struct:entropy_source
+estimate	serv_fifo.c	/^	int estimate;$/;"	m	struct:entropy_source	file:	access:public
+estimate	sock_serv.c	/^	double estimate;$/;"	m	struct:entropy_source	file:	access:public
+find_unused_fd	serv_fifo.c	/^find_unused_fd(int *count)$/;"	f	signature:(int *count)
+find_unused_fd	sock_serv.c	/^find_unused_fd(int *count)$/;"	f	signature:(int *count)
+id	serv_fifo.c	/^	int id;$/;"	m	struct:entropy_source	file:	access:public
+id	sock_serv.c	/^	int id;$/;"	m	struct:entropy_source	file:	access:public
+init_peer	serv_fifo.c	/^init_peer(int fd, int i) $/;"	f	signature:(int fd, int i)
+len	serv_fifo.c	/^	int len;$/;"	m	struct:entropy_source	file:	access:public
+len	sock_serv.c	/^	int len;$/;"	m	struct:entropy_source	file:	access:public
+main	fifo.c	/^int main (int argc, char **argv) $/;"	f	signature:(int argc, char **argv)
+main	serv_fifo.c	/^int main (int argc, char **argv) $/;"	f	signature:(int argc, char **argv)
+main	sock_client.c	/^int main (int argc, char **argv) $/;"	f	signature:(int argc, char **argv)
+main	sock_serv.c	/^int main (int argc, char **argv) $/;"	f	signature:(int argc, char **argv)
+packet	fifo.c	/^char packet[128];$/;"	v
+packet	sock_client.c	/^char packet[128];$/;"	v
+path	serv_fifo.c	/^	char *path;$/;"	m	struct:entropy_source	file:	access:public
+path	sock_serv.c	/^	char *path;$/;"	m	struct:entropy_source	file:	access:public
+peer	serv_fifo.c	/^struct peer {$/;"	s	file:
+peer	sock_serv.c	/^struct peer {$/;"	s	file:
+peer::buf	serv_fifo.c	/^	char buf[LINE_MAX+1];$/;"	m	struct:peer	file:	access:public
+peer::buf	sock_serv.c	/^	char buf[LINE_MAX+1];$/;"	m	struct:peer	file:	access:public
+peer::bufused	serv_fifo.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
+peer::bufused	sock_serv.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
+peer::sfd	serv_fifo.c	/^	int sfd;$/;"	m	struct:peer	file:	access:public
+peer::sfd	sock_serv.c	/^	int sfd;$/;"	m	struct:peer	file:	access:public
+peer_ctx	serv_fifo.c	/^} *peer_ctx;$/;"	v	typeref:struct:peer
+peer_ctx	sock_serv.c	/^} *peer_ctx;$/;"	v	typeref:struct:peer
+poll_fd	serv_fifo.c	/^struct pollfd *poll_fd;$/;"	v	typeref:struct:pollfd
+poll_fd	sock_serv.c	/^struct pollfd *poll_fd;$/;"	v	typeref:struct:pollfd
+process_events	serv_fifo.c	/^process_events(int count) $/;"	f	signature:(int count)
+process_events	sock_serv.c	/^process_events(int count) $/;"	f	signature:(int count)
+read_fd	serv_fifo.c	/^read_fd(int fd, struct peer *p) $/;"	f	signature:(int fd, struct peer *p)
+read_fd	sock_serv.c	/^read_fd(int fd, struct peer *p) $/;"	f	signature:(int fd, struct peer *p)
+request_send	fifo.c	/^request_send(const char *buf)$/;"	f	signature:(const char *buf)
+request_send	sock_client.c	/^request_send(const char *buf)$/;"	f	signature:(const char *buf)
+sfd	serv_fifo.c	/^	int sfd;$/;"	m	struct:peer	file:	access:public
+sfd	sock_serv.c	/^	int sfd;$/;"	m	struct:peer	file:	access:public
+sock_nonblock	serv_fifo.c	/^void sock_nonblock(int sock)$/;"	f	signature:(int sock)
+sock_nonblock	sock_serv.c	/^void sock_nonblock(int sock)$/;"	f	signature:(int sock)
+sock_unix_close	serv_fifo.c	/^int sock_unix_close(int sock)$/;"	f	signature:(int sock)
+sock_unix_close	sock_serv.c	/^int sock_unix_close(int sock)$/;"	f	signature:(int sock)
+sock_unix_connect	sock_client.c	/^int sock_unix_connect(const char *path)$/;"	f	signature:(const char *path)
+sock_unix_listen	serv_fifo.c	/^int sock_unix_listen(const char *path)$/;"	f	signature:(const char *path)
+sock_unix_listen	sock_serv.c	/^int sock_unix_listen(const char *path)$/;"	f	signature:(const char *path)
+write_fd	serv_fifo.c	/^write_fd(int fd, struct peer *p)$/;"	f	signature:(int fd, struct peer *p)
+write_fd	sock_serv.c	/^write_fd(int fd, struct peer *p)$/;"	f	signature:(int fd, struct peer *p)
+xfree	serv_fifo.c	/^void xfree(void *ptr)$/;"	f	signature:(void *ptr)
+xfree	sock_serv.c	/^void xfree(void *ptr)$/;"	f	signature:(void *ptr)
+xrealloc0	serv_fifo.c	/^void *xrealloc0(void *mem, size_t old_size, size_t new_size)$/;"	f	signature:(void *mem, size_t old_size, size_t new_size)
+xrealloc0	sock_serv.c	/^void *xrealloc0(void *mem, size_t old_size, size_t new_size)$/;"	f	signature:(void *mem, size_t old_size, size_t new_size)

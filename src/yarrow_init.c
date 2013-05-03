@@ -545,6 +545,13 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	mkfifo(FIFO_PATH, 0777);
+	fifo_fd = open(FIFO_PATH, O_NONBLOCK);
+	if (fifo_fd == -1)
+		printf("open returned %d: %s\n",
+			fifo_fd, strerror(fifo_fd));
+
+
 	sock_nonblock(server_fd);
 	printf("server_fd %d\n", server_fd);
 
@@ -572,18 +579,18 @@ int main(int argc, char **argv)
 	while (1) {
 		res = poll(poll_fd, nelems, -1);
 		//printf("poll %d %d\n", res, poll_fd[0].revents);
-		if (res > 0) {
-			if (poll_fd[0].revents & POLLIN) {
-				accept_connect(&nelems);
-			}
- 		
-
-			process_events(nelems); 
-		} else if (res < 0 && errno != EINTR) {
+		if (res < 0 && errno != EINTR) {
 			printf("poll returned %d: %s\n",
 			      res, strerror(errno));
 			break;
 		} 
+
+		if (poll_fd[0].revents & POLLIN) {
+			accept_connect(&nelems);
+		}
+ 		
+
+		process_events(nelems); 
 	}	
 	
 	close(server_fd);
