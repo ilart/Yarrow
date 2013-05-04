@@ -1,4 +1,5 @@
 #define DEFAULT_SOCK_PATH "/var/run/yarrow.socket"
+#define PACKET_SIZE 128
 #define FIFO_PATH "/var/run/yarrow_fifo"
 #define MAX_LENGHT_NAME	255
 

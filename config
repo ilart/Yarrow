@@ -2,12 +2,12 @@ prng_cipher gost
 time_param 10
 Prng_hash md5 
 Entropy_hash sha1 
-NSOURCES 10
-K 2
+NSOURCES 2 
+K 1
 gate 9
 path_to_src /dev/urandom
 estimate 0.3
 lenght_entropy 80 
 path_to_src /dev/random
 estimate 0.5
-lenght_entropy 10
+lenght_entropy 40

@@ -22,7 +22,7 @@ typedef enum {
 	TimeParam, GateParam,
 	Nsources,
 	K,
-	path,
+	path_to_src,
 	estimate,
 	lenght_entropy
 } ServerOpCodes;
@@ -42,7 +42,7 @@ static struct {
 	{"gate", GateParam},
 	{"nsources", Nsources},
 	{"k", K},
-	{"path_to_src", path},
+	{"path_to_src", path_to_src},
 	{"estimate", estimate},
 	{"lenght_entropy", lenght_entropy}
 };
@@ -326,15 +326,15 @@ int process_server_config(const char *filename)
 	ptr = line = calloc(128, 1);
 	
 	fd = fopen(filename, "rw");
-	if (fd == 0)
+	if (fd == 0) {
+		printf("fopen returned %s\n", strerror(errno));
 		return FALSE;
-	
+	}
+
 	printf("open socket\n");
 
 	while (fgets(line, 127, fd) != NULL) {
 		linenum++;
-
-
 		if ((arg = strdelim(&line)) == NULL) {
 			printf("arg %s\n", arg);
 			continue;
@@ -354,7 +354,6 @@ int process_server_config(const char *filename)
 			}
 		}
 		
-		printf("arg %s name %s\n", arg, attr_table[i].name);
 		switch(opcode) {
 		case PrngCipher:
 			arg = strdelim(&line);
@@ -406,14 +405,14 @@ int process_server_config(const char *filename)
 			value = atoi(arg);
 			options.k = value;
 			break;
-		case path:
-			nsrc++;
+		case path_to_src:
 			arg = strdelim(&line); 
 			if (!arg || *arg == '\0')
 				printf("%s line %d: missing integer value.",
 				      filename, linenum);
 
 			strncpy(options.path_to_src[nsrc], arg, MAX_LENGHT_NAME);
+			nsrc++;
 			break;
 		case estimate:
 			arg = strdelim(&line); 
@@ -452,12 +451,113 @@ int process_server_config(const char *filename)
 	return TRUE;
 }
 
+int
+accumulate_samples(int id) 
+{
+	int res, left, fifo_fd, fd, used;
+	char buf[PACKET_SIZE];		//Our packet will have max size of 128
+					//including id and special characters '\r\n'
+	printf("src %s\n", options.path_to_src[id]);
+	fd 	= open(options.path_to_src[id], O_RDONLY);
+	fifo_fd = open(FIFO_PATH, O_NONBLOCK | O_WRONLY);
+	
+	printf("id %d pid %d: open fifo_fd %d, src_fd %d\n", id, getpid(), fifo_fd, fd);
+
+	if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
+		printf("signal returned SIG_ERR\n");
+
+	used = sprintf(buf, "%d", id);
+	left = PACKET_SIZE - used - strlen("\r\n");
+
+	while (left) {
+		res = read(fd, buf + used, left);
+		if (res == -1) {
+			if (errno == EINTR)
+				continue;
+			else {
+				printf("read returned -1: %s\n", strerror(res));
+				exit(1);
+			}
+		} else {
+			left -= res;
+			used += res;
+		}
+	}
+	
+	sprintf(buf+used, "\r\n");
+
+	printf("accumulate buf %s\n"
+	       "id %d\n", buf, atoi(buf));
+
+	res = write(fifo_fd, buf, PACKET_SIZE);
+	if (res == -1) {
+		printf("write returned %d: %s\n", res, strerror(res));
+		exit(1);
+	}
+
+	close(fd);
+	close(fifo_fd);
+
+	return 0;
+}
+
+int 
+accumulate_entropy()
+{
+	int fd, res, left, flag;
+	char *cp, *buf;// buf[PACKET_SIZE];
+
+	buf = peer_ctx[1].buf;
+	fd = poll_fd[1].fd;
+	
+	left = PACKET_SIZE;
+	flag = 0;
+
+	while (left) {
+		res = read(fd, buf + flag, left);
+		if (res == -1) {
+			printf("accumulate entropy: read returned %d: %s\n", res, strerror(res));
+			exit(1);
+		}
+		
+		printf("recived entropy %d byts: %s, atoi %d\n", res, buf, atoi(buf));
+
+		flag += res;
+		left -= res;
+		printf("id %d\n", atoi(buf));
+		buf[flag] = '\0';
+		cp = buf;
+			
+		while (*cp != '\0') {
+			if (cp[0] == '\r' && cp[1] == '\n') {
+				*cp = '\0';
+				printf("End \n");
+				return 0;
+			} else {
+				cp++;
+			}
+		}
+	}
+
+	return 1;
+}
+
+void
+init_peer(int fd, int i) 
+{
+	poll_fd[i].fd = fd;
+	poll_fd[i].events = (POLLIN | POLLPRI);
+
+	peer_ctx[i].sfd = fd;
+	peer_ctx[i].bufused = 0;
+}
+
 struct entropy_pool fast_pool, slow_pool;
 int add_to_fast[MAX_SOURCES];
 
 int main(int argc, char **argv)
 {
-	int server_fd, opt, res, i, fd, nelems;
+	int server_fd, fifo_fd, opt, pid, res, i, fd, nelems;
 	char *path;
 	struct prng_context prng;
 
@@ -531,38 +631,49 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	
-	res = entropy_pool_set_nsources(&fast_pool, 15);
-	if (res == 0)
-	        printf("entropy_pool_set_nsources %d \n", fast_pool.nsources);
-
-	res = entropy_pool_get_nsources(&fast_pool);
-	if (res != 0)
-                printf("entropy_pool_get_nsources %d\n", res);
+	res = mkfifo(FIFO_PATH, S_IRUSR | S_IWUSR | S_IWGRP);
+	if (res == -1 && errno != EEXIST) {
+		printf("mkfifo returned %d: %s\n", res, strerror(res));
+		exit(1);
+	}
 	
+	printf("mkfifo %d\n", res);
+	fifo_fd = open(FIFO_PATH, O_NONBLOCK | O_RDONLY);
+	if (fifo_fd == -1)
+		printf("open returned %d: %s\n",
+			fifo_fd, strerror(fifo_fd));
+
+	printf("open fifo %d\n", fifo_fd);
+	
+	for (i = 0; i < options.nsources; i++) {
+		pid = fork();
+		switch (pid) {
+		case -1:
+			printf("Fork returned -1: %s\n",
+			       strerror(pid));
+			exit(1);
+		case 0:
+			accumulate_samples(i); 
+			return 0;
+		default:
+			break;
+		}
+	}
+		
 	server_fd = sock_unix_listen(DEFAULT_SOCK_PATH);
 	if (server_fd == -1) {
 		printf("Error of sock_unix_connect");
 		exit(1);
 	}
-
-	mkfifo(FIFO_PATH, 0777);
-	fifo_fd = open(FIFO_PATH, O_NONBLOCK);
-	if (fifo_fd == -1)
-		printf("open returned %d: %s\n",
-			fifo_fd, strerror(fifo_fd));
-
-
+	
 	sock_nonblock(server_fd);
 	printf("server_fd %d\n", server_fd);
-
+	
 	poll_fd = calloc(1, sizeof(struct pollfd));
 	if (poll_fd == NULL) {
-		perror("error of calloc");
+		perror("Calloc returned NULL.");
 		exit(1);
 	}
-
-	poll_fd[0].fd = server_fd;
-	poll_fd[0].events = (POLLIN|POLLPRI);
 
 	peer_ctx = calloc(1, sizeof(struct peer));
 	if (peer_ctx == NULL) {
@@ -570,26 +681,33 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	
-	peer_ctx[0].sfd = server_fd;
-	peer_ctx[0].bufused = 0;
-	nelems = 1;
+	init_peer(server_fd, 0);
+	init_peer(fifo_fd, 1);
 
+	nelems = 2;
 	i = 0;
 	
 	while (1) {
+	//	printf("left %d\n", left);
+
 		res = poll(poll_fd, nelems, -1);
-		//printf("poll %d %d\n", res, poll_fd[0].revents);
-		if (res < 0 && errno != EINTR) {
+		if (res == -1 && errno != EINTR) {
 			printf("poll returned %d: %s\n",
 			      res, strerror(errno));
 			break;
-		} 
+		}
 
 		if (poll_fd[0].revents & POLLIN) {
 			accept_connect(&nelems);
-		}
- 		
+			poll_fd[0].revents = 0;
 
+		} else if (poll_fd[1].revents & POLLIN) {
+			if (accumulate_entropy()) 
+				printf("Can not find id in packet\n");
+			poll_fd[1].revents = 0;
+			memset(peer_ctx[1].buf, 0, sizeof(peer_ctx[1].buf));
+		} 
+ 		
 		process_events(nelems); 
 	}	
 	
@@ -711,7 +829,7 @@ int main(int argc, char **argv)
 
 
 	close(fd);
-
+	close(fifo_fd);
 
 return 0;
 }

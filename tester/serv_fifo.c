@@ -337,7 +337,7 @@ accumulate_samples(int id)
 {
 	int res, left, fifo_fd, fd, used;
 	char buf[PACKET_SIZE];		//Our packet will have max size of 128
-						//including id and special characters '\r\n'
+					//including id and special characters '\r\n'
 	fd 	= open(entropy_src[id].path, O_RDONLY);
 	fifo_fd = open(FIFO_PATH, O_NONBLOCK | O_WRONLY);
 	
@@ -374,36 +374,7 @@ accumulate_samples(int id)
 		printf("write returned %d: %s\n", res, strerror(res));
 		exit(1);
 	}
-/*
 
-	while (left--) {
-		res = read(fd, buf, sizeof(buf) - 4);
-		if (res > 0) {
-			buf[res] = id;
-			buf[res+1] = '\r';
-			buf[res+2] = '\n';
-			buf[res+3] = '\0';
-
-			printf("pid %d: I send packet %d byts,"
-			       "strlen %d, from %s\n",
-			       getpid(), res,
-			       strlen(buf), entropy_src[id].path);
-//			build_packet(buf); 
-			//write(fifo_fd, buf, sizeof(buf));
-		} else if (res < 0 && errno == EINTR) {
-			continue;
-		} else if (res < 0) {
-			printf("Read returned %d: %s \n",
-			       res, strerror(res));
-			exit(1);
-		}
-		res = write(fifo_fd, buf, sizeof(buf));
-		if (res == -1) {
-			printf("write returned %d: %s\n", res, strerror(res));
-			exit(1);
-		}
-	}
-*/	
 	close(fd);
 	close(fifo_fd);
 
@@ -416,7 +387,7 @@ accumulate_entropy()
 	int fd, res, left, flag;
 	char *cp, buf[PACKET_SIZE];
 
-	fd = poll_fd[0].fd;
+	fd = poll_fd[1].fd;
 	
 	left = PACKET_SIZE;
 	flag = 0;
@@ -493,7 +464,7 @@ int main (int argc, char **argv)
 		printf("open returned %d: %s\n",
 			fifo_fd, strerror(fifo_fd));
 
-	nsources = 1; // this value will be taken from entropy_pool.nsources
+	nsources = 2; // this value will be taken from entropy_pool.nsources
 	printf("open fifo %d\n", fifo_fd);
 
 	// create children for accumulate entropy from i source
@@ -543,7 +514,7 @@ int main (int argc, char **argv)
 		if (poll_fd[0].revents & POLLIN) {
 //			accept_connect(&nelems);
 			if (accumulate_entropy()) 
-				printf("Can not find id in packet\n");
+				printf("Can not find end of packet\n");
 
 			poll_fd[0].revents = 0;
 		} 
