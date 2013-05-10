@@ -85,7 +85,6 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 	printf("len %d\n", len);
 
 	printf(" entropy \n %s \n", v0);
-
 	prng->hdesc->init(&prng->hash_ctx);	
 	prng->hdesc->update(&prng->hash_ctx, v0, len);
 	prng->hdesc->update(&prng->hash_ctx, v0, len);
@@ -110,12 +109,9 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 		val[3] = (i & 0xff);
 		prng->hdesc->update(&prng->hash_ctx, val, sizeof(val));
 		prng->hdesc->finalize(&prng->hash_ctx, digest);
-//			printf(" %u", digest[m]);
-//		}
-//		printf("\n");
-
-		
 	}
+
+	printf("digest %s\n", digest);
 
 	prng->hdesc->init(&prng->hash_ctx);
 	prng->hdesc->update(&prng->hash_ctx, digest, len);
@@ -246,7 +242,7 @@ size_adaptor(unsigned char *digest, struct prng_context *prng)
 	
 	memcpy(p, tmp, key_len);
 
-	free(tmp);
+//	free(tmp);
 }
 
 int

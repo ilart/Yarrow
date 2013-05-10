@@ -24,7 +24,6 @@ typedef enum {
 	K,
 	path_to_src,
 	estimate,
-	lenght_entropy
 } ServerOpCodes;
 
 static const char	*program_name;
@@ -43,8 +42,7 @@ static struct {
 	{"nsources", Nsources},
 	{"k", K},
 	{"path_to_src", path_to_src},
-	{"estimate", estimate},
-	{"lenght_entropy", lenght_entropy}
+	{"estimate", estimate}
 };
 
 typedef struct {
@@ -56,8 +54,7 @@ typedef struct {
 	int nsources;
 	int k;
 	char path_to_src[MAX_SOURCES][MAX_LENGHT_NAME]; //paths to sources 
-	int estimate[MAX_SOURCES];
-	int lenght_entropy[MAX_SOURCES];
+	double estimate[MAX_SOURCES];
 }	Options;
 
 
@@ -72,29 +69,21 @@ struct peer {
 
 struct pollfd *poll_fd;
 
-void
-write_fd(int fd, struct peer *p)
+int received_sigterm = 0;
+int received_sigchld = 0;
+
+/*void
+write_fd(int fd, struct peer *p, int left)
 {
-	int res, left;
-	left = p->bufused;
+	int res;
 
 	p->bufused = 0;
 
-	while (left) {
-		res = write(fd, p->buf+p->bufused, left);
-		if (res == -1 && errno != EINTR) {
-			printf("Write returned %d: %s\n", res, strerror(res));
-			exit(1);
-		}
-		
-		p->bufused += res;
-		left -= res;
-	}
 	return;
 }
-
+*/
 int 
-read_fd(int fd, struct peer *p) 
+read_request(int fd, struct peer *p) 
 {
 	int res;
 	char *cp;
@@ -122,7 +111,7 @@ read_fd(int fd, struct peer *p)
 				break;
 			else {
 				printf("read returned %d: %s", res, strerror(res));
-				exit(1);
+				kill(getpid(), SIGTERM);
 			}
 		}
 	}
@@ -165,17 +154,58 @@ void *xrealloc0(void *mem, size_t old_size, size_t new_size)
 	return ptr;
 }
 
+void
+build_send_replay(struct peer *p, struct prng_context *prng)
+{
+	int n, left, res;
+	size_t size;
+	
+	left = atoi(p->buf);
+	if (left <= 0 ) {
+		printf("Bad request: user requested a negative number\n");
+		return;
+	}
+
+	while (left) {
+		n = prng->used > left ? left : prng->used;
+		if ( n != 0) {
+			left -= n; 
+			prng->used -= n;
+			
+			memcpy(p->buf, prng->random_storage + prng->used, n);
+			memset(prng->random_storage + prng->used, 0, n);	
+						
+			while (n) {
+				res = write(p->sfd, p->buf, n);
+				if (res == -1 && errno != EAGAIN) {
+					printf("Write returned %d: %s\n", res, strerror(res));
+					n = 0;
+				}
+				n -= res;
+			}
+
+		} else { 
+			size = STORAGE_SIZE;
+			prng_encrypt(prng, prng->random_storage, &size);
+			prng->used += STORAGE_SIZE;
+		}
+	}
+	
+	return;
+}
+
 void 
-process_events(int count) 
+process_events(int count, struct prng_context *prng) 
 {
 	int idx, res;
 
-	for (idx = 1; idx < count; idx++) {
+	for (idx = 2; idx < count; idx++) {
 		if (poll_fd[idx].revents & (POLLIN|POLLPRI)) {
 
-			res = read_fd(poll_fd[idx].fd, &peer_ctx[idx]);
-			if (res == 0 && peer_ctx[idx].sfd != -1)
-				write_fd(poll_fd[idx].fd, &peer_ctx[idx]);
+			res = read_request(poll_fd[idx].fd, &peer_ctx[idx]);
+			if (res == 0 && peer_ctx[idx].sfd != -1) {
+				build_send_replay(&peer_ctx[idx], prng);
+			}
 			else if (res == 0 && peer_ctx[idx].sfd == -1) {
 				close(poll_fd[idx].fd);
 				poll_fd[idx].fd = -1;
@@ -244,9 +274,6 @@ accept_connect(int *nelems)
 			       client_fd, *nelems);
 		} else if (client_fd == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
 			return;
-		} else if (client_fd == -1 && errno != EINTR) {
-			printf("accept returned %d: %s", client_fd, strerror(client_fd));
-			exit(1);	
 		}
 	}
 	return;
@@ -316,6 +343,7 @@ strdelim(char **s)
 int process_server_config(const char *filename)
 {
 	int i, value, linenum, nsrc;
+	float fvalue;
 	FILE *fd;
 	char *line, *ptr;
 	char *arg;
@@ -383,6 +411,7 @@ int process_server_config(const char *filename)
 				    filename, linenum);
 			
 			value = atoi(arg);
+			printf("time param %d\n", value);
 			if (value < MIN_TIME_PARAM)
 				value = MIN_TIME_PARAM;
 			options.time_param = value;
@@ -419,23 +448,16 @@ int process_server_config(const char *filename)
 			if (!arg || *arg == '\0')
 				printf("%s line %d: missing integer value.",
 				      filename, linenum);
-			value = atoi(arg);
-			options.estimate[nsrc-1] = value;
-			break;
-		case lenght_entropy:
-			arg = strdelim(&line); 
-			if (!arg || *arg == '\0')
-				printf("%s line %d: missing integer value.",
-				      filename, linenum);
-			value = atoi(arg);
-			options.lenght_entropy[nsrc-1] = value;
+			fvalue = atof(arg);
+			printf("fvalue %f\n", fvalue);
+			options.estimate[nsrc-1] = fvalue;
 			break;
 		default:
 			printf("%s: line %d: mising handler for opcode %s\n",
 			      filename, linenum, arg);
 		}
 		
-		printf("parse end\n");
+//		printf("parse end\n");
 		if ((arg = strdelim(&line)) != NULL && *arg != '\0')
 			printf("%s line %d: garbage at end of line; \"%.200s\".",
 			      filename, linenum, arg);
@@ -448,6 +470,7 @@ int process_server_config(const char *filename)
 		printf("error of fclose\n");
 		exit(1);
 	}
+	printf("end parse\n");
 	return TRUE;
 }
 
@@ -463,13 +486,10 @@ accumulate_samples(int id)
 	
 	printf("id %d pid %d: open fifo_fd %d, src_fd %d\n", id, getpid(), fifo_fd, fd);
 
-	if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
-		printf("signal returned SIG_ERR\n");
+	while (1) {
+		used = sprintf(buf, "%d", id); 	/* The first two index for socket and fifo*/
+		left = PACKET_SIZE - used - strlen("\r\n");
 
-	used = sprintf(buf, "%d", id);
-	left = PACKET_SIZE - used - strlen("\r\n");
-
-	while (left) {
 		res = read(fd, buf + used, left);
 		if (res == -1) {
 			if (errno == EINTR)
@@ -482,17 +502,17 @@ accumulate_samples(int id)
 			left -= res;
 			used += res;
 		}
-	}
 	
-	sprintf(buf+used, "\r\n");
+		sprintf(buf+used, "\r\n");
+	
+//		printf("accumulate buf %s\n"
+//	      	       "id %d\n", buf, atoi(buf));
 
-	printf("accumulate buf %s\n"
-	       "id %d\n", buf, atoi(buf));
-
-	res = write(fifo_fd, buf, PACKET_SIZE);
-	if (res == -1) {
-		printf("write returned %d: %s\n", res, strerror(res));
-		exit(1);
+		res = write(fifo_fd, buf, PACKET_SIZE);
+		if (res == -1) {
+			printf("write returned %d: %s\n", res, strerror(res));
+			exit(1);
+		}
 	}
 
 	close(fd);
@@ -502,10 +522,10 @@ accumulate_samples(int id)
 }
 
 int 
-accumulate_entropy()
+accumulate_entropy(struct prng_context *prng)
 {
-	int fd, res, left, flag;
-	char *cp, *buf;// buf[PACKET_SIZE];
+	int fd, res, left, flag, id;
+	char *cp, *buf; // buf[PACKET_SIZE];
 
 	buf = peer_ctx[1].buf;
 	fd = poll_fd[1].fd;
@@ -520,17 +540,21 @@ accumulate_entropy()
 			exit(1);
 		}
 		
-		printf("recived entropy %d byts: %s, atoi %d\n", res, buf, atoi(buf));
+		printf("recived entropy %d byts, atoi %d\n", res, buf, atoi(buf));
 
 		flag += res;
 		left -= res;
+		
+		id = atoi(buf);
 		printf("id %d\n", atoi(buf));
+		
 		buf[flag] = '\0';
 		cp = buf;
 			
 		while (*cp != '\0') {
 			if (cp[0] == '\r' && cp[1] == '\n') {
 				*cp = '\0';
+				feed_entropy(id, buf, PACKET_SIZE, options.estimate[id], prng);
 				printf("End \n");
 				return 0;
 			} else {
@@ -540,6 +564,19 @@ accumulate_entropy()
 	}
 
 	return 1;
+}
+
+static void 
+sigterm_handler(int sig) 
+{
+	received_sigterm = sig;
+}
+
+static void
+sigchld_handler(int sig)
+{
+	received_sigchld = sig;
+	signal(SIGTERM, sigterm_handler);
 }
 
 void
@@ -558,10 +595,14 @@ int add_to_fast[MAX_SOURCES];
 int main(int argc, char **argv)
 {
 	int server_fd, fifo_fd, opt, pid, res, i, fd, nelems;
+	size_t size;
+	int pids[MAX_SOURCES];
 	char *path;
 	struct prng_context prng;
 
-	memset(add_to_fast, 0, sizeof(add_to_fast));
+	prng.used = 0;
+
+	memset(add_to_fast, 0, MAX_SOURCES);
 	set_program_name(argc, argv);
 	
 	printf("getopt start\n");
@@ -605,6 +646,11 @@ int main(int argc, char **argv)
 		       slow_pool.nsources, 
 		       slow_pool.k, 
 		       slow_pool.hdesc->name);
+	
+	prng.gate_param = options.gate_param;
+	
+	res = prng_set_time_param(&prng, options.time_param);
+	printf("prng_set_time_param %d", res);
 
 	if (prng_cipher_init(options.prng_cipher, &prng)) {
 		printf("prng.cipher_name %s \n"
@@ -656,6 +702,7 @@ int main(int argc, char **argv)
 			accumulate_samples(i); 
 			return 0;
 		default:
+			pids[i] = pid;
 			break;
 		}
 	}
@@ -686,9 +733,37 @@ int main(int argc, char **argv)
 
 	nelems = 2;
 	i = 0;
-	
-	while (1) {
+
+	signal(SIGTERM, sigterm_handler);
+	signal(SIGCHLD, sigchld_handler);
+
+	for (;;) {
 	//	printf("left %d\n", left);
+		if (received_sigterm) {
+			for (i = 0; i < options.nsources; i++) {
+				res = kill(pids[i], SIGTERM);
+				if (res == -1)
+					printf("kill returned %d: %s\n", res, strerror(res));
+			}
+
+			close(server_fd);
+			close(fifo_fd);
+			unlink(DEFAULT_SOCK_PATH);
+			unlink(FIFO_PATH);
+		}
+		
+		if (received_sigchld) {
+			pid = waitpid(-1, &res, WNOHANG);
+			if (pid <= 0 && errno != EINTR)
+				printf("waitpid return %d: %s", pid, strerror(pid));
+			else
+				pids[pid] = 0; 		
+		}
+
+		if (prng.used < MIN_BUF_USED) {
+			size = STORAGE_SIZE - prng.used;
+			prng_encrypt(&prng, prng.random_storage + prng.used, &size);
+		}
 
 		res = poll(poll_fd, nelems, -1);
 		if (res == -1 && errno != EINTR) {
@@ -702,17 +777,14 @@ int main(int argc, char **argv)
 			poll_fd[0].revents = 0;
 
 		} else if (poll_fd[1].revents & POLLIN) {
-			if (accumulate_entropy()) 
+			if (accumulate_entropy(&prng)) 
 				printf("Can not find id in packet\n");
 			poll_fd[1].revents = 0;
 			memset(peer_ctx[1].buf, 0, sizeof(peer_ctx[1].buf));
 		} 
  		
-		process_events(nelems); 
+		process_events(nelems, &prng); 
 	}	
-	
-	close(server_fd);
-	unlink("/var/run/yarrow.socket");
 
 /*
 	res = entropy_pool_set_k(&fast_pool, 1);
@@ -757,10 +829,7 @@ int main(int argc, char **argv)
 		perror("error of read");		
 	}
 
-	prng.gate_param = 10;
 
-	res = prng_set_time_param(&prng, 10);
-	printf("prng_set_time_param %d", res);
 
 	res = prng_get_time_param(&prng);
 	printf("prng_set_time_param %d", res);
@@ -827,9 +896,5 @@ int main(int argc, char **argv)
 			fast_pool.nsources, 
 			fast_pool.k);
 
-
-	close(fd);
-	close(fifo_fd);
-
-return 0;
+	return 0;
 }

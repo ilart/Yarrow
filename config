@@ -7,7 +7,5 @@ K 1
 gate 9
 path_to_src /dev/urandom
 estimate 0.3
-lenght_entropy 80 
 path_to_src /dev/random
 estimate 0.5
-lenght_entropy 40

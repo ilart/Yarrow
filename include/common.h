@@ -25,6 +25,7 @@
 #include <sys/fcntl.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <linux/un.h>
 #include <sys/poll.h>
 

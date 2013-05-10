@@ -47,6 +47,7 @@ DEFAULT_SOCK_PATH	include/yarrow_init.h	1;"	d
 ENCRYPT	src/prng.c	11;"	d	file:
 EPOOL_FAIL	include/entropy_pool.h	/^	EPOOL_FAIL = 1$/;"	e	enum:__anon2
 EPOOL_OK	include/entropy_pool.h	/^	EPOOL_OK = 0,$/;"	e	enum:__anon2
+ESTIMATE_DIVIDER	include/feed_entropy.h	4;"	d
 EntropyHash	src/yarrow_init.c	/^	EntropyHash, $/;"	e	enum:__anon3	file:
 F	lib/md5.c	21;"	d	file:
 FALSE	include/macros.h	5;"	d
@@ -159,14 +160,14 @@ LE32_FROM_BYTES	lib/aes.c	39;"	d	file:
 MACROS_H_	include/macros.h	2;"	d
 MACROS_H_	lib/macros.h	2;"	d
 MAJ	lib/sha256.c	97;"	d	file:
-MASK	include/prng.h	8;"	d
+MASK	include/prng.h	9;"	d
 MAXKEY	include/prng_desc.h	5;"	d
 MAX_DIGEST	include/hash_desc.h	11;"	d
 MAX_LENGHT_NAME	include/yarrow_init.h	4;"	d
 MAX_SOURCES	include/entropy_pool.h	6;"	d
 MD5_DIGEST_LEN	lib/md5.h	8;"	d
 MD5_H_	lib/md5.h	2;"	d
-MIN_TIME_PARAM	include/prng.h	6;"	d
+MIN_TIME_PARAM	include/prng.h	7;"	d
 NELEMS	src/yarrow_init.c	17;"	d	file:
 NELEMS	tester/serv_fifo.c	20;"	d	file:
 NELEMS	tester/sock_serv.c	19;"	d	file:
@@ -181,7 +182,7 @@ PRNG_GOST	include/prng_desc.h	7;"	d
 PRTCHAR	lib/test.c	116;"	d	file:
 PrngCipher	src/yarrow_init.c	/^	PrngCipher, PrngHash,$/;"	e	enum:__anon3	file:
 PrngHash	src/yarrow_init.c	/^	PrngCipher, PrngHash,$/;"	e	enum:__anon3	file:
-QUOTE	src/yarrow_init.c	273;"	d	file:
+QUOTE	src/yarrow_init.c	304;"	d	file:
 RIJNDAEL_POLY	lib/galois.c	7;"	d	file:
 ROL	lib/md5.c	26;"	d	file:
 ROL32	lib/sha1.c	32;"	d	file:
@@ -202,6 +203,7 @@ SSIG1	lib/sha256.c	101;"	d	file:
 SSIZE_MAX	src/yarrow_init.c	15;"	d	file:
 SSIZE_MAX	tester/serv_fifo.c	17;"	d	file:
 SSIZE_MAX	tester/sock_serv.c	16;"	d	file:
+STORAGE_SIZE	include/prng.h	6;"	d
 ServerOpCodes	src/yarrow_init.c	/^} ServerOpCodes;$/;"	t	typeref:enum:__anon3	file:
 T0	lib/sha1.c	39;"	d	file:
 T00	lib/md5.c	65;"	d	file:
@@ -226,7 +228,7 @@ TRUE	include/macros.h	8;"	d
 TRUE	lib/macros.h	8;"	d
 TimeParam	src/yarrow_init.c	/^	TimeParam, GateParam,$/;"	e	enum:__anon3	file:
 VPATH	Makefile	/^VPATH = .\/src$/;"	m
-WHITESPACE	src/yarrow_init.c	272;"	d	file:
+WHITESPACE	src/yarrow_init.c	303;"	d	file:
 YARROW_H_	include/yarrow.h	2;"	d
 _ENTROPY_POOL_H	include/entropy_pool.h	3;"	d
 _HASH_H	include/hash_desc.h	9;"	d
@@ -262,7 +264,7 @@ _hash_ctx::sha256	include/hash_desc.h	/^		struct sha256_context sha256;$/;"	m	un
 accept_connect	src/yarrow_init.c	/^accept_connect(int *nelems)$/;"	f	signature:(int *nelems)
 accept_connect	tester/serv_fifo.c	/^accept_connect(int *nelems)$/;"	f	signature:(int *nelems)
 accept_connect	tester/sock_serv.c	/^accept_connect(int *nelems)$/;"	f	signature:(int *nelems)
-accumulate_entropy	src/yarrow_init.c	/^accumulate_entropy()$/;"	f
+accumulate_entropy	src/yarrow_init.c	/^accumulate_entropy(struct prng_context *prng)$/;"	f	signature:(struct prng_context *prng)
 accumulate_entropy	tester/serv_fifo.c	/^accumulate_entropy()$/;"	f
 accumulate_entropy	tester/sock_serv.c	/^accumulate_entropy (char *buf)$/;"	f	signature:(char *buf)
 accumulate_samples	src/yarrow_init.c	/^accumulate_samples(int id) $/;"	f	signature:(int id)
@@ -310,6 +312,7 @@ buffer	lib/sha256.h	/^        uint8_t         buffer[64];     \/* 512-bit messag
 bufused	src/yarrow_init.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
 bufused	tester/serv_fifo.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
 bufused	tester/sock_serv.c	/^	int bufused;$/;"	m	struct:peer	file:	access:public
+build_send_replay	src/yarrow_init.c	/^build_send_replay(struct peer *p, struct prng_context *prng)$/;"	f	signature:(struct peer *p, struct prng_context *prng)
 cdesc	include/prng.h	/^	struct cipher_desc *cdesc;$/;"	m	struct:prng_context	typeref:struct:prng_context::cipher_desc	access:public
 cipher_ctx	include/prng.h	/^	union _cipher_ctx *cipher_ctx;$/;"	m	struct:prng_context	typeref:union:prng_context::_cipher_ctx	access:public
 cipher_desc	include/cipher_desc.h	/^struct cipher_desc {$/;"	s
@@ -584,8 +587,9 @@ prng_context::gate_param	include/prng.h	/^	int gate_param;$/;"	m	struct:prng_con
 prng_context::hash_ctx	include/prng.h	/^	union _hash_ctx hash_ctx;$/;"	m	struct:prng_context	typeref:union:prng_context::_hash_ctx	access:public
 prng_context::hdesc	include/prng.h	/^	struct hash_desc *hdesc;$/;"	m	struct:prng_context	typeref:struct:prng_context::hash_desc	access:public
 prng_context::key	include/prng.h	/^	int key[8];$/;"	m	struct:prng_context	access:public
-prng_context::random_storage	include/prng.h	/^	char random_storage[512];$/;"	m	struct:prng_context	access:public
+prng_context::random_storage	include/prng.h	/^	char random_storage[STORAGE_SIZE];$/;"	m	struct:prng_context	access:public
 prng_context::time_param	include/prng.h	/^	int time_param;$/;"	m	struct:prng_context	access:public
+prng_context::used	include/prng.h	/^	int used;	\/*number random byts in storage*\/$/;"	m	struct:prng_context	access:public
 prng_encrypt	include/prng.h	/^void prng_encrypt(struct prng_context *prng, void *buf, size_t *size);$/;"	p	signature:(struct prng_context *prng, void *buf, size_t *size)
 prng_encrypt	src/prng.c	/^void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)$/;"	f	signature:(struct prng_context *prng, void *buf, size_t *size)
 prng_generator_gate	include/prng.h	/^void prng_generator_gate(struct prng_context *prng);$/;"	p	signature:(struct prng_context *prng)
@@ -601,15 +605,17 @@ prng_reseed	include/prng.h	/^int prng_reseed(struct prng_context *prng, const st
 prng_reseed	src/prng.c	/^prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)$/;"	f	signature:(struct prng_context *prng, const struct entropy_pool *pool)
 prng_set_time_param	include/prng.h	/^int prng_set_time_param(struct prng_context *prng, int time_param);$/;"	p	signature:(struct prng_context *prng, int time_param)
 prng_set_time_param	src/prng.c	/^prng_set_time_param(struct prng_context *prng, int time_param)$/;"	f	signature:(struct prng_context *prng, int time_param)
-process_events	src/yarrow_init.c	/^process_events(int count) $/;"	f	signature:(int count)
+process_events	src/yarrow_init.c	/^process_events(int count, struct prng_context *prng) $/;"	f	signature:(int count, struct prng_context *prng)
 process_events	tester/serv_fifo.c	/^process_events(int count) $/;"	f	signature:(int count)
 process_events	tester/sock_serv.c	/^process_events(int count) $/;"	f	signature:(int count)
 process_server_config	src/yarrow_init.c	/^int process_server_config(const char *filename)$/;"	f	signature:(const char *filename)
 program_name	src/yarrow_init.c	/^static const char	*program_name;$/;"	v	file:
-random_storage	include/prng.h	/^	char random_storage[512];$/;"	m	struct:prng_context	access:public
+random_storage	include/prng.h	/^	char random_storage[STORAGE_SIZE];$/;"	m	struct:prng_context	access:public
 read_fd	src/yarrow_init.c	/^read_fd(int fd, struct peer *p) $/;"	f	signature:(int fd, struct peer *p)
 read_fd	tester/serv_fifo.c	/^read_fd(int fd, struct peer *p) $/;"	f	signature:(int fd, struct peer *p)
 read_fd	tester/sock_serv.c	/^read_fd(int fd, struct peer *p) $/;"	f	signature:(int fd, struct peer *p)
+received_sigchld	src/yarrow_init.c	/^int received_sigchld = 0;$/;"	v
+received_sigterm	src/yarrow_init.c	/^int received_sigterm = 0;$/;"	v
 request_send	client_connect.c	/^request_send(const char *buf)$/;"	f	signature:(const char *buf)
 request_send	tester/fifo.c	/^request_send(const char *buf)$/;"	f	signature:(const char *buf)
 request_send	tester/sock_client.c	/^request_send(const char *buf)$/;"	f	signature:(const char *buf)
@@ -662,6 +668,8 @@ sha256_update	lib/sha256.c	/^sha256_update(struct sha256_context *ctx, const voi
 sha256_update	lib/sha256.h	/^void sha256_update(struct sha256_context *ctx, const void *msg, uint32_t len);$/;"	p	signature:(struct sha256_context *ctx, const void *msg, uint32_t len)
 shift_rows	lib/aes.c	/^shift_rows(struct aes_context *ctx)$/;"	f	file:	signature:(struct aes_context *ctx)
 show_key_schedule	lib/test.c	/^show_key_schedule()$/;"	f
+sigchld_handler	src/yarrow_init.c	/^sigchld_handler(int sig)$/;"	f	file:	signature:(int sig)
+sigterm_handler	src/yarrow_init.c	/^sigterm_handler(int sig) $/;"	f	file:	signature:(int sig)
 size_adaptor	include/prng.h	/^void size_adaptor(unsigned char *digest, struct prng_context *prng);$/;"	p	signature:(unsigned char *digest, struct prng_context *prng)
 size_adaptor	src/prng.c	/^size_adaptor(unsigned char *digest, struct prng_context *prng)$/;"	f	signature:(unsigned char *digest, struct prng_context *prng)
 slow_pool	src/test.c	/^struct entropy_pool fast_pool, slow_pool;$/;"	v	typeref:struct:
@@ -709,8 +717,9 @@ uint32_to_bytes	lib/md5.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t 
 uint32_to_bytes	lib/sha1.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
 uint32_to_bytes	lib/sha256.c	/^uint32_to_bytes(unsigned char *out, const u_int32_t *in, unsigned int n)$/;"	f	file:	signature:(unsigned char *out, const u_int32_t *in, unsigned int n)
 update	include/hash_desc.h	/^	void (*update)(void *ctx, const void *buf, size_t len);$/;"	m	struct:hash_desc	access:public
+used	include/prng.h	/^	int used;	\/*number random byts in storage*\/$/;"	m	struct:prng_context	access:public
 w	lib/aes.c	/^	u_int32_t	w[AES_NB*(AES_NR_MAX+1)];$/;"	m	struct:aes_context	file:	access:public
-write_fd	src/yarrow_init.c	/^write_fd(int fd, struct peer *p)$/;"	f	signature:(int fd, struct peer *p)
+write_fd	src/yarrow_init.c	/^write_fd(int fd, struct peer *p, int left)$/;"	f	signature:(int fd, struct peer *p, int left)
 write_fd	tester/serv_fifo.c	/^write_fd(int fd, struct peer *p)$/;"	f	signature:(int fd, struct peer *p)
 write_fd	tester/sock_serv.c	/^write_fd(int fd, struct peer *p)$/;"	f	signature:(int fd, struct peer *p)
 xfree	src/yarrow_init.c	/^void xfree(void *ptr)$/;"	f	signature:(void *ptr)

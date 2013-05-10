@@ -3,6 +3,8 @@
 
 #define	BLOCK_SIZE	64
 #define COUNTER_SIZE	2
+#define STORAGE_SIZE	4096
+#define MIN_BUF_USED	1024
 #define MIN_TIME_PARAM 2 
 
 #define MASK ((1 << CHAR_BIT) - 1)
@@ -31,7 +33,8 @@ struct prng_context {
 	union _hash_ctx hash_ctx;
 	u_int32_t counter[COUNTER_SIZE]; 
 
-	char random_storage[512];
+	char random_storage[STORAGE_SIZE];
+	int used;	/*number random byts in storage*/
 };
 
 int prng_reseed(struct prng_context *prng, const struct entropy_pool *pool);
