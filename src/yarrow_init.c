@@ -499,7 +499,7 @@ accumulate_samples(int id)
 				exit(1);
 			}
 		} else {
-			left -= res;
+	//		left -= res;
 			used += res;
 		}
 	
@@ -510,7 +510,7 @@ accumulate_samples(int id)
 
 		res = write(fifo_fd, buf, PACKET_SIZE);
 		if (res == -1) {
-			printf("write returned %d: %s\n", res, strerror(res));
+			printf("accumulate_samples(): write returned %d: %s\n", res, strerror(res));
 			exit(1);
 		}
 	}
@@ -716,13 +716,13 @@ int main(int argc, char **argv)
 	sock_nonblock(server_fd);
 	printf("server_fd %d\n", server_fd);
 	
-	poll_fd = calloc(1, sizeof(struct pollfd));
+	poll_fd = calloc(2, sizeof(struct pollfd));
 	if (poll_fd == NULL) {
 		perror("Calloc returned NULL.");
 		exit(1);
 	}
 
-	peer_ctx = calloc(1, sizeof(struct peer));
+	peer_ctx = calloc(2, sizeof(struct peer));
 	if (peer_ctx == NULL) {
 		perror("Calloc returned NULL");
 		exit(1);

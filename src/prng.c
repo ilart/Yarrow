@@ -219,30 +219,36 @@ void prng_next(struct prng_context *prng)
 void 
 size_adaptor(unsigned char *digest, struct prng_context *prng)
 {
-	unsigned char *tmp;
+	unsigned char *ptr;
 	int i, k, key_len, hash_len;
-	char *p;
+	char *key;
 
 	key_len = prng->cdesc->key_size;
 	hash_len = prng->hdesc->digest_len;
 
-	tmp = calloc(prng->time_param * hash_len, 1);
+	ptr = malloc(prng->time_param * hash_len);
+	if (ptr == NULL) {
+		printf("malloc returned %d\n", ptr);
+		exit(1);
+	}
 
-	p = (char *) prng->key;
-	memcpy(tmp, digest, hash_len);	
+	printf("malloc %d byts, ptr %p\n", prng->time_param * hash_len, ptr);
+
+	key = (char *) prng->key;
+	memcpy(ptr, digest, hash_len);	
 
 	for (i = 1; i < prng->time_param; i++) {
 		prng->hdesc->init(&prng->hash_ctx);
 		for (k = 0; k < i; k++) {
-			prng->hdesc->update(&prng->hash_ctx, tmp + k*hash_len, hash_len);
+			prng->hdesc->update(&prng->hash_ctx, ptr + k*hash_len, hash_len);
 		}
-		prng->hdesc->finalize(&prng->hash_ctx, tmp + i*hash_len);
+		prng->hdesc->finalize(&prng->hash_ctx, ptr + i*hash_len);
 	}
 
-	
-	memcpy(p, tmp, key_len);
-
-//	free(tmp);
+	memcpy(key, ptr, key_len);
+	printf("free() ptr %p\n", ptr);
+	free(ptr);
+	printf("free end\n");
 }
 
 int
