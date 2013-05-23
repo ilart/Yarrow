@@ -33,7 +33,7 @@ struct prng_context {
 	union _hash_ctx hash_ctx;
 	u_int32_t counter[COUNTER_SIZE]; 
 
-	char random_storage[STORAGE_SIZE];
+	unsigned char random_storage[STORAGE_SIZE];
 	int used;	/*number random byts in storage*/
 };
 

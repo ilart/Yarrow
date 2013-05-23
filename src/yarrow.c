@@ -77,26 +77,29 @@ entropy_pool_add(struct entropy_pool *pool,
 		 double estimate)
 {
 	float nbits;
+	int i;
 	assert( pool != NULL && source_id >= 0 && buf != NULL);
 
-	printf("Debug pool_nsources = %d \n"
-	       "source_id %d \n"
-	       "buf %p \n"
-	       "pool %p \n ", pool->nsources, source_id, buf, pool);
+//	printf("Debug pool_nsources = %d \n"
+//	       "source_id %d \n"
+//	       "buf %p \n"
+//	       "pool %p \n ", pool->nsources, source_id, buf, pool);
 
 	if (source_id >= pool->nsources)
 		return EPOOL_FAIL;
 
 	nbits = len * CHAR_BIT * estimate;
-	printf("nbits %f esitmate %f, len %d \n", nbits, estimate, (int ) len);
+//	printf("nbits %f esitmate %f, len %d \n", nbits, estimate, (int ) len);
 	pool->estimate[source_id] += nbits;
-	printf("pool_estimate %f\n", pool->estimate[source_id]);
+//	printf("pool_estimate %f\n", pool->estimate[source_id]);
 
 	pool->hdesc->update(&pool->hash_ctx, pool->buffer, pool->hdesc->digest_len);
 	pool->hdesc->update(&pool->hash_ctx, buf, len);
 	pool->hdesc->finalize(&pool->hash_ctx, pool->buffer);
 
-	printf("buffer %s \n", pool->buffer );
+	printf("digest\n");
+	for (i = 0; i < len; i++) 
+		printf("%x", pool->buffer[i]);
 	return EPOOL_OK;
 }
 

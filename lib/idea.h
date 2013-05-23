@@ -2,6 +2,7 @@
 #define _IDEA_H
 
 #define IDEA_KEY_NELEMS 8 /*number of 16-bit keyword (8*16 = 128). IDEA use 128 bit key*/
+#define IDEA_KEY_SIZE	16
 #define IDEA_BLOCK_NBYTES 4 /*number of 16-bit block (4*16 = 64). IDEA use 64 bit block*/
 #define IDEA_ROUND_KEY_NELEMS 52 /*number of round key*/ 
 

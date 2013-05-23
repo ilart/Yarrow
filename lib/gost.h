@@ -22,6 +22,7 @@
 #define GOST_H_
 
 #define GOST_SBOX_NELEMS	128	/* number of bytes in S-box table */
+#define GOST_KEY_SIZE		32
 #define GOST_KEY_NELEMS		8	/* 32-bit key elements (256 bits) */
 #define GOST_BLOCK_LEN		8	/* block length for 32z and 32r transforms */
 

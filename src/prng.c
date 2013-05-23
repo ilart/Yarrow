@@ -17,7 +17,7 @@ struct cipher_desc cipher_desc_tbl[] = {
 	{ 
   	  CIPHER_GOST,
  	  GOST_BLOCK_LEN,
-	  GOST_KEY_NELEMS,
+	  GOST_KEY_SIZE,
  	  INIT(gost_context_new),
   	  ENCRYPT(gost_encrypt_32z),
   	  DECRYPT(gost_decrypt_32r),
@@ -27,7 +27,7 @@ struct cipher_desc cipher_desc_tbl[] = {
 	{
 	  CIPHER_IDEA, 
 	  IDEA_BLOCK_NBYTES,
-	  IDEA_KEY_NELEMS,
+	  IDEA_KEY_SIZE,
 	  INIT(idea_context_new),
 	  ENCRYPT(idea_encrypt),
 	  DECRYPT(idea_decrypt),
@@ -37,7 +37,7 @@ struct cipher_desc cipher_desc_tbl[] = {
 /*	{
 	  CIPHER_AES_128,
 	  AES_BLOCK_LEN,
-	  AES_KEY_NELEMS,
+	  AES_KEY_SIZE,
 	  INIT(aes_context_new),
 	  ENCRYPT(aes_encrypt),
 	  DECRYPT(aes_decrypt),
@@ -47,7 +47,7 @@ struct cipher_desc cipher_desc_tbl[] = {
 	{
 	  CIPHER_AES_192,
 	  AES_BLOCK_LEN,
-	  AES_KEY_NELEMS,
+	  AES_KEY_SIZE,
 	  INIT(aes_context_new),
 	  ENCRYPT(aes_encrypt),
 	  DECRYPT(aes_decrypt),
@@ -57,7 +57,7 @@ struct cipher_desc cipher_desc_tbl[] = {
 	{
 	  CIPHER_AES_256,
 	  AES_BLOCK_LEN,
-	  AES_KEY_NELEMS,
+	  AES_KEY_SIZE,
 	  INIT(aes_context_new),
 	  ENCRYPT(aes_encrypt),
 	  DECRYPT(aes_decrypt),
@@ -115,7 +115,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 
 	prng->hdesc->init(&prng->hash_ctx);
 	prng->hdesc->update(&prng->hash_ctx, digest, len);
-	prng->hdesc->update(&prng->hash_ctx, prng->key, 32);
+	prng->hdesc->update(&prng->hash_ctx, prng->key, prng->cdesc->key_size);
 	prng->hdesc->finalize(&prng->hash_ctx, digest);
 	
 	size_adaptor(digest, prng);
@@ -140,6 +140,7 @@ prng_reseed(struct prng_context *prng, const struct entropy_pool *pool)
 		prng->counter[i] = tmp[i];
 	}
 
+
 	return TRUE;
 }
 
@@ -147,7 +148,7 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 {
 	int i, cpy_sz; 
 	u_int32_t tmp[2];
-	char *ptr;
+	unsigned char *ptr, *p;
 	
 	assert(prng != NULL && buf != NULL && size != NULL);
 
@@ -156,14 +157,16 @@ void prng_encrypt(struct prng_context *prng, void *buf, size_t *size)
 	}
 
 	printf("size in ecrypt %i \n\n",(int) *size);
-	ptr = (char *)buf;
-
+	ptr = (unsigned char *)buf;
+	p = tmp;
+	printf("prng_encrypt\n");
+	prng->used += *size;
+	
 	while ((*size) > 0) {
 		prng->cdesc->encrypt(prng->cipher_ctx, tmp);
 		cpy_sz = (*size < BLOCK_SIZE/8) ? *size : BLOCK_SIZE/8;
-		
+	 	
 		memcpy(ptr, tmp, cpy_sz);
-		
 		prng_next(prng);
 
 		for (i = 0; i < ARRAY_SIZE(prng->counter); i++ ) {
@@ -220,8 +223,8 @@ void
 size_adaptor(unsigned char *digest, struct prng_context *prng)
 {
 	unsigned char *ptr;
-	int i, k, key_len, hash_len;
-	char *key;
+	int i, k, key_len, t, hash_len;
+	unsigned char *key;
 
 	key_len = prng->cdesc->key_size;
 	hash_len = prng->hdesc->digest_len;
@@ -232,12 +235,16 @@ size_adaptor(unsigned char *digest, struct prng_context *prng)
 		exit(1);
 	}
 
-	printf("malloc %d byts, ptr %p\n", prng->time_param * hash_len, ptr);
+	printf("size_adaptor hash_len %d \n", hash_len);
 
-	key = (char *) prng->key;
+	key = (unsigned char *) prng->key;
 	memcpy(ptr, digest, hash_len);	
 
 	for (i = 1; i < prng->time_param; i++) {
+		printf("key adaptor\n");
+		for (t = 0; t < prng->time_param * hash_len; t++)
+			printf("%x", ptr[t]);
+		printf("\n");
 		prng->hdesc->init(&prng->hash_ctx);
 		for (k = 0; k < i; k++) {
 			prng->hdesc->update(&prng->hash_ctx, ptr + k*hash_len, hash_len);
@@ -246,9 +253,9 @@ size_adaptor(unsigned char *digest, struct prng_context *prng)
 	}
 
 	memcpy(key, ptr, key_len);
-	printf("free() ptr %p\n", ptr);
+//	printf("free() ptr %p\n", ptr);
 	free(ptr);
-	printf("free end\n");
+//	printf("free end\n");
 }
 
 int

@@ -115,6 +115,7 @@ gost_set_key(struct gost_context *ctx, const u_int32_t *key)
 	return_if_fail(key != NULL);
 
 	memcpy(ctx->key, key, GOST_KEY_NELEMS * sizeof(u_int32_t));
+	printf("key set %d %d %d %d %d %d %d %d \n", key[0], key[1], key[2], key[3], key[4], key[5],key[6], key[7]);
 }
 
 void

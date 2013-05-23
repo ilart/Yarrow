@@ -2,34 +2,42 @@
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int
 main (int argc, char **argv)
 {
-	int i, base, t, d, r, val;
-	char str[10];
+	int i, left, fd;
+	int r;
+	unsigned char str[40], res[70];
 
+	fd = open("/dev/random", O_RDONLY);
 	bzero(str, sizeof(str));
-	val = atoi(argv[1]);
-	base = 16;
-	d = val;
-	printf("sizeof %d\n", sizeof("\r\n"));
-	r = 1;
-	for (i = 0; r != 0; i++) {
-		r = d / base;
-		t = d % base;
-		printf("r = %d, t = %d\n", r,t);
-		
-		if (t < 10)
-			str[i] = t + '0';
-		else
-			str[i] = t - 10 + 'a';
+	memset(res, 1, sizeof(res));
 
-	
-		printf("%c ", str[i]);
-		d = r;
-	} 
-	printf( "val %d = %s\n", val, str);
+	left = 32;
+
+	while (left) {
+		left -= read(fd, str+32-left, left);
+	}
+	printf("str %s\n", str);
+	for (i = 0; i < 32; i++) {
+		r = (int ) str[i];
+		printf("%d ", str[i]);
+		if (r < 16 && r > 0) 
+			sprintf(res+i*2, "0%x",str[i]);
+		else 
+			sprintf(res+i*2, "%x", str[i]);
+	}
+
+	printf("\n");
+ 
+	for (i = 0; i < 64; i++)
+		printf( "%c", res[i]);
+	close(fd);
 	return 0;
 }
 

@@ -24,6 +24,8 @@ typedef enum {
 	K,
 	path_to_src,
 	estimate,
+	fthreshold,
+	sthreshold
 } ServerOpCodes;
 
 static const char	*program_name;
@@ -42,7 +44,9 @@ static struct {
 	{"nsources", Nsources},
 	{"k", K},
 	{"path_to_src", path_to_src},
-	{"estimate", estimate}
+	{"estimate", estimate},
+	{"fthreshold", fthreshold},
+	{"sthreshold", sthreshold}
 };
 
 typedef struct {
@@ -55,6 +59,8 @@ typedef struct {
 	int k;
 	char path_to_src[MAX_SOURCES][MAX_LENGHT_NAME]; //paths to sources 
 	double estimate[MAX_SOURCES];
+	float fthreshold[MAX_SOURCES];
+	float sthreshold[MAX_SOURCES];
 }	Options;
 
 
@@ -63,7 +69,7 @@ Options options;
 
 struct peer {
 	int sfd;
-	char buf[LINE_MAX+1];
+	unsigned char buf[LINE_MAX+1];
 	int bufused;
 } *peer_ctx;
 
@@ -82,11 +88,12 @@ write_fd(int fd, struct peer *p, int left)
 	return;
 }
 */
+
 int 
 read_request(int fd, struct peer *p) 
 {
 	int res;
-	char *cp;
+	unsigned char *cp;
 	res = 0;
 
 	for (;;) {
@@ -98,6 +105,7 @@ read_request(int fd, struct peer *p)
 			while (*cp != '\0') {
 				if (cp[0] == '\r' && cp[1] == '\n') {
 					*cp = '\0';
+					//printf("\n Client send: %s\n", p->buf);
 					return 0;
 				} else {
 					cp++;
@@ -111,7 +119,8 @@ read_request(int fd, struct peer *p)
 				break;
 			else {
 				printf("read returned %d: %s", res, strerror(res));
-				kill(getpid(), SIGTERM);
+				p->sfd = -1;
+				return 0;
 			}
 		}
 	}
@@ -154,40 +163,73 @@ void *xrealloc0(void *mem, size_t old_size, size_t new_size)
 	return ptr;
 }
 
+void convert_to_hex(unsigned char *src, unsigned char *dst, int n) 
+{
+	int k, res;
+
+	for (k = 0; k < n; k++) {
+		res = src[k];
+		if (res < 16 && res > 0)
+			sprintf(dst+ k*2, "0%x", src[k]);
+		else
+			sprintf(dst + k*2, "%x", src[k]);
+	}
+}
+
 void
 build_send_replay(struct peer *p, struct prng_context *prng)
 {
-	int n, left, res;
+	int n, req, res, i;
 	size_t size;
+	unsigned char packet[LINE_MAX+1], *ptr;
 	
-	left = atoi(p->buf);
-	if (left <= 0 ) {
+	req = atoi(p->buf) * 2;  /*we will send plain-text 
+				   and one character - one byte*/
+	if (req <= 0 ) {
 		printf("Bad request: user requested a negative number\n");
 		return;
 	}
+	printf("Client request %d\n", req);
 
-	while (left) {
-		n = prng->used > left ? left : prng->used;
-		if ( n != 0) {
-			left -= n; 
-			prng->used -= n;
+	while (req) {
+		n = prng->used-1 > req ? req : prng->used-1;
+		n = n > LINE_MAX/2 ? LINE_MAX/2 : n; 
+
+		printf("\n\n n = %d used = %d, req = %d\n\n", n, prng->used, req);
+		req -= n; 
+		prng->used -= n;
 			
-			memcpy(p->buf, prng->random_storage + prng->used, n);
-			memset(prng->random_storage + prng->used, 0, n);	
-						
-			while (n) {
-				res = write(p->sfd, p->buf, n);
-				if (res == -1 && errno != EAGAIN) {
-					printf("Write returned %d: %s\n", res, strerror(res));
-					n = 0;
-				}
-				n -= res;
-			}
+		memcpy(p->buf, prng->random_storage + prng->used, n);
+		memset(prng->random_storage + prng->used, 0, n);	
+		printf("Random storage\n");
+//		for (i = 0; i < 500; i++)
+//			printf("%x",prng->random_storage[i]);
+			//
+		convert_to_hex(p->buf, packet, n);
+		printf("Server send to client\n");
+		for (i = 0; i < n; i++)
+			printf("%x",p->buf[i]);
+		res = 0;		
+		ptr = packet;
+		
+		printf("SEND %d byts\n", n);
 
-		} else { 
-			size = STORAGE_SIZE;
+		while (n) {
+			res = write(p->sfd, ptr, n);
+			if (res == -1 && errno != EAGAIN) {
+				printf("Write returned %d: %s\n", res, strerror(res));
+				req = 0;
+				break;
+			} 
+				
+			n -= res;
+			ptr += res;
+		}
+
+		if (prng->used < 512) { 
+			printf("FILL THE BUFFER\n\n\n");
+			size = STORAGE_SIZE - prng->used;
 			prng_encrypt(prng, prng->random_storage, &size);
-			prng->used += STORAGE_SIZE;
 		}
 	}
 	
@@ -200,11 +242,14 @@ process_events(int count, struct prng_context *prng)
 	int idx, res;
 
 	for (idx = 2; idx < count; idx++) {
+		printf("flag in proccess_events for: idx = %d\n", idx);
 		if (poll_fd[idx].revents & (POLLIN|POLLPRI)) {
 
 			res = read_request(poll_fd[idx].fd, &peer_ctx[idx]);
 			if (res == 0 && peer_ctx[idx].sfd != -1) {
+				printf("flag in proccess_events: befor build_send_replay\n");
 				build_send_replay(&peer_ctx[idx], prng);
+				printf("flag in proccess_events: after build_send_replay\n");
 			}
 			else if (res == 0 && peer_ctx[idx].sfd == -1) {
 				close(poll_fd[idx].fd);
@@ -215,8 +260,8 @@ process_events(int count, struct prng_context *prng)
 			} else 
 				continue;
 
-			printf("revents %d, Client send: %s\n",
-			       poll_fd[idx].revents, peer_ctx[idx].buf);
+//			printf("revents %d, Client send: %s\n",
+			       //poll_fd[idx].revents, peer_ctx[idx].buf);
 		}
 		if (poll_fd[idx].revents & (POLLERR|POLLNVAL)) {
 			printf("we recived %d event from %d desc\n",
@@ -452,6 +497,22 @@ int process_server_config(const char *filename)
 			printf("fvalue %f\n", fvalue);
 			options.estimate[nsrc-1] = fvalue;
 			break;
+		case fthreshold:
+			arg = strdelim(&line);
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				      filename, linenum);
+			fvalue = atof(arg);
+			options.fthreshold[nsrc-1] = fvalue;
+			break;
+		case sthreshold:
+			arg = strdelim(&line);
+			if (!arg || *arg == '\0')
+				printf("%s line %d: missing integer value.",
+				      filename, linenum);
+			fvalue = atof(arg);
+			options.sthreshold[nsrc-1] = fvalue;
+			break;
 		default:
 			printf("%s: line %d: mising handler for opcode %s\n",
 			      filename, linenum, arg);
@@ -525,12 +586,13 @@ int
 accumulate_entropy(struct prng_context *prng)
 {
 	int fd, res, left, flag, id;
+	float estimate;
 	char *cp, *buf; // buf[PACKET_SIZE];
 
 	buf = peer_ctx[1].buf;
 	fd = poll_fd[1].fd;
 	
-	left = PACKET_SIZE;
+	left = LINE_MAX;
 	flag = 0;
 
 	while (left) {
@@ -540,21 +602,25 @@ accumulate_entropy(struct prng_context *prng)
 			exit(1);
 		}
 		
-		printf("recived entropy %d byts, atoi %d\n", res, buf, atoi(buf));
+		printf("recived entropy %d byts, %s\n", res, buf);
 
 		flag += res;
 		left -= res;
 		
-		id = atoi(buf);
-		printf("id %d\n", atoi(buf));
+		id = buf[0]-48; /*ascii presentation of decimal*/
+		estimate = atof(buf+2);
+
+		printf("id %d, estimate %f\n", id, estimate);
 		
 		buf[flag] = '\0';
+		memmove(buf, buf+8, strlen(buf)-8); /*Remove id and estimate*/
 		cp = buf;
 			
 		while (*cp != '\0') {
 			if (cp[0] == '\r' && cp[1] == '\n') {
 				*cp = '\0';
-				feed_entropy(id, buf, PACKET_SIZE, options.estimate[id], prng);
+				printf("accumulate entropy strlen buf %d\n", strlen(buf));
+				feed_entropy(id, buf, strlen(buf), estimate, prng);
 				printf("End \n");
 				return 0;
 			} else {
@@ -572,13 +638,6 @@ sigterm_handler(int sig)
 	received_sigterm = sig;
 }
 
-static void
-sigchld_handler(int sig)
-{
-	received_sigchld = sig;
-	signal(SIGTERM, sigterm_handler);
-}
-
 void
 init_peer(int fd, int i) 
 {
@@ -594,9 +653,9 @@ int add_to_fast[MAX_SOURCES];
 
 int main(int argc, char **argv)
 {
-	int server_fd, fifo_fd, opt, pid, res, i, fd, nelems;
+	int server_fd, fifo_fd, opt, res, i, nelems;
 	size_t size;
-	int pids[MAX_SOURCES];
+	char req[256];
 	char *path;
 	struct prng_context prng;
 
@@ -629,28 +688,35 @@ int main(int argc, char **argv)
 		
 	res = entropy_pool_init(&fast_pool, options.nsources, options.entropy_hash);
 	if (res == 0)
-		printf("pool.nsources %d\n"
-		       "pool.k %d\n"
-		       "pool.hdesc->name %s\n\n",
+		printf("fast_pool.nsources %d\n"
+		       "fast_pool.hdesc->name %s\n\n",
 		       fast_pool.nsources, 
-		       fast_pool.k, 
 		       fast_pool.hdesc->name);
-
-	res = entropy_pool_set_k(&fast_pool, options.k);
 	
 	res = entropy_pool_init(&slow_pool, options.nsources, options.entropy_hash);
 	if (res == 0)
 		printf("slow_pool.nsoursec %d\n"
-		       "slow_pool.k %d\n" 
 		       "slow_pool.hdesc->name %s\n\n", 
 		       slow_pool.nsources, 
-		       slow_pool.k, 
 		       slow_pool.hdesc->name);
+	
+	res = entropy_pool_set_k(&fast_pool, options.k);
+	res = entropy_pool_set_k(&slow_pool, options.k);
 	
 	prng.gate_param = options.gate_param;
 	
 	res = prng_set_time_param(&prng, options.time_param);
 	printf("prng_set_time_param %d", res);
+
+	for (i = 0; i < options.nsources; i++) {
+		res = entropy_pool_set_threshold(&fast_pool, i, options.fthreshold[i]);	
+		if (res == 0)
+	                printf("entropy_pool_set_threshold in fast %f\n", fast_pool.threshold[i]);
+
+		res = entropy_pool_set_threshold(&slow_pool, i, options.sthreshold[i]);	
+		if (res == 0)
+			printf("entropy_pool_set_threshold in slow %f\n", slow_pool.threshold[i]);
+	}
 
 	if (prng_cipher_init(options.prng_cipher, &prng)) {
 		printf("prng.cipher_name %s \n"
@@ -692,17 +758,20 @@ int main(int argc, char **argv)
 	printf("open fifo %d\n", fifo_fd);
 	
 	for (i = 0; i < options.nsources; i++) {
-		pid = fork();
-		switch (pid) {
-		case -1:
-			printf("Fork returned -1: %s\n",
-			       strerror(pid));
-			exit(1);
+		res = fork();
+		switch (res) {
 		case 0:
-			accumulate_samples(i); 
-			return 0;
+			sprintf(req, "%s %d %f", "./accumulate_samples", i, options.estimate[i]);
+			res = system(req);
+			if (res == -1) {
+				printf("system returned -1: %s\n", strerror(res));
+				exit(1);
+			}
+			break;
+		case -1:
+			printf("fork returned %d: %s\n", res, strerror(res));
+			exit(1);
 		default:
-			pids[i] = pid;
 			break;
 		}
 	}
@@ -714,6 +783,7 @@ int main(int argc, char **argv)
 	}
 	
 	sock_nonblock(server_fd);
+	sock_nonblock(fifo_fd);
 	printf("server_fd %d\n", server_fd);
 	
 	poll_fd = calloc(2, sizeof(struct pollfd));
@@ -732,37 +802,18 @@ int main(int argc, char **argv)
 	init_peer(fifo_fd, 1);
 
 	nelems = 2;
-	i = 0;
 
 	signal(SIGTERM, sigterm_handler);
-	signal(SIGCHLD, sigchld_handler);
+	signal(SIGPIPE, SIG_IGN);
 
 	for (;;) {
 	//	printf("left %d\n", left);
 		if (received_sigterm) {
-			for (i = 0; i < options.nsources; i++) {
-				res = kill(pids[i], SIGTERM);
-				if (res == -1)
-					printf("kill returned %d: %s\n", res, strerror(res));
-			}
-
 			close(server_fd);
 			close(fifo_fd);
 			unlink(DEFAULT_SOCK_PATH);
 			unlink(FIFO_PATH);
-		}
-		
-		if (received_sigchld) {
-			pid = waitpid(-1, &res, WNOHANG);
-			if (pid <= 0 && errno != EINTR)
-				printf("waitpid return %d: %s", pid, strerror(pid));
-			else
-				pids[pid] = 0; 		
-		}
-
-		if (prng.used < MIN_BUF_USED) {
-			size = STORAGE_SIZE - prng.used;
-			prng_encrypt(&prng, prng.random_storage + prng.used, &size);
+			exit(1);
 		}
 
 		res = poll(poll_fd, nelems, -1);
@@ -782,111 +833,17 @@ int main(int argc, char **argv)
 			poll_fd[1].revents = 0;
 			memset(peer_ctx[1].buf, 0, sizeof(peer_ctx[1].buf));
 		} 
+		
+		if (prng.used < MIN_BUF_USED) {
+			printf("prng.used %d\n\n\n\n", prng.used);
+			size = STORAGE_SIZE - prng.used;
+			prng_encrypt(&prng, prng.random_storage + prng.used, &size);
+		}
  		
 		process_events(nelems, &prng); 
 	}	
 
-/*
-	res = entropy_pool_set_k(&fast_pool, 1);
-	if (res == 0)
-		printf("entropy_pool_set_k %d\n", fast_pool.k);
-
-	res = entropy_pool_get_k(&fast_pool);
-	if (res != 0)
-                printf("entropy_pool_get_k %d\n", res);
-	printf("\n");
-
-	res = entropy_pool_set_threshold(&fast_pool, 0, 120.0);	
-	if (res == 0)
-                printf("entropy_pool_set_threshold in fast %f\n", fast_pool.threshold[0]);
-
-	res = entropy_pool_set_threshold(&slow_pool, 0, 181.0);	
-	if (res == 0)
-                printf("entropy_pool_set_threshold in slow %f\n", slow_pool.threshold[0]);
-	
-	treshd = entropy_pool_get_threshold(&fast_pool, 0);	
-	if (treshd != 0)
-                printf("entropy_pool_get_threshold %f\n", treshd);
-	printf("\n");
-	
-	fd = open("/dev/urandom" , O_RDONLY);
-	if (fd == -1)
-		perror("Error of open");
-
-	res = read(fd, &prng.key, sizeof(prng.key));
-	if (res == -1)
-		perror("Error of write");
-
-	printf("key before reseed \n");
-	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
-		printf("%u ", prng.key[i]);
-	}
-	
-	printf("\n");
-
-	res = read(fd, buf, sizeof(buf));
-	if (res < 0) {
-		perror("error of read");		
-	}
-
-
-
-	res = prng_get_time_param(&prng);
-	printf("prng_set_time_param %d", res);
-
-	feed_entropy(0, buf, 16, 0.5, &prng);
-	feed_entropy(0, buf+16, 16, 0.5, &prng);
-	feed_entropy(0, buf+32, 16, 0.5, &prng);
-	feed_entropy(0, buf+48, 16, 0.5, &prng);
-		
-
-	res = entropy_pool_add(&fast_pool, 0, buf, 33, 0.5);
-	if (res == 0)
-		printf("pool.estimate add %f \n", 
-			fast_pool.estimate[0]);
-	else {
-		printf("error of entropy_pool_add");
-		return EPOOL_FAIL;
-	}
-	printf("\n");
-	
-
-	res = entropy_pool_get_nsources(&fast_pool);
-
-//	prng_reseed(&prng, &fast_pool, 10);
-
-	printf("\n key after reseed \n");
-	for (i = 0; i < ARRAY_SIZE(prng.key); i++) {
-		printf("%u ", prng.key[i]);
-	}
-	
-	printf("\n counter after reseed \n");
-	for (i = 0; i < ARRAY_SIZE(prng.counter); i++) {
-		printf("%u ", prng.counter[i]);
-	}
-
-	prng_encrypt(&prng, buf_random, &size);	
-	printf("\nrandom values\n");
-	for (i = 0; i < 512/4; i++) {
-		printf(" %d, ", buf_random[i]);
-	}
-
-	res = entropy_pool_is_thresholded(&fast_pool);
-	printf("thresholded = %d \n", res);
-
-	printf("\ndigest_len %d\n", fast_pool.hdesc->digest_len);	
-	
-	tmp_s = entropy_pool_bytes(&slow_pool);
-	printf("slow_pool_byts %s \n", tmp_s);
-
-	entropy_pool_clean(&fast_pool);
-	printf("entropy_pool_clean %s", fast_pool.buffer);
-
-
-//	slow_pool.hdesc->finalize(&slow_pool, (void *)tmp_buf);
-//	printf("hash = %s \n", tmp_buf);
-	
-*/	res = entropy_pool_deinit(&fast_pool);
+	res = entropy_pool_deinit(&fast_pool);
 
 	if (res == 0)
 		printf ("fast_pool_hdesc %p,"

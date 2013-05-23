@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -O2 -fomit-frame-pointer -ggdb -D_GNU_SOURCE -D_XOPEN_SOUCE=600
+CFLAGS = -Wall -O2 -fomit-frame-pointer -D_GNU_SOURCE -D_XOPEN_SOUCE=600
 objects = yarrow_init.o yarrow.o feed_entropy.o prng.o cipher_desc.o hash_desc.o sock-unix.o
 VPATH = ./src
 INCLUDES = -I ./include/ -I ./lib/  

@@ -6,6 +6,10 @@ NSOURCES 2
 K 1
 gate 9
 path_to_src /dev/urandom
-estimate 0.3
+estimate 0.0825
+fthreshold 200 
+sthreshold 300 
 path_to_src /dev/random
-estimate 0.5
+estimate 0.05
+fthreshold 200
+sthreshold 300

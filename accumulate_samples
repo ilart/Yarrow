@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#
+# Shell script implementing Yarrow entropy source prototype.
+#
+
+ID=$1
+EST=$2
+
+exec 0</dev/random
+exec 1>/tmp/fifo
+
+nbytes=0
+
+while read -r -n1 c
+do
+    q=`printf "%b" "${c:-\000}" | od -N1 -t x1 | head -n1 | cut -d ' ' -f2`
+    msg=${msg}${q}
+    nbytes=$((nbytes+1))
+    if [ $nbytes -eq 34 ]; then
+	printf "%s;%s;%s\r\n" $ID $EST $msg;
+        nbytes=0
+        msg=""
+    fi
+done;
+
